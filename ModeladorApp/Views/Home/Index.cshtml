@@ -1,8 +1,143 @@
-﻿@{
+﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PROYECTO>
+
+@{
     ViewData["Title"] = "Inicio";
 }
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<style>
+    .loadingP {
+        background-image: url(img/loading.gif);
+        width: 15px;
+        display: inline-block;
+    }
+
+    .colapsado {
+        width: 15px;        
+        cursor: pointer;
+    }
+
+    .expandido {
+        width: 15px;
+        background-image: url(img/tabler-icon-minus.svg);
+        background-repeat: no-repeat;
+        background-position: -50px -17px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .treeview ul {
+        font: 14px Arial, Sans-Serif;
+        margin: 0px;
+        padding-left: 20px;
+        list-style: none;
+    }
+
+    .treeview > li > a {
+        font-weight: bold;
+    }
+
+    .treeview li a {
+        padding: 4px;
+        font-size: 12px;
+        display: inline-block;
+        text-decoration: none;
+        width: auto;
+    }
+</style>
 
 
+
+<script type="text/javascript">
+
+    //window.onload = load;
+
+    function load() {
+
+        //console.log("-------------->>");
+
+    //$(document).ready(function () {        
+
+    }
+
+    function getSubMenus(proyId) {
+
+        console.log(proyId)          
+      
+        //Comprobar si la data se ha cargado
+        if ($('#node_' + proyId).attr('data-loaded') === 'false') {           
+
+            $('#node_' + proyId).addClass("loadingP");   // Show loading panel
+            $('#node_' + proyId).removeClass("colapsado");
+
+            console.log("ENTRO");
+            // Now Load Data Here 
+            $.ajax({
+                url: "/Home/GetSubMenu",
+                type: "GET",
+                data: { parentId : proyId },
+                dataType: "json",
+                success: function (d) {
+
+                    //console.log(d);
+
+                    $('#node_' + proyId).removeClass("loadingP");
+
+                    if (d.length > 0) {
+
+                        var $ul = $("<ul></ul>");
+                        $.each(d, function (i, element) {
+                            $ul.append(
+                                $("<li></li>").append(
+                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(img/tabler-icon-plus.svg)" id="node_' + element.proyID + '" onclick="getSubMenus(' + element.proyID + ')" data-loaded="false" pid="' + element.proyID + '">&nbsp;</span>' +
+                                    '<span><a onclick="editIdentificador(' + element.proyID + ')">' + element.identificador + '</a></span>' + '-' +
+                                    '<span><a onclick="editNombre(' + element.proyID +')">' + element.nombre + '</a></span>'
+                                )
+                            )
+                        });
+
+                        $('#node_' + proyId).parent().append($ul);
+                        $('#node_' + proyId).addClass('colapsado');
+                        $('#node_' + proyId).toggleClass('colapsado expandido');
+                        $('#node_' + proyId).closest('li').children('ul').slideDown();
+                    }
+                    else {
+                        // no sub menu
+                        $('#node_' + proyId).css({ 'display': 'inline-block', 'width': '15px' });
+                    }
+
+                    $('#node_' + proyId).attr('data-loaded', true);
+                },
+                error: function () {
+                    alert("Error!");
+                }
+            });
+        }
+        else {
+            // if already data loaded
+            $('#node_' + proyId).toggleClass("colapsado expandido");
+            $('#node_' + proyId).closest('li').children('ul').slideToggle();
+        }
+    }
+
+
+
+    
+    function editNombre(vId) {
+
+        console.log(vId)
+
+    }
+
+    function editIdentificador(vId) {
+
+        console.log(vId)
+
+    }
+
+    //});
+
+</script>
 
 <div class="container-fluid">
 
@@ -17,8 +152,8 @@
                 <h2 class="page-title">
                     Pestañas
                 </h2>
-            </div>            
-    
+            </div>
+
             <!-- Page title actions -->
 
             <div class="col-auto ms-auto d-print-none">
@@ -68,10 +203,57 @@
                                 </li>
                             </ul>
                             <div class="card-body">
+
                                 <div class="tab-content">
+
                                     <div class="tab-pane show active" id="home">
-                                        <div>Visualización de Master</div>
+
+                                        <div>Visualización de</div>
+
+                                        <h2>Proyecto Master</h2>
+                                        <div style="border:1px solid black; padding:0px;  background-color:#FAFAFA">
+                                            @{
+                                                <div class="treeview">
+                                                    @{
+                                                        if (Model != null && Model.Count() > 0)
+                                                        {
+                                                            @*Here I will going to load Treeview menus*@
+                                                            <ul>
+                                                                @foreach (var i in Model)
+                                                                {
+                                                                <li>
+                                                                    @*<span class="avatar avatar-xs rounded me-2" 
+                                                                          style="background-image: url(img/tabler-icon-circle-plus.svg)"></span>*@
+
+                                                                    <span class="colapsado avatar avatar-xs rounded me-2"
+                                                                          style="background-image: url(img/tabler-icon-plus.svg)"
+                                                                          id="node_@i.ProyID" onclick="getSubMenus('@i.ProyID')"
+                                                                          data-loaded="false" pid="@i.ProyID">&nbsp;</span>
+
+                                                                    @* Here I have added the above span for collapsible button for treeview *@
+                                                                    @* and data-loaded="false" means its sub menu not loaded yet from database *@
+
+                                                                    <span>
+                                                                        <a style="cursor:pointer">@i.Identificador</a>
+                                                                    </span>
+                                                                    -
+                                                                    <span>
+                                                                        <a style="cursor:pointer" onclick="editNombre('@i.ProyID')">@i.Nombre</a>
+                                                                    </span>
+
+
+                                                                </li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+
+
                                     </div>
+
                                     <div class="tab-pane" id="usuario1">
                                         <div>Visualizacion de Usuario 1</div>
                                     </div>

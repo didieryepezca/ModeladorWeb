@@ -28,5 +28,7 @@ namespace ModeladorApp.Data
                     "MultipleActiveResultSets=True;" +
                     "Connection Timeout=36000");
         }
+
+        public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
     }
 }

@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-
-using ModeladorApp.Models.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+
+using ModeladorApp.Models.Entities;
+using ModeladorApp.Data.DataAccess;
 
 namespace ModeladorApp.Controllers
 {
@@ -17,11 +18,12 @@ namespace ModeladorApp.Controllers
     {
         private readonly UserManager<ApplicationUser> userManager;
         private readonly ILogger<HomeController> _logger;
+       
 
         public HomeController(UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
         {
             this.userManager = userManager;
-            _logger = logger;
+            _logger = logger;            
         }
 
         [Authorize]
@@ -31,8 +33,21 @@ namespace ModeladorApp.Controllers
 
             ViewBag.usuarioId = user.Result.Id;
 
+            var da = new ProyectoDA();
 
-            return View();
+            var proyectos = da.GetProyectos();
+
+            return View(proyectos);
+        }
+
+        public JsonResult GetSubMenu(int parentId) {
+
+            var da = new ProyectoDA();
+
+            //System.Threading.Thread.Sleep(5000);
+            var subMenus = da.GetProyectoSubMenu(parentId);
+
+            return Json(subMenus);
         }
 
 
