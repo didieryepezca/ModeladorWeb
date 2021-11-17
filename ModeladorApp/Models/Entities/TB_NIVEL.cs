@@ -20,8 +20,8 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "Nombre")]
         public string Nombre { get; set; }
 
-        [Display(Name = "ID Usuario")]
-        public string UsuarioId { get; set; }
+        [Display(Name = "ID Proyecto")]
+        public string ProyectoId { get; set; }
 
         [Display(Name = "Fecha de Creacion")]
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]

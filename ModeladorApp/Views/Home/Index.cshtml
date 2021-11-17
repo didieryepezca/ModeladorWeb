@@ -60,28 +60,28 @@
 
     }
 
-    function getSubMenus(proyId) {
+    function getSubMenus(pId) {
 
-        console.log(proyId)          
+        console.log(pId)
       
         //Comprobar si la data se ha cargado
-        if ($('#node_' + proyId).attr('data-loaded') === 'false') {           
+        if ($('#node_' + pId).attr('data-loaded') === 'false') {
 
-            $('#node_' + proyId).addClass("loadingP");   // Show loading panel
-            $('#node_' + proyId).removeClass("colapsado");
+            $('#node_' + pId).addClass("loadingP");   // Show loading panel
+            $('#node_' + pId).removeClass("colapsado");
 
             console.log("ENTRO");
             // Now Load Data Here 
             $.ajax({
                 url: "/Home/GetSubMenu",
                 type: "GET",
-                data: { parentId : proyId },
+                data: { parentId: pId },
                 dataType: "json",
                 success: function (d) {
 
                     console.log(d);
 
-                    $('#node_' + proyId).removeClass("loadingP");
+                    $('#node_' + pId).removeClass("loadingP");
 
                     if (d.length > 0) {
 
@@ -96,17 +96,17 @@
                             )
                         });
 
-                        $('#node_' + proyId).parent().append($ul);
-                        $('#node_' + proyId).addClass('colapsado');
-                        $('#node_' + proyId).toggleClass('colapsado expandido');
-                        $('#node_' + proyId).closest('li').children('ul').slideDown();
+                        $('#node_' + pId).parent().append($ul);
+                        $('#node_' + pId).addClass('colapsado');
+                        $('#node_' + pId).toggleClass('colapsado expandido');
+                        $('#node_' + pId).closest('li').children('ul').slideDown();
                     }
                     else {
                         // no sub menu
-                        $('#node_' + proyId).css({ 'display': 'inline-block', 'width': '15px' });
+                        $('#node_' + pId).css({ 'display': 'inline-block', 'width': '15px' });
                     }
 
-                    $('#node_' + proyId).attr('data-loaded', true);
+                    $('#node_' + pId).attr('data-loaded', true);
                 },
                 error: function () {
                     alert("Error!");
@@ -115,8 +115,8 @@
         }
         else {
             // if already data loaded
-            $('#node_' + proyId).toggleClass("colapsado expandido");
-            $('#node_' + proyId).closest('li').children('ul').slideToggle();
+            $('#node_' + pId).toggleClass("colapsado expandido");
+            $('#node_' + pId).closest('li').children('ul').slideToggle();
         }
     }
 
