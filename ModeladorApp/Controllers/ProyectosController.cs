@@ -26,7 +26,7 @@ namespace ModeladorApp.Controllers
         }
 
         [Authorize]
-        public IActionResult VerProyectos()
+        public IActionResult VerProyectos(string nombre, string tipoProyecto)
         {
             var da = new ProyectoDA();            
 

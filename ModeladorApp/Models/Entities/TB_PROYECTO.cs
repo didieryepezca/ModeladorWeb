@@ -30,6 +30,9 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID de Propietario")]
         public string PropietarioID { get; set; }
 
+        [Display(Name = "Nombre del Propietario")]
+        public string PropietarioName { get; set; }
+
         public ICollection<TB_PERMISOS> TB_PERMISOS { get; set; }
     }
 }
