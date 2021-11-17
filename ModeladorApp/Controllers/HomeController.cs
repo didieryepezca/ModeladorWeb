@@ -33,19 +33,19 @@ namespace ModeladorApp.Controllers
 
             ViewBag.usuarioId = user.Result.Id;
 
-            var da = new ProyectoDA();
+            var da = new NivelDA();
 
-            var proyectos = da.GetProyectos();
+            var proyectos = da.GetNiveles();
 
             return View(proyectos);
         }
 
         public JsonResult GetSubMenu(int parentId) {
 
-            var da = new ProyectoDA();
+            var da = new NivelDA();
 
             //System.Threading.Thread.Sleep(5000);
-            var subMenus = da.GetProyectoSubMenu(parentId);
+            var subMenus = da.GetSubNiveles(parentId);
 
             return Json(subMenus);
         }
