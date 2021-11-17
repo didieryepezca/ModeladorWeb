@@ -24,7 +24,18 @@ namespace ModeladorApp.Controllers
             this.userManager = userManager;
             _logger = logger;
         }
-        
-        
+
+        [Authorize]
+        public IActionResult VerProyectos()
+        {
+            var da = new ProyectoDA();            
+
+            var proyectos = da.GetAllProyectosWithPermisos();
+
+            return View(proyectos);
+        }
+
+       
+
     }
 }

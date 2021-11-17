@@ -20,5 +20,10 @@ namespace ModeladorApp.Models.Entities
         {
             get { return Nombres + " " + Apellidos; }
         }
+        //public string inicialesNombres {
+
+        //    get { return Nombres.Substring(0, 1) + Apellidos.Substring(0, 1);  }
+        
+        //}
     }
 }

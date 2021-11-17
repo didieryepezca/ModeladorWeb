@@ -12,6 +12,18 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class ProyectoDA
     {
+        public IEnumerable<TB_PROYECTO> GetAllProyectosWithPermisos()
+        {
+            var ana = new List<TB_PROYECTO>();
+
+            using (var db = new ApplicationDbContext())
+            {
+                IQueryable<TB_PROYECTO> query = db.TB_PROYECTO.Include(c => c.TB_PERMISOS);
+
+                return query.ToList();
+            }
+        }
+
         public IEnumerable<TB_PROYECTO> GetProyectosUsuario(string propiertarioId = "")
         {
             using (var db = new ApplicationDbContext())

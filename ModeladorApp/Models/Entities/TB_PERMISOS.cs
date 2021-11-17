@@ -17,7 +17,7 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID de Proyecto")]
         [ForeignKey("TB_PROYECTO")]
         public int ProyectoID { get; set; }
-        public virtual TB_PROYECTO TB_PROYECTO { get; set; }        
+        public virtual TB_PROYECTO TB_PROYECTO { get; set; }
         public string UsuarioCreacionId { get; set; }
 
         [Display(Name = "Usuario que creo")]
@@ -33,5 +33,6 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "Fecha de Creación")]
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
         public DateTime FechaPermisoCreado { get; set; }
+        
     }
 }
