@@ -12,11 +12,11 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class PermisosDA
     {
-        public IEnumerable<TB_PERMISOS> getPermisosWithProyectos(string tipo = "", string currentUser = "")
+        public IEnumerable<TB_PERMISOS> getPermisosWithProyectos(string tipo = "CREADOS", string currentUser = "")
         {
             using (var db = new ApplicationDbContext())
             {
-                IQueryable<TB_PERMISOS> query = db.TB_PERMISOS.Include(c => c.TB_PROYECTO);
+                IQueryable<TB_PERMISOS> query = db.TB_PERMISOS.Include(p => p.TB_PROYECTO);
 
                 if (tipo == "CREADOS")
                 {

@@ -14,8 +14,8 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID Permiso")]
         public int PermisoID { get; set; }
 
-        [Display(Name = "ID Proyecto")]
-        [ForeignKey("ProyectoID")]
+        [Display(Name = "ID de Proyecto")]
+        [ForeignKey("TB_PROYECTO")]
         public int ProyectoID { get; set; }
         public virtual TB_PROYECTO TB_PROYECTO { get; set; }        
         public string UsuarioCreacionId { get; set; }
