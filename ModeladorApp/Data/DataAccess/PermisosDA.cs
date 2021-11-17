@@ -12,7 +12,7 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class PermisosDA
     {
-        public IEnumerable<TB_PERMISOS> getPermisosWithProyectos(string tipo = "CREADOS", string currentUser = "")
+        public IEnumerable<TB_PERMISOS> getPermisosWithProyectos(string tipo = "", string currentUser = "")
         {
             using (var db = new ApplicationDbContext())
             {
@@ -35,7 +35,16 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
-
+        public int InsertPermiso(TB_PERMISOS permiso)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                db.Add(permiso);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
 
     }
 }

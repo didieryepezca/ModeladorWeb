@@ -29,6 +29,8 @@ namespace ModeladorApp.Data
                     "Connection Timeout=36000");
         }
 
+        //Tabla de Usuarios
+        public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
         public virtual DbSet<TB_PERMISOS> TB_PERMISOS { get; set; }
         public virtual DbSet<TB_NIVEL> TB_NIVEL { get; set; }

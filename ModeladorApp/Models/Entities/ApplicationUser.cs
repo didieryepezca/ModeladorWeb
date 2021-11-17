@@ -15,5 +15,10 @@ namespace ModeladorApp.Models.Entities
 
         [Display(Name = "Apellidos")]
         public String Apellidos { get; set; }
+
+        public string UsuarioNombreCompleto
+        {
+            get { return Nombres + " " + Apellidos; }
+        }
     }
 }
