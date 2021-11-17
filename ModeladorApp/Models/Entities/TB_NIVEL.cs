@@ -21,7 +21,7 @@ namespace ModeladorApp.Models.Entities
         public string Nombre { get; set; }
 
         [Display(Name = "ID Proyecto")]
-        public string ProyectoId { get; set; }
+        public int ProyectoId { get; set; }
 
         [Display(Name = "Fecha de Creacion")]
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
