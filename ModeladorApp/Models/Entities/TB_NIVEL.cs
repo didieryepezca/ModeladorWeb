@@ -23,7 +23,8 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID Usuario")]
         public string UsuarioId { get; set; }
 
-        [Display(Name = "Fecha Creacion")]
+        [Display(Name = "Fecha de Creacion")]
+        [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
         public DateTime FechaCreacion { get; set; }
 
     }

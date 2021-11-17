@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PROYECTO>
+﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_NIVEL>
 
 @{
     ViewData["Title"] = "Inicio";
@@ -79,7 +79,7 @@
                 dataType: "json",
                 success: function (d) {
 
-                    //console.log(d);
+                    console.log(d);
 
                     $('#node_' + proyId).removeClass("loadingP");
 
@@ -89,9 +89,9 @@
                         $.each(d, function (i, element) {
                             $ul.append(
                                 $("<li></li>").append(
-                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(img/tabler-icon-plus.svg)" id="node_' + element.proyID + '" onclick="getSubMenus(' + element.proyID + ')" data-loaded="false" pid="' + element.proyID + '">&nbsp;</span>' +
-                                    '<span><a onclick="editIdentificador(' + element.proyID + ')">' + element.identificador + '</a></span>' + '-' +
-                                    '<span><a onclick="editNombre(' + element.proyID +')">' + element.nombre + '</a></span>'
+                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(img/tabler-icon-plus.svg)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
+                                    '<span><a onclick="editIdentificador(' + element.nivelID + ')">' + element.identificador + '</a></span>' + '-' +
+                                    '<span><a onclick="editNombre(' + element.nivelID +')">' + element.nombre + '</a></span>'
                                 )
                             )
                         });
@@ -227,8 +227,8 @@
 
                                                                     <span class="colapsado avatar avatar-xs rounded me-2"
                                                                           style="background-image: url(img/tabler-icon-plus.svg)"
-                                                                          id="node_@i.ProyID" onclick="getSubMenus('@i.ProyID')"
-                                                                          data-loaded="false" pid="@i.ProyID">&nbsp;</span>
+                                                                          id="node_@i.NivelID" onclick="getSubMenus('@i.NivelID')"
+                                                                          data-loaded="false" pid="@i.NivelID">&nbsp;</span>
 
                                                                     @* Here I have added the above span for collapsible button for treeview *@
                                                                     @* and data-loaded="false" means its sub menu not loaded yet from database *@
@@ -238,7 +238,7 @@
                                                                     </span>
                                                                     -
                                                                     <span>
-                                                                        <a style="cursor:pointer" onclick="editNombre('@i.ProyID')">@i.Nombre</a>
+                                                                        <a style="cursor:pointer" onclick="editNombre('@i.NivelID')">@i.Nombre</a>
                                                                     </span>
 
 

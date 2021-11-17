@@ -30,6 +30,6 @@ namespace ModeladorApp.Data
         }
         
         public virtual DbSet<TB_NIVEL> TB_NIVEL { get; set; }
-        public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
+        //public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
     }
 }

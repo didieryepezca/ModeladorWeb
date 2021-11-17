@@ -50,7 +50,6 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
 
-
         [Authorize]
         public IActionResult AdminProyectos()
         {
