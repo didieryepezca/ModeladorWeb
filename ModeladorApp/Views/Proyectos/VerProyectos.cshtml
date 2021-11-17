@@ -22,28 +22,29 @@
                     <div class="btn-list">
 
                         <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first">
-                           
-                                <div class="input-icon">
-                                    <span class="input-icon-addon">
-                                        <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg>
-                                    </span>
-                                    <input type="text" name="nombre" class="form-control" placeholder="Buscar…" aria-label="Search in website">
-                                </div>
-                            
+
+                            <div class="input-icon">
+                                <span class="input-icon-addon">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg>
+                                </span>
+                                <input type="text" name="nombre" class="form-control" placeholder="Buscar…" aria-label="Search in website">
+                            </div>
+
                         </div>
 
                         <span class="d-none d-sm-inline">
                             <select class="form-select" name="tipoProyecto">
                                 @*<option selected="@ViewBag.permiso">@ViewBag.permiso</option>*@
-                                <option value="TODOS LOS PROYECTOS">TODOS LOS PROYECTOS</option>
-                                <option value="ADMINISTRO">PROYECTOS QUE ADMINISTRO</option>
-                                <option value="EDITO QUE PUEDO EDITAR">PROYECTOS QUE PUEDO EDITAR</option>  
-                                <option value="VEO QUE PUEDO VER">PROYECTOS QUE PUEDO VER</option>
+                                <option value="ALL">TODOS LOS PROYECTOS</option>
+                                <option value="VIEWER">PROYECTOS QUE PUEDO VER</option>
+                                <option value="EDITOR">PROYECTOS QUE PUEDO EDITAR</option>
                             </select>
                         </span>
-
-                        <button type="submit" class="btn btn-primary d-none d-sm-inline-block">                            
+                        @{
+                            var search = 'B';
+                        }
+                        <button type="submit" value="@search" name="accion" class="btn btn-primary d-none d-sm-inline-block">
                             Buscar
                         </button>
 
@@ -93,7 +94,7 @@
 
                                                     <span title="@nombreCompleto"
                                                           class="avatar avatar-sm avatar-rounded">@firstLetters</span>
-                                                    }
+                                                }
                                             </div>
                                             <span><strong>Creado por:</strong> @Html.DisplayFor(modelItem => item.PropietarioName)</span>
                                         </div>

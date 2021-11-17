@@ -26,11 +26,21 @@ namespace ModeladorApp.Controllers
         }
 
         [Authorize]
-        public IActionResult VerProyectos(string nombre, string tipoProyecto)
+        public IActionResult VerProyectos(string nombre, string tipoProyecto, string accion = "")
         {
-            var da = new ProyectoDA();            
+            var user = userManager.GetUserAsync(User);
+            var userId = user.Result.Id;
 
-            var proyectos = da.GetAllProyectosWithPermisos();
+            var da = new ProyectoDA();
+
+            string vAccion = "";
+
+            if (!String.IsNullOrWhiteSpace(accion))
+            {
+                vAccion = accion;
+            }
+
+            var proyectos = da.GetAllProyectosWithPermisos(nombre, tipoProyecto, userId, vAccion);
 
             return View(proyectos);
         }
