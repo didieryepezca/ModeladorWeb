@@ -17,16 +17,18 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID Proyecto")]
         [ForeignKey("ProyectoID")]
         public int ProyectoID { get; set; }
-        public virtual TB_PROYECTO TB_PROYECTO { get; set; }
+        public virtual TB_PROYECTO TB_PROYECTO { get; set; }        
+        public string UsuarioCreacionId { get; set; }
 
         [Display(Name = "Usuario que creo")]
-        public string UsuarioCreacion { get; set; }
+        public string UsuarioCreacionName { get; set; }
 
         [Display(Name = "Permiso")]
-        public string Permiso { get; set; }
+        public string Permiso { get; set; }        
+        public string UsuarioConcedidoId { get; set; }
 
         [Display(Name = "Usuario concedido")]
-        public string UsuarioConcedido { get; set; }
+        public string UsuarioConcedidoName { get; set; }
 
         [Display(Name = "Fecha de Creación")]
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]

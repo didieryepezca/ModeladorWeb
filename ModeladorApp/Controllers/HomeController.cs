@@ -17,8 +17,7 @@ namespace ModeladorApp.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<HomeController> _logger;
-       
+        private readonly ILogger<HomeController> _logger;       
 
         public HomeController(UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
         {
@@ -40,7 +39,7 @@ namespace ModeladorApp.Controllers
             return View(proyectos);
         }
 
-        public JsonResult GetSubMenu(int parentId) {
+        public JsonResult funGetSubNiveles(int parentId) {
 
             var da = new NivelDA();
 
@@ -50,11 +49,7 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
 
-        [Authorize]
-        public IActionResult AdminProyectos()
-        {
-            return View();
-        }
+        
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
