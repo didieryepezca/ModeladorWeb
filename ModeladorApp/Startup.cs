@@ -51,6 +51,9 @@ namespace ModeladorApp
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMvc().AddRazorRuntimeCompilation();
+            services.AddMvc().AddRazorPagesOptions(options => {
+                options.Conventions.AddPageRoute("/Proyectos/VerProyectos", "");
+            }).SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
