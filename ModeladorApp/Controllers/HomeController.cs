@@ -35,11 +35,20 @@ namespace ModeladorApp.Controllers
             var daPer = new HomeDA();
             var proyectos = daPer.getProyectosWithPermisos(userId);
 
-            //var da = new NivelDA();
-            //var proyectos = da.GetNiveles();
+           
 
             return View(proyectos);
         }
+
+        public List<TB_NIVEL> FunGetMaster(int vIdPerSnp)
+        {
+            var da = new NivelDA();
+
+            var master = da.GetMaster().ToList();           
+
+            return master;
+        }
+
 
         public JsonResult funGetSubNiveles(int parentId) {
 

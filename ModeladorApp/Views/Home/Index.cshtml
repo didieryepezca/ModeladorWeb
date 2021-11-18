@@ -50,9 +50,9 @@
 
 <script type="text/javascript">
 
-    window.onload = load;
+    window.onload = loadMaster;
 
-    function load() {
+    function loadMaster() {
 
 
 
@@ -133,9 +133,9 @@
 
     }
 
-
-
 </script>
+
+
 <form asp-action="Index" method="get">
 
     <div class="container-fluid">
@@ -155,9 +155,6 @@
             </div>
         </div>
     </div>
-
-
-
 
     <div class="page-body">
         <div class="container-fluid">
@@ -190,6 +187,7 @@
                                         <div class="tab-pane show active" id="master">
 
                                         </div>
+
                                         @foreach (var item in Model)
                                         {
                                             <div class="tab-pane" id="proyecto_@item.ProyectoID">

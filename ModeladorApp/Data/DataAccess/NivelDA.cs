@@ -13,7 +13,7 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class NivelDA
     {
-        public IEnumerable<TB_NIVEL> GetNiveles()
+        public IEnumerable<TB_NIVEL> GetMaster()
         {
             var ana = new List<TB_NIVEL>();
 
