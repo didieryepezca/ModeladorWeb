@@ -19,7 +19,7 @@
 
     .expandido {
         width: 15px;
-        background-image: url(img/tabler-icon-minus.svg);
+        background-image: url(https://image.pngaaa.com/549/4811549-middle.png);
         background-repeat: no-repeat;
         background-position: -50px -17px;
         display: inline-block;
@@ -89,7 +89,7 @@
                         $.each(d, function (i, element) {
                             $ul.append(
                                 $("<li></li>").append(
-                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(img/tabler-icon-plus.svg)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
+                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
                                     '<span><a onclick="editIdentificador(' + element.nivelID + ')">' + element.identificador + '</a></span>' + '-' +
                                     '<span><a onclick="editNombre(' + element.nivelID +')">' + element.nombre + '</a></span>'
                                 )
@@ -146,11 +146,9 @@
         <div class="row align-items-center">
             <div class="col">
                 <!-- Page pre-title -->
-                <div class="page-pretitle">
-                    Inicio
-                </div>
+              
                 <h2 class="page-title">
-                    Pestañas
+                    Proyectos
                 </h2>
             </div>
 
@@ -208,10 +206,7 @@
                                 <div class="tab-content">
 
                                     <div class="tab-pane show active" id="home">
-
-                                        <div>Visualización de</div>
-
-                                        <h2>Proyecto Master</h2>
+                                        
                                         <div style="border:1px solid black; padding:0px;  background-color:#FAFAFA">
                                             @{
                                                 <div class="treeview">
@@ -227,7 +222,7 @@
                                                                           style="background-image: url(img/tabler-icon-circle-plus.svg)"></span>*@
 
                                                                     <span class="colapsado avatar avatar-xs rounded me-2"
-                                                                          style="background-image: url(img/tabler-icon-plus.svg)"
+                                                                          style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)"
                                                                           id="node_@i.NivelID" onclick="getSubMenus('@i.NivelID')"
                                                                           data-loaded="false" pid="@i.NivelID">&nbsp;</span>
 
@@ -255,18 +250,18 @@
 
                                     </div>
 
-                                    <div class="tab-pane" id="usuario1">
-                                        <div>Visualizacion de Usuario 1</div>
+                                    <div class="tab-pane" id="usuario1">    
+                                        
                                     </div>
+
                                     <div class="tab-pane" id="usuario2">
-                                        <div>Visualizacion de Usuario 2</div>
+                                        
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
 
                     <!--<div class="col-12">
                         <div class="card">
@@ -276,7 +271,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class="col-12">
                         <div class="card">
@@ -362,7 +356,6 @@
             </div>
 
         </div>
-
     </div>
 </div>
 

@@ -1,11 +1,4 @@
-/*!
-* Tabler v1.0.0-beta4 (https://tabler.io)
-* @version 1.0.0-beta4
-* @link https://tabler.io
-* Copyright 2018-2021 The Tabler Authors
-* Copyright 2018-2021 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
+
 pre.highlight,
 .highlight pre {
   max-height: 30rem;
@@ -205,7 +198,7 @@ pre.highlight,
 .example-content {
   font-size: 0.9375rem;
   line-height: 1.3333333;
-  color: #1e293b;
+  color: #FEB11A;
   flex: 1;
   max-width: 100%; }
   .example-content .page-header {
@@ -237,7 +230,7 @@ pre.highlight,
   max-width: 52rem; }
 
 .example-modal-backdrop {
-  background: #1e293b;
+  background: #FEB11A;
   opacity: 0.24;
   position: absolute;
   width: 100%;

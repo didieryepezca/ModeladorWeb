@@ -4,7 +4,8 @@ body {
   min-height: 100vh; }
 
 .brand-wrapper {
-  margin-bottom: 19px; }
+  margin-bottom: 19px;  
+}
   .brand-wrapper .logo {
     height: 37px; }
 
@@ -50,15 +51,16 @@ body {
       color: #919aa3; }
     .login-card .form-control::placeholder {
       color: #919aa3; }
-  .login-card .login-btn {
+.login-card .login-btn {
     padding: 13px 20px 12px;
-    background-color: #000;
+    background-color: #FF8900; /*color del boton Login*/
     border-radius: 4px;
     font-size: 17px;
     font-weight: bold;
     line-height: 20px;
     color: #fff;
-    margin-bottom: 24px; }
+    margin-bottom: 24px;
+}
     .login-card .login-btn:hover {
       border: 1px solid #000;
       background-color: transparent;
