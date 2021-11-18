@@ -40,10 +40,12 @@ namespace ModeladorApp.Controllers
             return View(proyectos);
         }
 
-        public List<TB_NIVEL> FunGetMaster(int vIdPerSnp)
+        public List<TB_NIVEL> FunGetMaster()
         {
             var da = new NivelDA();
-
+            
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(5000);
             var master = da.GetMaster().ToList();           
 
             return master;

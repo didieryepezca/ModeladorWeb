@@ -47,16 +47,53 @@
 </style>
 
 
-
 <script type="text/javascript">
 
-    window.onload = loadMaster;
+    window.onload = loadMaster();
 
-    function loadMaster() {
+    async function loadMaster() {
 
+        //removemos el pane del proyecto master para volverlo a construir
+        $("#masterPane").remove();
 
+        //muestra el loader cuando volvemos a hacer click aqui
+        $("#emptyPy").show();
 
+        var data = await funGetMasterData()
+
+        //cuando termina de ejecutarse la función asyncrona oculta el loader...
+        $("#emptyPy").hide();
+
+        //------------------------------------------------------------->>>Treeview Master
+        var treeview = "";
+
+        treeview = treeview + '<div id="masterPane" style="border:1px solid black; padding:0px; background-color:#FAFAFA">';
+        treeview = treeview + '<div class="treeview">';
+
+        treeview = treeview + '<ul>';
+
+        treeview = treeview + '<li>';
+        treeview = treeview + '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + data[0].nivelID + '" onclick="getSubMenus(' + data[0].nivelID +')" data-loaded="false" pid="">&nbsp;</span>';
+        treeview = treeview + '<span><a style="cursor:pointer">' + data[0].identificador +'</a></span> - ';
+        treeview = treeview + '<span><a style="cursor:pointer" onclick="editNombre(' + data[0].nivelID +')">' + data[0].nombre + '</a></span>';
+        treeview = treeview + '</li>';
+
+        treeview = treeview + '</ul>';
+        treeview = treeview + '</div>';
+        treeview = treeview + '</div>';
+
+        $('#master').append(treeview).fadeIn(300000);
+        //------------------------------------------------------------->>>Treeview Master
     }
+
+    //trae la información del Master.
+    function funGetMasterData() {
+        var url = "/Home/FunGetMaster";
+        return $.get(url, {  }, function (data) {
+            //console.log(data);
+        });
+    };
+
 
     function getSubMenus(pId) {
 
@@ -169,12 +206,13 @@
 
                                 <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
                                     <li class="nav-item">
-                                        <a href="#master" class="nav-link active" data-bs-toggle="tab"><strong>MASTER</strong></a>
+                                        <a href="#master" onclick="loadMaster()" class="nav-link active" 
+                                           data-bs-toggle="tab"><strong>MASTER</strong></a>
                                     </li>
                                     @foreach (var item in Model)
                                     {
                                         <li class="nav-item">
-                                            <a href="#proyecto_@item.ProyectoID" class="nav-link"
+                                            <a href="#proyecto_@item.ProyectoID"  class="nav-link"
                                                data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
                                         </li>
                                     }
@@ -186,30 +224,57 @@
 
                                         <div class="tab-pane show active" id="master">
 
+                                            <div class="row align-items-center">
+                                                <div class="col-auto ms-auto d-print-none">
+                                                    <div class="btn-list">
+
+                                                        <span class="d-none d-sm-inline">
+                                                            <a href="#" class="btn btn-primary">
+                                                                Clonar
+                                                            </a>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="empty" id="emptyPy">
+                                                <div class="empty-img">
+                                                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                                                </div>
+                                                <p class="empty-title">Cargando "MASTER"</p>
+                                            </div>
+
                                         </div>
 
                                         @foreach (var item in Model)
                                         {
-                                            <div class="tab-pane" id="proyecto_@item.ProyectoID">
+                                    <div class="tab-pane" id="proyecto_@item.ProyectoID">
 
-                                                @if (item.Permiso == "EDITOR") 
-                                                { 
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto ms-auto d-print-none">
-                                                            <div class="btn-list">
+                                        @if (item.Permiso == "EDITOR")
+                                        {
+                                            <div class="row align-items-center">
+                                                <div class="col-auto ms-auto d-print-none">
+                                                    <div class="btn-list">
 
-                                                                <span class="d-none d-sm-inline">
-                                                                    <a href="#" class="btn btn-primary">
-                                                                        Editar
-                                                                    </a>
-                                                                </span>
-                                                            </div>
-                                                        </div>
+                                                        <span class="d-none d-sm-inline">
+                                                            <a href="#" class="btn btn-primary">
+                                                                Editar
+                                                            </a>
+                                                        </span>
                                                     </div>
-                                                }
-
+                                                </div>
                                             </div>
                                         }
+
+                                        <div class="empty" id="emptyPy_@item.TB_PROYECTO.NombreProyecto">
+                                            <div class="empty-img">
+                                                <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                                            </div>
+                                            <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
+                                        </div>
+
+                                    </div>
+                                    }
 
                                     </div>
                                 </div>

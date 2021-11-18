@@ -21,7 +21,7 @@ namespace ModeladorApp.Data.DataAccess
             {
                 IQueryable<TB_NIVEL> query = db.TB_NIVEL;
 
-                query = query.Where(item => item.ParentNivelID == 0);
+                query = query.Where(item => item.ParentNivelID == 0 && item.ProyectoId == 0);
 
                 query = query.OrderBy(p => p.NivelID);
 
