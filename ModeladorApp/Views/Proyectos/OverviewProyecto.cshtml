@@ -1,0 +1,376 @@
+﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PERMISOS>
+
+
+<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<script type="text/javascript">
+
+    var ArrayCamposPermiso = [];
+
+    function AddPermiso() {
+
+        //var tipos = $("input[type='radio']");
+        //var tipoSeleccionado = tipos.filter(":checked");
+
+        var proyecto = $('#selectProyecto').val();
+        var usuario = $('#selectUsuario').val();
+        var permiso = $('form input[type=radio]:checked').val();
+
+        var ArrayCamposPermiso = [];
+
+        if (proyecto != "" && proyecto != null) {
+            ArrayCamposPermiso.push(proyecto);
+        }
+
+        if (usuario != "" && usuario != null) {
+            ArrayCamposPermiso.push(usuario);
+        }
+
+        if (permiso != "" && permiso != null) {
+            ArrayCamposPermiso.push(permiso);
+        }
+
+        var nroCamposLlenos = ArrayCamposPermiso.length;
+
+        if (nroCamposLlenos == 3) {
+
+            url = "/Permisos/FunInsertPermiso";
+            $.get(url, { py: proyecto, user: usuario, per: permiso }, function (data) {
+
+                //console.log(data);
+                if (data >= 1) {
+
+                    swal({
+                        title: "OK",
+                        text: "Se Añadio el Permiso con Exito",
+                        type: "success"
+                    }
+                        , function () {
+                            //window.location = "http://172.17.1.38:8188/Home/Index";
+                            window.location = "https://localhost:5001/Permisos/VerPermisos";
+                        }
+                    );
+                }
+                else {
+                    swal({
+                        title: "ERROR",
+                        text: "Hubo un problema al Agregar el Permiso",
+                        type: "warning"
+                    });
+                }
+
+            });
+
+            $('#modal-permiso').modal('toggle');
+
+        } else {
+
+            swal({
+                title: "ERROR",
+                text: "Te falta completar Campos",
+                type: "warning"
+            });
+
+        }
+    }
+</script>
+
+
+<form asp-action="OverviewProyecto" method="get">
+
+    <div class="container-fluid">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
+                    <div class="page-pretitle">
+                        Inicio
+                    </div>
+                    <h2 class="page-title">
+                        Administración de Proyecto
+                    </h2>
+                </div>
+
+                <!-- Page title actions -->
+                <div class="col-auto ms-auto d-print-none">
+                    <div class="btn-list">
+                        @{
+                            if (@ViewBag.propietarioID == ViewBag.currentUser)
+                            {
+                                <a href="#" class="btn btn-blue d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-permiso">
+                                    <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                    Agregar Permiso
+                                </a>
+
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-body">
+        <div class="container-fluid">
+
+            <div class="row row-deck row-cards">
+
+                <div class="col-lg-12">
+                    <div class="row row-cards">
+
+                        <div class="col-12">
+                            <div class="card">
+
+
+                                <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+                                    <li class="nav-item">
+                                        <a href="#overview" class="nav-link active" data-bs-toggle="tab">Overview</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#accesos" class="nav-link" data-bs-toggle="tab">Control de Accesos</a>
+                                    </li>
+                                   
+                                </ul>
+
+
+                                <div class="card-body">
+
+                                    <div class="tab-content">
+
+                                        <div class="tab-pane active" id="overview">
+
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Información del Proyecto</h3>
+                                                    </div>
+                                                    <div class="card-body">
+
+                                                        <div class="form-group mb-2 row">
+                                                            <label class="form-label col-1 col-form-label">Nombre</label>
+                                                            <div class="col">
+                                                                <input type="email" class="form-control" value="@ViewBag.nombre">
+                                                                @*<small class="form-hint">We'll never share anything with anyone else.</small>*@
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-3 row">
+                                                            <label class="form-label col-1 col-form-label">Descripción</label>
+                                                            <div class="col">
+                                                                <textarea id="txtPyDescripcion" class="form-control" rows="8">@ViewBag.descripcion</textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group mb-3 row">
+
+                                                            <div class="row">
+
+                                                                <label class="form-label col-1 col-form-label">Creación</label>
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" id="datepicker-icon-prepend" value="@ViewBag.fechacreacion">
+                                                                    
+                                                                    <!--<div class="input-icon">
+                                                                        <span class="input-icon-addon">-->
+                                                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                                                            <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="5" width="16" height="16" rx="2"></rect><line x1="16" y1="3" x2="16" y2="7"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="4" y1="11" x2="20" y2="11"></line><line x1="11" y1="15" x2="12" y2="15"></line><line x1="12" y1="15" x2="12" y2="18"></line></svg>
+                                                                        </span>
+                                                                        <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend" value="2020-06-20">
+                                                                    </div>-->
+
+                                                                </div>
+                                                                <label class="form-label col-1 col-form-label">Última edición</label>
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" id="datepicker-icon-prepend" value="@ViewBag.fechaedicion">
+                                                                </div>
+                                                                <label class="form-label col-1 col-form-label">Propietario</label>
+                                                                <div class="col-lg-3">
+                                                                    <input class="form-control" value="@ViewBag.propietario">
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+
+                                                        @if(@ViewBag.propietarioID == ViewBag.currentUser)
+                                                        {
+                                                            <div class="form-footer">
+                                                                <a class="btn btn-primary">Actualizar</a>
+                                                            </div>
+                                                        }
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="tab-pane" id="accesos">                                            
+
+                                            <div class="table-responsive">
+                                                <table class="table table-vcenter table-mobile-md card-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Permiso Creado Por</th>
+                                                            <th>Permiso</th>
+                                                            <th>Permiso Concedido A</th>
+                                                            <th>Fecha de Creacion/Otorgacion</th>
+                                                            <th class="w-1"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @{
+                                                            int count = 1;
+                                                        }
+                                                        @foreach (var item in Model)
+                                                        {
+                                                            <tr>
+                                                                <td class="text-muted" data-label="#">
+                                                                    @count
+                                                                </td>
+
+                                                                <td class="text-muted" data-label="Permiso Creado Por">
+                                                                    <strong>@Html.DisplayFor(modelItem => item.UsuarioCreacionName)</strong>
+                                                                </td>
+
+                                                                <td class="text-muted" data-label="Permiso">
+                                                                    @Html.DisplayFor(modelItem => item.Permiso)
+                                                                </td>
+
+                                                                <td class="text-muted" data-label="Permiso Concedido A">
+                                                                    <strong>@Html.DisplayFor(modelItem => item.UsuarioConcedidoName)</strong>
+                                                                </td>
+
+                                                                <td class="text-muted" data-label="Fecha de Creacion/Otorgacion">
+                                                                    @Html.DisplayFor(modelItem => item.FechaPermisoCreado)
+                                                                </td>
+
+                                                                <td>
+                                                                    <div class="btn-list flex-nowrap">
+
+                                                                        @if (item.UsuarioCreacionId == ViewBag.currentUser)
+                                                                        {
+                                                                            <a href="#" class="btn btn-white">
+                                                                                Modificar
+                                                                            </a>
+                                                                            <a href="#" class="btn btn-red">
+                                                                                Eliminar
+                                                                            </a>
+                                                                        }
+
+                                                                        @*<div class="dropdown">
+                                            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
+                                                Actions
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end">
+                                                <a class="dropdown-item" href="#">
+                                                    Action
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    Another action
+                                                </a>
+                                            </div>
+                                        </div>*@
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            { count = count + 1; }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                        </div>                                       
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal modal-blur fade" id="modal-permiso" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Agregar Permiso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label class="form-label">Selecciona un Usuario</label>
+                                <select class="form-select" id="selectUsuario"
+                                        asp-items="@(new SelectList(ViewBag.users, "Id", "UsuarioNombreCompleto"))">
+                                    <option selected=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <label class="form-label">Tipo de Permiso</label>
+                    <div class="form-selectgroup-boxes row mb-3">
+
+                        <div class="col-lg-6">
+                            <label class="form-selectgroup-item">
+                                <input type="radio" name="report-type" value="VIEWER" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <span class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </span>
+                                    <span class="form-selectgroup-label-content">
+                                        <span class="form-selectgroup-title strong mb-1">VIEWER</span>
+                                        <span class="d-block text-muted">Permite Ver la información de Proyectos</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label class="form-selectgroup-item">
+                                <input type="radio" name="report-type" value="EDITOR" class="form-selectgroup-input">
+                                <span class="form-selectgroup-label d-flex align-items-center p-3">
+                                    <span class="me-3">
+                                        <span class="form-selectgroup-check"></span>
+                                    </span>
+                                    <span class="form-selectgroup-label-content">
+                                        <span class="form-selectgroup-title strong mb-1">EDITOR</span>
+                                        <span class="d-block text-muted">Permite Editar la información de Proyectos</span>
+                                    </span>
+                                </span>
+                            </label>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </a>
+                    <a onclick="AddPermiso()" class="btn btn-primary ms-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="icon" width="24" height="24"
+                             viewBox="0 0 24 24" stroke-width="2"
+                             stroke="currentColor"
+                             fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                            <line x1="12" y1="5" x2="12" y2="19" />
+                            <line x1="5" y1="12" x2="19" y2="12" />
+                        </svg>
+                        Añadir
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

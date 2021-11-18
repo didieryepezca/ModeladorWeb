@@ -12,18 +12,6 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class ProyectoDA
     {
-        //public IEnumerable<TB_PROYECTO> GetAllProyectosWithPermisos()
-        //{
-        //    var ana = new List<TB_PROYECTO>();
-
-        //    using (var db = new ApplicationDbContext())
-        //    {
-        //        IQueryable<TB_PROYECTO> query = db.TB_PROYECTO.Include(c => c.TB_PERMISOS);              
-
-        //        return query.ToList();
-        //    }
-        //}
-
         public object GetAllProyectosWithPermisos(string nombre, string tipoProyecto, string userId, string accion = "")
         {
             using (var db = new ApplicationDbContext())
@@ -125,6 +113,19 @@ namespace ModeladorApp.Data.DataAccess
                 return query;
             }
         }
+
+        public TB_PROYECTO getProyecto(int pyId)
+        {
+            var result = new TB_PROYECTO();
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    result = db.TB_PROYECTO.Where(item => item.ProyectoID == pyId).FirstOrDefault();
+                }
+            }
+            return result;
+        }
+
 
         public IEnumerable<TB_PROYECTO> GetProyectosUsuario(string propiertarioId = "")
         {

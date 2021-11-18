@@ -57,7 +57,39 @@ namespace ModeladorApp.Controllers
             return View(proyectos);
         }
 
-       
+
+        [Authorize]
+        public IActionResult OverviewProyecto(int proyectoId) 
+        {
+            var user = userManager.GetUserAsync(User);
+            var userId = user.Result.Id;
+
+
+            var dapy = new ProyectoDA();
+            var da = new PermisosDA();
+
+            var proyecto = dapy.getProyecto(proyectoId);
+
+            ViewBag.currentUser = userId;
+
+            ViewBag.propietarioID = proyecto.PropietarioID;
+            ViewBag.nombre = proyecto.NombreProyecto;
+            ViewBag.descripcion = proyecto.DescripcionProyecto;
+            ViewBag.fechacreacion = proyecto.FechaCreado;
+            ViewBag.fechaedicion = proyecto.FechaUltimaEdicion;
+            ViewBag.propietario = proyecto.PropietarioName;
+
+            var daUsers = new UsuariosDA();
+            var usuarios = daUsers.GetAllUsers();
+            ViewBag.users = usuarios;
+
+            var overview = da.getPermisosByIdProyecto(proyectoId);
+
+            return View(overview);
+        }
+
+
+
 
     }
 }

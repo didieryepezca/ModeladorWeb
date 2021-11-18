@@ -36,11 +36,7 @@ namespace ModeladorApp.Controllers
 
             var daProy = new ProyectoDA();
             var proyUser = daProy.GetProyectosUsuario(userId);
-            ViewBag.proyectos = proyUser;
-
-            var daUsers = new UsuariosDA();
-            var usuarios = daUsers.GetAllUsers();
-            ViewBag.users = usuarios;
+            ViewBag.proyectos = proyUser;            
 
             var daPer = new PermisosDA();
             var permisos = daPer.getPermisosWithProyectos(tipoPermiso, userId);
