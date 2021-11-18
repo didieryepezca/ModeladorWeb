@@ -13,7 +13,7 @@
                         Inicio
                     </div>
                     <h2 class="page-title">
-                        Proyectos:
+                        Proyectos: @ViewBag.tipo
                     </h2>
                 </div>
 
@@ -68,7 +68,7 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="row row-cards">
 
-                        @foreach (var item in Model.GroupBy(test => test.TB_PERMISOS).Select(grp => grp.First()).ToList())
+                        @foreach (var item in Model.GroupBy(test => test.TB_PERMISOS).Select(p => p.First()).ToList())
                         {
                             <div class="col-4">
                                 <div class="card">

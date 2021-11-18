@@ -26,22 +26,43 @@ namespace ModeladorApp.Data.DataAccess
 
         public object GetAllProyectosWithPermisos(string nombre, string tipoProyecto, string userId, string accion = "")
         {
-            var ana = new List<TB_PROYECTO>();
-
             using (var db = new ApplicationDbContext())
-            {
-                var permisos = new List<TB_PERMISOS>();
+            {                
                 var query = new List<TB_PROYECTO>();
 
+                if (string.IsNullOrWhiteSpace(accion))
+                {
+                    query = (from proy in db.TB_PROYECTO join permiso in db.TB_PERMISOS
+                               on proy.ProyectoID equals permiso.ProyectoID
+
+                             //Agrupar proyectos repetidos por el join con los permisos...
+                             into permisos
+                             from p in permisos.DefaultIfEmpty()                             
+
+                             select new TB_PROYECTO
+                             {
+                                 ProyectoID = proy.ProyectoID,
+                                 NombreProyecto = proy.NombreProyecto,
+                                 DescripcionProyecto = proy.DescripcionProyecto,
+                                 FechaCreado = proy.FechaCreado,
+                                 FechaUltimaEdicion = proy.FechaUltimaEdicion,
+                                 PropietarioID = proy.PropietarioID,
+                                 PropietarioName = proy.PropietarioName,
+
+                                 TB_PERMISOS = db.TB_PERMISOS.Where(p => p.ProyectoID == proy.ProyectoID).ToList()
+
+                             }).ToList();                    
+                }
 
                 if (tipoProyecto == "ALL")
                 {
-                    //permisos = db.TB_PERMISOS.ToList();
-
                     query = (from proy in db.TB_PROYECTO
                              join permiso in db.TB_PERMISOS
-                             on proy.ProyectoID equals permiso.ProyectoID
-                             where proy.NombreProyecto.Contains(nombre)
+                                on proy.ProyectoID equals permiso.ProyectoID
+
+                             //Agrupar proyectos repetidos por el join con los permisos...
+                             into permisos
+                             from p in permisos.DefaultIfEmpty()                            
 
                              select new TB_PROYECTO
                              {
@@ -56,16 +77,14 @@ namespace ModeladorApp.Data.DataAccess
 
                              }).ToList();
 
-                } else if (tipoProyecto == "VIEWER") {
+                }
+                else if (tipoProyecto == "VIEWER") {                   
 
-                    permisos = db.TB_PERMISOS.Where(i => i.Permiso == "VIEWER" && i.UsuarioConcedidoId == userId).ToList();
+                    query = (from proy in db.TB_PROYECTO join permiso in db.TB_PERMISOS
+                               on proy.ProyectoID equals permiso.ProyectoID                             
 
-                    query = (from proy in db.TB_PROYECTO
-                             join permiso in db.TB_PERMISOS
-                             on proy.ProyectoID equals permiso.ProyectoID
-
-                             where proy.NombreProyecto.Contains(nombre)
-                             && permiso.UsuarioCreacionId == userId                             
+                             where permiso.UsuarioConcedidoId == userId
+                             && permiso.Permiso == "VIEWER"                             
 
                              select new TB_PROYECTO
                              {
@@ -76,20 +95,18 @@ namespace ModeladorApp.Data.DataAccess
                                  FechaUltimaEdicion = proy.FechaUltimaEdicion,
                                  PropietarioID = proy.PropietarioID,
                                  PropietarioName = proy.PropietarioName,
-                                 TB_PERMISOS = permisos
+                                 TB_PERMISOS = db.TB_PERMISOS.Where(p => p.ProyectoID == proy.ProyectoID).ToList()
 
                              }).ToList();
 
-                } else if (tipoProyecto == "EDITOR")  {
-
-                    permisos = db.TB_PERMISOS.Where(i => i.Permiso == "EDITOR" && i.UsuarioConcedidoId == userId).ToList();
+                } else if (tipoProyecto == "EDITOR")  {                   
 
                     query = (from proy in db.TB_PROYECTO
                              join permiso in db.TB_PERMISOS
                              on proy.ProyectoID equals permiso.ProyectoID
-
-                             where proy.NombreProyecto.Contains(nombre)
-                             && permiso.UsuarioCreacionId == userId                            
+                            
+                             where permiso.UsuarioCreacionId == userId
+                             && permiso.Permiso == "EDITOR"
 
                              select new TB_PROYECTO
                              {
@@ -100,18 +117,14 @@ namespace ModeladorApp.Data.DataAccess
                                  FechaUltimaEdicion = proy.FechaUltimaEdicion,
                                  PropietarioID = proy.PropietarioID,
                                  PropietarioName = proy.PropietarioName,
-                                 TB_PERMISOS = permisos
+                                 TB_PERMISOS = db.TB_PERMISOS.Where(p => p.ProyectoID == proy.ProyectoID).ToList()
 
                              }).ToList();
-
-                }           
+                }          
 
                 return query;
             }
         }
-
-
-
 
         public IEnumerable<TB_PROYECTO> GetProyectosUsuario(string propiertarioId = "")
         {

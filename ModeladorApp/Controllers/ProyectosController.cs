@@ -42,6 +42,18 @@ namespace ModeladorApp.Controllers
 
             var proyectos = da.GetAllProyectosWithPermisos(nombre, tipoProyecto, userId, vAccion);
 
+            if (tipoProyecto == "ALL")
+            {
+                ViewBag.tipo = "Todos";
+            }
+            else if (tipoProyecto == "VIEWER")
+            {
+                ViewBag.tipo = "que puedo Ver";
+            }
+            else {
+                ViewBag.tipo = "que puedo Editar";
+            }
+
             return View(proyectos);
         }
 
