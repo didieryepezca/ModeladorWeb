@@ -25,29 +25,6 @@ namespace ModeladorApp.Controllers
             _logger = logger;
         }
 
-
-        [Authorize]
-        public IActionResult VerPermisos(string tipoPermiso)
-        {
-            var user = userManager.GetUserAsync(User);
-            var userId = user.Result.Id;
-
-            ViewBag.usuario = userId;
-
-            var daProy = new ProyectoDA();
-            var proyUser = daProy.GetProyectosUsuario(userId);
-            ViewBag.proyectos = proyUser;            
-
-            var daPer = new PermisosDA();
-            var permisos = daPer.getPermisosWithProyectos(tipoPermiso, userId);
-
-            ViewBag.permiso = tipoPermiso;
-
-            return View(permisos);
-        }
-
-
-
         public int FunInsertPermiso(int py, string user, string per)
         {
             var result = "0";
@@ -56,7 +33,7 @@ namespace ModeladorApp.Controllers
             var userLoggedId = userLogged.Result.Id;
             var userLoggedName = userLogged.Result.UsuarioNombreCompleto;
 
-            var daUser = new UsuariosDA();                       
+            var daUser = new UsuariosDA();       
             
             var da = new PermisosDA();          
             

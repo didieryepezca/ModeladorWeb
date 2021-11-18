@@ -29,12 +29,14 @@ namespace ModeladorApp.Controllers
         public IActionResult Index()
         {
             var user = userManager.GetUserAsync(User);
-
             ViewBag.usuarioId = user.Result.Id;
+            var userId = user.Result.Id;
 
-            var da = new NivelDA();
+            var daPer = new HomeDA();
+            var proyectos = daPer.getProyectosWithPermisos(userId);
 
-            var proyectos = da.GetNiveles();
+            //var da = new NivelDA();
+            //var proyectos = da.GetNiveles();
 
             return View(proyectos);
         }

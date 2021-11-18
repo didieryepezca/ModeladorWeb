@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_NIVEL>
+﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PERMISOS>
 
 @{
     ViewData["Title"] = "Inicio";
@@ -13,7 +13,7 @@
     }
 
     .colapsado {
-        width: 15px;        
+        width: 15px;
         cursor: pointer;
     }
 
@@ -50,20 +50,18 @@
 
 <script type="text/javascript">
 
-    //window.onload = load;
+    window.onload = load;
 
     function load() {
 
-        //console.log("-------------->>");
 
-    //$(document).ready(function () {        
 
     }
 
     function getSubMenus(pId) {
 
         console.log(pId)
-      
+
         //Comprobar si la data se ha cargado
         if ($('#node_' + pId).attr('data-loaded') === 'false') {
 
@@ -71,7 +69,7 @@
             $('#node_' + pId).removeClass("colapsado");
 
             console.log("ENTRO");
-            // Now Load Data Here 
+            // Now Load Data Here
             $.ajax({
                 url: "/Home/funGetSubNiveles",
                 type: "GET",
@@ -91,7 +89,7 @@
                                 $("<li></li>").append(
                                     '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
                                     '<span><a onclick="editIdentificador(' + element.nivelID + ')">' + element.identificador + '</a></span>' + '-' +
-                                    '<span><a onclick="editNombre(' + element.nivelID +')">' + element.nombre + '</a></span>'
+                                    '<span><a onclick="editNombre(' + element.nivelID + ')">' + element.nombre + '</a></span>'
                                 )
                             )
                         });
@@ -122,7 +120,7 @@
 
 
 
-    
+
     function editNombre(vId) {
 
         console.log(vId)
@@ -135,277 +133,94 @@
 
     }
 
-    //});
+
 
 </script>
+<form asp-action="Index" method="get">
 
-<div class="container-fluid">
-
-    <!-- Page title -->
-    <div class="page-header d-print-none">
-        <div class="row align-items-center">
-            <div class="col">
-                <!-- Page pre-title -->
-              
-                <h2 class="page-title">
-                    Proyectos
-                </h2>
-            </div>
-
-            <!-- Page title actions -->
-            <div class="col-auto ms-auto d-print-none">
-                <div class="btn-list">
-                    <span class="d-none d-sm-inline">
-                        <a href="#" class="btn btn-white">
-                            Editar
-                        </a>
-                    </span>
-                    <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-new-project">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                        Crear Proyecto
-                    </a>
-                    <a href="#" class="btn btn-primary d-sm-none btn-icon" data-bs-toggle="modal" data-bs-target="#modal-report" aria-label="Create new report">
-                        <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-<div class="page-body">
     <div class="container-fluid">
+        <!-- Page title -->
+        <div class="page-header d-print-none">
+            <div class="row align-items-center">
+                <div class="col">
+                    <!-- Page pre-title -->
 
-        <div class="row row-deck row-cards">
+                    <h2 class="page-title">
+                        Tus Proyectos
+                    </h2>
+                </div>
 
-            <div class="col-lg-12">
-                <div class="row row-cards">
+                <!-- Page title actions -->
 
-                    <div class="col-md-12">
-                        <div class="card">
-
-                            <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
-                                <li class="nav-item">
-                                    <a href="#home" class="nav-link active" data-bs-toggle="tab">MASTER</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#usuario1" class="nav-link" data-bs-toggle="tab">USUARIO 1</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#usuario2" class="nav-link" data-bs-toggle="tab">USUARIO 2</a>
-                                </li>
-                            </ul>
-
-                            <div class="card-body">
-
-                                <div class="tab-content">
-
-                                    <div class="tab-pane show active" id="home">
-                                        
-                                        <div style="border:1px solid black; padding:0px;  background-color:#FAFAFA">
-                                            @{
-                                                <div class="treeview">
-                                                    @{
-                                                        if (Model != null && Model.Count() > 0)
-                                                        {
-                                                            @*Here I will going to load Treeview menus*@
-                                                            <ul>
-                                                                @foreach (var i in Model)
-                                                                {
-                                                                <li>
-                                                                    @*<span class="avatar avatar-xs rounded me-2" 
-                                                                          style="background-image: url(img/tabler-icon-circle-plus.svg)"></span>*@
-
-                                                                    <span class="colapsado avatar avatar-xs rounded me-2"
-                                                                          style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)"
-                                                                          id="node_@i.NivelID" onclick="getSubMenus('@i.NivelID')"
-                                                                          data-loaded="false" pid="@i.NivelID">&nbsp;</span>
-
-                                                                    @* Here I have added the above span for collapsible button for treeview *@
-                                                                    @* and data-loaded="false" means its sub menu not loaded yet from database *@
-
-                                                                    <span>
-                                                                        <a style="cursor:pointer">@i.Identificador</a>
-                                                                    </span>
-                                                                    -
-                                                                    <span>
-                                                                        <a style="cursor:pointer" onclick="editNombre('@i.NivelID')">@i.Nombre</a>
-                                                                    </span>
+            </div>
+        </div>
+    </div>
 
 
-                                                                </li>
-                                                                }
-                                                            </ul>
-                                                        }
-                                                    }
-                                                </div>
-                                            }
+
+
+    <div class="page-body">
+        <div class="container-fluid">
+
+            <div class="row row-deck row-cards">
+
+                <div class="col-lg-12">
+                    <div class="row row-cards">
+
+                        <div class="col-md-12">
+                            <div class="card">
+
+                                <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+                                    <li class="nav-item">
+                                        <a href="#master" class="nav-link active" data-bs-toggle="tab"><strong>MASTER</strong></a>
+                                    </li>
+                                    @foreach (var item in Model)
+                                    {
+                                        <li class="nav-item">
+                                            <a href="#proyecto_@item.ProyectoID" class="nav-link"
+                                               data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
+                                        </li>
+                                    }
+                                </ul>
+
+                                <div class="card-body">
+
+                                    <div class="tab-content">
+
+                                        <div class="tab-pane show active" id="master">
+
                                         </div>
+                                        @foreach (var item in Model)
+                                        {
+                                            <div class="tab-pane" id="proyecto_@item.ProyectoID">
 
+                                                @if (item.Permiso == "EDITOR") 
+                                                { 
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto ms-auto d-print-none">
+                                                            <div class="btn-list">
 
-                                    </div>
+                                                                <span class="d-none d-sm-inline">
+                                                                    <a href="#" class="btn btn-primary">
+                                                                        Editar
+                                                                    </a>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
 
-                                    <div class="tab-pane" id="usuario1">    
-                                        
-                                    </div>
+                                            </div>
+                                        }
 
-                                    <div class="tab-pane" id="usuario2">
-                                        
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--<div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">Traffic summary</h3>
-                                <div id="chart-mentions" class="chart-lg"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <p class="mb-3">Using Storage <strong>6854.45 MB </strong>of 8 GB</p>
-                                <div class="progress progress-separated mb-3">
-                                    <div class="progress-bar bg-primary" role="progressbar" style="width: 44%"></div>
-                                    <div class="progress-bar bg-info" role="progressbar" style="width: 19%"></div>
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: 9%"></div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-auto d-flex align-items-center pe-2">
-                                        <span class="legend me-2 bg-primary"></span>
-                                        <span>Regular</span>
-                                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">915MB</span>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center px-2">
-                                        <span class="legend me-2 bg-info"></span>
-                                        <span>System</span>
-                                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">415MB</span>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center px-2">
-                                        <span class="legend me-2 bg-success"></span>
-                                        <span>Shared</span>
-                                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">201MB</span>
-                                    </div>
-                                    <div class="col-auto d-flex align-items-center ps-2">
-                                        <span class="legend me-2"></span>
-                                        <span>Free</span>
-                                        <span class="d-none d-md-inline d-lg-none d-xxl-inline ms-2 text-muted">612MB</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body p-2 text-center">
-                                <div class="text-end text-green">
-                                    <span class="text-green d-inline-flex align-items-center lh-1">
-                                        6%-->
-                    <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                    <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-                                    </span>
-                                </div>
-                                <div class="h1 m-0">43</div>
-                                <div class="text-muted mb-3">New Tickets</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body p-2 text-center">
-                                <div class="text-end text-red">
-                                    <span class="text-red d-inline-flex align-items-center lh-1">
-                                        -2%-->
-                    <!-- Download SVG icon from http://tabler-icons.io/i/trending-down -->
-                    <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><polyline points="3 7 9 13 13 9 21 17" /><polyline points="21 10 21 17 14 17" /></svg>
-                                    </span>
-                                </div>
-                                <div class="h1 m-0">95</div>
-                                <div class="text-muted mb-3">Daily Earnings</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body p-2 text-center">
-                                <div class="text-end text-green">
-                                    <span class="text-green d-inline-flex align-items-center lh-1">
-                                        9%-->
-                    <!-- Download SVG icon from http://tabler-icons.io/i/trending-up -->
-                    <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
-                                    </span>
-                                </div>
-                                <div class="h1 m-0">7</div>
-                                <div class="text-muted mb-3">New Replies</div>
-                            </div>
-                        </div>
-                    </div>-->
-
                 </div>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-<div class="modal modal-blur fade" id="modal-new-project" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Crear Proyecto</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="mb-3">
-                            <label class="form-label">Nombre</label>
-                            <input id="txtPyNombre" type="text" class="form-control"
-                                   name="example-text-input" placeholder="Escribe un Nombre para tu Proyecto">
-                        </div>
-                    </div>
-
-                    <div class="col-lg-12">
-                        <div>
-                            <label class="form-label">Describe tu proyecto</label>
-                            <textarea id="txtPyDescripcion" class="form-control" rows="8"></textarea>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                    Cancelar
-                </a>
-                <a onclick="createProject()" class="btn btn-primary ms-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="icon" width="24" height="24"
-                         viewBox="0 0 24 24" stroke-width="2"
-                         stroke="currentColor"
-                         fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                        <line x1="12" y1="5" x2="12" y2="19" />
-                        <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
-                    Crear
-                </a>
             </div>
         </div>
     </div>
-</div>
+
+</form>
