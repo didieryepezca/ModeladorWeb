@@ -18,12 +18,10 @@
     }
 
     .expandido {
-        width: 15px;
-        background-image: url(https://image.pngaaa.com/549/4811549-middle.png);
-        background-repeat: no-repeat;
-        background-position: -50px -17px;
-        display: inline-block;
+        width: 15px;      
+        /*display: inline-block;*/
         cursor: pointer;
+
     }
 
     .treeview ul {
@@ -95,19 +93,17 @@
         });
     };
 
-
     function getSubMenus(pId) {
 
-        console.log(pId)
-
+        //console.log(pId)
         //Comprobar si la data se ha cargado
         if ($('#node_' + pId).attr('data-loaded') === 'false') {
-
-            $('#node_' + pId).addClass("loadingP");   // Show loading panel
+            
+            $('#node_' + pId).attr('style', "background-image: url(https://raw.githubusercontent.com/Codelessly/FlutterLoadingGIFs/master/packages/cupertino_activity_indicator_selective.gif)");// Loader
             $('#node_' + pId).removeClass("colapsado");
 
-            console.log("ENTRO");
-            // Now Load Data Here
+            console.log("colapsado");
+            // Cargamos la data con un Ajax Call...
             $.ajax({
                 url: "/Home/funGetSubNiveles",
                 type: "GET",
@@ -116,16 +112,18 @@
                 success: function (d) {
 
                     console.log(d);
-
-                    $('#node_' + pId).removeClass("loadingP");
+                    
+                    $('#node_' + pId).attr('style',"background-image: url(https://iconsplace.com/wp-content/uploads/_icons/ffa500/256/png/minus-2-icon-11-256.png)"); //-
 
                     if (d.length > 0) {
 
-                        var $ul = $("<ul></ul>");
+                        if (d[0].parentNivelID == pId) { $('#ul' + pId).remove(); } //prevenir info duplicada                        
+
+                        var $ul = $('<ul id="ul'+ pId +'"></ul>');
                         $.each(d, function (i, element) {
                             $ul.append(
                                 $("<li></li>").append(
-                                    '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
+                                    '<span class="avatar avatar-xs rounded me-2 colapsado" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
                                     '<span><a onclick="editIdentificador(' + element.nivelID + ')">' + element.identificador + '</a></span>' + '-' +
                                     '<span><a onclick="editNombre(' + element.nivelID + ')">' + element.nombre + '</a></span>'
                                 )
@@ -134,6 +132,7 @@
 
                         $('#node_' + pId).parent().append($ul);
                         $('#node_' + pId).addClass('colapsado');
+                        $('#node_' + pId).attr('style', "background-image: url(https://iconsplace.com/wp-content/uploads/_icons/ffa500/256/png/minus-2-icon-11-256.png)"); //-
                         $('#node_' + pId).toggleClass('colapsado expandido');
                         $('#node_' + pId).closest('li').children('ul').slideDown();
                     }
@@ -145,13 +144,19 @@
                     $('#node_' + pId).attr('data-loaded', true);
                 },
                 error: function () {
-                    alert("Error!");
+                    alert("Hubo un problema al cargar la data!");
                 }
             });
         }
         else {
-            // if already data loaded
+            // if already data loaded            
+            console.log("expandido")
+
+            console.log(pId);
+            /*$('#node_' + pId).attr('data-loaded', false);*/
             $('#node_' + pId).toggleClass("colapsado expandido");
+            $('#node_' + pId).attr('style', "background-image: url(https://image.pngaaa.com/73/4388073-middle.png)"); // +
+            
             $('#node_' + pId).closest('li').children('ul').slideToggle();
         }
     }
@@ -230,6 +235,7 @@
                                                 </div>
                                                 <p class="empty-title">Cargando "MASTER"</p>
                                             </div>
+                                            
 
                                         </div>
 
