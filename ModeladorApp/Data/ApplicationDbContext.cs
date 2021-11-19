@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 using ModeladorApp.Models.Entities;
 
 namespace ModeladorApp.Data
@@ -34,8 +30,9 @@ namespace ModeladorApp.Data
         public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
         public virtual DbSet<TB_PERMISOS> TB_PERMISOS { get; set; }
         public virtual DbSet<TB_NIVEL> TB_NIVEL { get; set; }
+        public virtual DbSet<TB_NIVEL_INFO> TB_NIVEL_INFO { get; set; }
 
 
-        
+
     }
 }
