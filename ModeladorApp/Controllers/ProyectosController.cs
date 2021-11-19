@@ -89,6 +89,45 @@ namespace ModeladorApp.Controllers
         }
 
 
+        public int FunInsertPermiso(int py, string user, string per)
+        {
+            var result = "0";
+
+            var userLogged = userManager.GetUserAsync(User);
+            var userLoggedId = userLogged.Result.Id;
+            var userLoggedName = userLogged.Result.UsuarioNombreCompleto;
+
+            var daUser = new UsuariosDA();
+
+            var da = new PermisosDA();
+
+            try
+            {
+                var usuConcedido = daUser.GetUserById(user);
+                var usuConcName = usuConcedido.UsuarioNombreCompleto;
+
+                TB_PERMISOS permiso = new TB_PERMISOS();
+
+                permiso.ProyectoID = py;
+                permiso.UsuarioCreacionId = userLoggedId;
+                permiso.UsuarioCreacionName = userLoggedName;
+                permiso.Permiso = per;
+                permiso.UsuarioConcedidoId = user;
+                permiso.UsuarioConcedidoName = usuConcName;
+                permiso.FechaPermisoCreado = DateTime.Now;
+
+                var modelcount = da.InsertPermiso(permiso);
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
 
 
     }

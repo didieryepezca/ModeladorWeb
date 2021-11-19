@@ -19,7 +19,6 @@
 
     .expandido {
         width: 15px;      
-        /*display: inline-block;*/
         cursor: pointer;
 
     }
@@ -63,12 +62,10 @@
         $("#emptyPy").hide();
 
         //------------------------------------------------------------->>>Treeview Master
-        var treeview = "";
+        var treeview = "";        
 
-        treeview = treeview + '<br />';
-        treeview = treeview + '<div id="masterPane" style="border:1px solid black; padding:0px; background-color:#FAFAFA">';
+        treeview = treeview + '<div id="masterPane" style="border:1px solid black; padding:0px; background-color:#FAFAFA">';        
         treeview = treeview + '<div class="treeview">';
-
         treeview = treeview + '<ul>';
 
         treeview = treeview + '<li>';
@@ -102,7 +99,7 @@
             $('#node_' + pId).attr('style', "background-image: url(https://raw.githubusercontent.com/Codelessly/FlutterLoadingGIFs/master/packages/cupertino_activity_indicator_selective.gif)");// Loader
             $('#node_' + pId).removeClass("colapsado");
 
-            console.log("colapsado");
+            //console.log("colapsado");
             // Cargamos la data con un Ajax Call...
             $.ajax({
                 url: "/Home/funGetSubNiveles",
@@ -111,7 +108,7 @@
                 dataType: "json",
                 success: function (d) {
 
-                    console.log(d);
+                    //console.log(d);
                     
                     $('#node_' + pId).attr('style',"background-image: url(https://iconsplace.com/wp-content/uploads/_icons/ffa500/256/png/minus-2-icon-11-256.png)"); //-
 
@@ -131,7 +128,7 @@
                         });
 
                         $('#node_' + pId).parent().append($ul);
-                        $('#node_' + pId).addClass('colapsado');
+                        //$('#node_' + pId).addClass('colapsado');
                         $('#node_' + pId).attr('style', "background-image: url(https://iconsplace.com/wp-content/uploads/_icons/ffa500/256/png/minus-2-icon-11-256.png)"); //-
                         $('#node_' + pId).toggleClass('colapsado expandido');
                         $('#node_' + pId).closest('li').children('ul').slideDown();
@@ -150,10 +147,9 @@
         }
         else {
             // if already data loaded            
-            console.log("expandido")
-
-            console.log(pId);
-            /*$('#node_' + pId).attr('data-loaded', false);*/
+            //console.log("expandido")
+            
+            $('#node_' + pId).attr('data-loaded', false);
             $('#node_' + pId).toggleClass("colapsado expandido");
             $('#node_' + pId).attr('style', "background-image: url(https://image.pngaaa.com/73/4388073-middle.png)"); // +
             
@@ -214,7 +210,6 @@
 
                                         <div class="tab-pane show active" id="master">
 
-                                            
 
                                             <div class="row align-items-center">
                                                 <div class="col-auto ms-auto d-print-none">
@@ -227,7 +222,7 @@
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>                                            
 
                                             <div class="empty" id="emptyPy">
                                                 <div class="empty-img">
@@ -235,7 +230,6 @@
                                                 </div>
                                                 <p class="empty-title">Cargando "MASTER"</p>
                                             </div>
-                                            
 
                                         </div>
 

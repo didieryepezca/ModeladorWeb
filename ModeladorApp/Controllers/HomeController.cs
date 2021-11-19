@@ -45,7 +45,7 @@ namespace ModeladorApp.Controllers
             var da = new NivelDA();
             
             //Un momento por favor xD
-            //System.Threading.Thread.Sleep(5000);
+            System.Threading.Thread.Sleep(2500);
             var master = da.GetMaster().ToList();           
 
             return master;
@@ -56,7 +56,7 @@ namespace ModeladorApp.Controllers
 
             var da = new NivelDA();
 
-            System.Threading.Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(1000);
             var subMenus = da.GetSubNiveles(parentId);
 
             return Json(subMenus);
