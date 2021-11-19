@@ -70,8 +70,8 @@
 
         treeview = treeview + '<li>';
         treeview = treeview + '<span class="colapsado avatar avatar-xs rounded me-2" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + data[0].nivelID + '" onclick="getSubMenus(' + data[0].nivelID + ')" data-loaded="false" pid="">&nbsp;</span>';
-        treeview = treeview + '<span><a style="cursor:pointer">' + data[0].identificador + '</a></span> - ';
-        treeview = treeview + '<span><a style="cursor:pointer" onclick="editNombre(' + data[0].nivelID + ')">' + data[0].nombre + '</a></span>';
+        treeview = treeview + '<a style="cursor:pointer">' + data[0].identificador + '</a> - ';
+        treeview = treeview + '<a style="cursor:pointer">' + data[0].nombre + '</a>';
         treeview = treeview + '</li>';
 
         treeview = treeview + '</ul>';
@@ -84,7 +84,7 @@
 
     //trae la información del Master.
     function funGetMasterData() {
-        var url = "/Home/FunGetMaster";
+        var url = "/Home/funGetMaster";
         return $.get(url, {}, function (data) {
             //console.log(data);
         });
@@ -118,14 +118,33 @@
 
                         var $ul = $('<ul id="ul'+ pId +'"></ul>');
                         $.each(d, function (i, element) {
+
+                            //console.log(element.nivelID);
+                           
+                            var info = funGetInfo(element.nivelID)
+                            
+                            info.then(function (result) {
+                                // accedemos al result de la promise info...
+                                console.log(result)
+                            });
+                            
+                            //console.log(inf);
+
                             $ul.append(
                                 $("<li></li>").append(
-                                    '<span class="avatar avatar-xs rounded me-2 colapsado" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +
-                                    '<span><a onclick="editIdentificador(' + element.nivelID + ')">' + element.identificador + '</a></span>' + '-' +
-                                    '<span><a onclick="editNombre(' + element.nivelID + ')">' + element.nombre + '</a></span>'
+                                    '<span class="avatar avatar-xs rounded me-2 colapsado" style="background-image: url(https://image.pngaaa.com/73/4388073-middle.png)" id="node_' + element.nivelID + '" onclick="getSubMenus(' + element.nivelID + ')" data-loaded="false" pid="' + element.nivelID + '">&nbsp;</span>' +                                                                       
+                                    '<a style="cursor:pointer">' + element.identificador + '</a>' + ' - ' +
+                                    '<a style="cursor:pointer">' + element.nombre + '</a>' + ' - ' +                
+                                    '<input type="text" size="4">'                                   
+                                    //'<a style="cursor:pointer"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="6" cy="10" r="2"></circle><line x1="6" y1="4" x2="6" y2="8"></line><line x1="6" y1="12" x2="6" y2="20"></line><circle cx="12" cy="16" r="2"></circle><line x1="12" y1="4" x2="12" y2="14"></line><line x1="12" y1="18" x2="12" y2="20"></line><circle cx="18" cy="7" r="2"></circle><line x1="18" y1="4" x2="18" y2="5"></line><line x1="18" y1="9" x2="18" y2="20"></line></svg></a>'                                                                                                                                   
                                 )
                             )
+
+
+
+
                         });
+
 
                         $('#node_' + pId).parent().append($ul);
                         //$('#node_' + pId).addClass('colapsado');
@@ -157,7 +176,20 @@
         }
     }
 
-
+    //-------------------------------- para obtener la info de cada nivel...
+    async function funGetInfo(lvlID) {
+        return info = await funGetInfoFromDB(lvlID);       
+        //var info = await funGetInfoFromDB(lvlID);
+        //console.log(info)
+    };    
+    
+    function funGetInfoFromDB(lvlID) {        
+        var url = "/Home/funGetInfoFromDB";
+        return $.get(url, { lvlId: lvlID}, function (data) {
+            //console.log(data);
+        });
+    }
+    //-------------------------------- para obtener la info de cada nivel...
 
 
     function editNombre(vId) {

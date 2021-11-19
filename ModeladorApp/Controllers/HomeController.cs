@@ -33,14 +33,12 @@ namespace ModeladorApp.Controllers
             var userId = user.Result.Id;
 
             var daPer = new HomeDA();
-            var proyectos = daPer.getProyectosWithPermisos(userId);
-
-           
+            var proyectos = daPer.getProyectosWithPermisos(userId);          
 
             return View(proyectos);
         }
 
-        public List<TB_NIVEL> FunGetMaster()
+        public List<TB_NIVEL> funGetMaster()
         {
             var da = new NivelDA();
             
@@ -51,18 +49,26 @@ namespace ModeladorApp.Controllers
             return master;
         }
 
-
         public JsonResult funGetSubNiveles(int parentId) {
 
             var da = new NivelDA();
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(1500);
             var subMenus = da.GetSubNiveles(parentId);
 
             return Json(subMenus);
         }
 
-        
+        public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
+        {
+            var da = new NivelInfoDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(1000);
+            var info = da.GetNivelInfo(lvlId).ToList();
+
+            return info;
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
