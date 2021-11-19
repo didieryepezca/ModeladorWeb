@@ -73,6 +73,70 @@
 
         }
     }
+
+    var camposProyecto = [];
+
+    function UpdateProyecto() {
+
+        var camposProyecto = [];
+
+        var idpy = $('#txtPyId').val();
+        var nombre = $('#txtPyNombre').val();
+        var descripcion = $('#txtPyDescripcion').val();
+
+
+        if (idpy != "" && idpy != null) {
+            camposProyecto.push(idpy);
+        }
+
+        if (nombre != "" && nombre != null) {
+            camposProyecto.push(nombre);
+        }
+
+        if (descripcion != "" && descripcion != null) {
+            camposProyecto.push(descripcion);
+        }
+
+        var nroCamposProyecto = camposProyecto.length;
+
+        if (nroCamposProyecto == 3) {
+
+            url = "/Proyectos/FunUpdateProyecto";
+            $.get(url, { vIdPy: idpy, vNombre: nombre, vDescripcion: descripcion }, function (data) {
+
+                if (data >= 1) {
+
+                    swal({
+                        title: "OK",
+                        text: "Se Actualizó",
+                        type: "success"
+                    }
+                        , function () {
+
+                            //window.location = "https://localhost:5001/Periodo/VerPeriodosGeneral";
+                        }
+                    );
+                }
+                else {
+                    swal({
+                        title: "ERROR",
+                        text: "Hubo un problema",
+                        type: "warning"
+                    });
+                }
+            });
+
+        } else {
+
+            swal({
+                title: "ERROR",
+                text: "Te falta completar Campos",
+                type: "warning"
+            });
+
+        }
+    }
+
 </script>
 
 
@@ -98,7 +162,7 @@
                         @{
                             if (@ViewBag.propietarioID == ViewBag.currentUser)
                             {
-                                <a href="#" class="btn btn-blue d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-permiso">
+                                <a href="#" class="btn btn-white d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-permiso">
                                     <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
                                     Agregar Permiso
@@ -131,7 +195,7 @@
                                     <li class="nav-item">
                                         <a href="#accesos" class="nav-link" data-bs-toggle="tab">Control de Accesos</a>
                                     </li>
-                                   
+
                                 </ul>
 
 
@@ -151,7 +215,8 @@
                                                         <div class="form-group mb-2 row">
                                                             <label class="form-label col-1 col-form-label">Nombre</label>
                                                             <div class="col">
-                                                                <input type="email" class="form-control" value="@ViewBag.nombre">
+                                                                <input id="txtPyId" class="form-control" value="@ViewBag.pyId" hidden>
+                                                                <input id="txtPyNombre" class="form-control" value="@ViewBag.nombre">
                                                                 @*<small class="form-hint">We'll never share anything with anyone else.</small>*@
                                                             </div>
                                                         </div>
@@ -167,33 +232,26 @@
 
                                                                 <label class="form-label col-1 col-form-label">Creación</label>
                                                                 <div class="col-lg-3">
-                                                                    <input class="form-control" id="datepicker-icon-prepend" value="@ViewBag.fechacreacion">
-                                                                    
-                                                                    <!--<div class="input-icon">
-                                                                        <span class="input-icon-addon">-->
-                                                                            <!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
-                                                                            <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="5" width="16" height="16" rx="2"></rect><line x1="16" y1="3" x2="16" y2="7"></line><line x1="8" y1="3" x2="8" y2="7"></line><line x1="4" y1="11" x2="20" y2="11"></line><line x1="11" y1="15" x2="12" y2="15"></line><line x1="12" y1="15" x2="12" y2="18"></line></svg>
-                                                                        </span>
-                                                                        <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend" value="2020-06-20">
-                                                                    </div>-->
+                                                                    <input class="form-control" value="@ViewBag.fechacreacion" disabled>
+
 
                                                                 </div>
                                                                 <label class="form-label col-1 col-form-label">Última edición</label>
                                                                 <div class="col-lg-3">
-                                                                    <input class="form-control" id="datepicker-icon-prepend" value="@ViewBag.fechaedicion">
+                                                                    <input class="form-control" value="@ViewBag.fechaedicion" disabled>
                                                                 </div>
                                                                 <label class="form-label col-1 col-form-label">Propietario</label>
                                                                 <div class="col-lg-3">
-                                                                    <input class="form-control" value="@ViewBag.propietario">
+                                                                    <input class="form-control" value="@ViewBag.propietario" disabled>
                                                                 </div>
 
                                                             </div>
                                                         </div>
 
-                                                        @if(@ViewBag.propietarioID == ViewBag.currentUser)
+                                                        @if (@ViewBag.propietarioID == ViewBag.currentUser)
                                                         {
                                                             <div class="form-footer">
-                                                                <a class="btn btn-primary">Actualizar</a>
+                                                                <a onclick="UpdateProyecto()" class="btn btn-primary">Actualizar</a>
                                                             </div>
                                                         }
 
@@ -202,7 +260,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="tab-pane" id="accesos">                                            
+                                        <div class="tab-pane" id="accesos">
 
                                             <div class="table-responsive">
                                                 <table class="table table-vcenter table-mobile-md card-table">
@@ -248,6 +306,10 @@
 
                                                                         @if (item.UsuarioCreacionId == ViewBag.currentUser)
                                                                         {
+
+                                                                        }
+                                                                        else if (item.UsuarioCreacionId == ViewBag.currentUser && item.Permiso == "VIEWER")
+                                                                        {
                                                                             <a href="#" class="btn btn-white">
                                                                                 Modificar
                                                                             </a>
@@ -256,19 +318,6 @@
                                                                             </a>
                                                                         }
 
-                                                                        @*<div class="dropdown">
-                                            <button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">
-                                                Actions
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-end">
-                                                <a class="dropdown-item" href="#">
-                                                    Action
-                                                </a>
-                                                <a class="dropdown-item" href="#">
-                                                    Another action
-                                                </a>
-                                            </div>
-                                        </div>*@
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -278,7 +327,7 @@
                                                 </table>
                                             </div>
 
-                                        </div>                                       
+                                        </div>
 
                                     </div>
                                 </div>
@@ -291,7 +340,6 @@
             </div>
         </div>
     </div>
-
 
 
     <div class="modal modal-blur fade" id="modal-permiso" tabindex="-1" role="dialog" aria-hidden="true">

@@ -72,6 +72,7 @@ namespace ModeladorApp.Controllers
 
             ViewBag.currentUser = userId;
 
+            ViewBag.pyId = proyectoId;
             ViewBag.propietarioID = proyecto.PropietarioID;
             ViewBag.nombre = proyecto.NombreProyecto;
             ViewBag.descripcion = proyecto.DescripcionProyecto;
@@ -88,6 +89,24 @@ namespace ModeladorApp.Controllers
             return View(overview);
         }
 
+
+        public int FunUpdateProyecto(int vIdPy, string vNombre, string vDescripcion)
+        {
+            var result = "0";
+            var cDa = new ProyectoDA();
+
+            try
+            {               
+                var modelcount = cDa.UpdateProyecto(vIdPy, vNombre, vDescripcion);
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
 
         public int FunInsertPermiso(int py, string user, string per)
         {

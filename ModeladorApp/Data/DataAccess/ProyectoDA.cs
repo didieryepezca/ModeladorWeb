@@ -140,5 +140,24 @@ namespace ModeladorApp.Data.DataAccess
                 return query.ToList();
             }
         }
+
+        public int UpdateProyecto(int vIdPy, string vNombre, string vDescripcion)
+        {
+            var result = 0;
+
+            using (var db = new ApplicationDbContext())
+            {
+                var py = db.TB_PROYECTO.Where(item => item.ProyectoID == vIdPy).FirstOrDefault();
+                py.NombreProyecto = vNombre;
+                py.DescripcionProyecto = vDescripcion;
+                py.FechaUltimaEdicion = DateTime.Now;              
+
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
+
     }
 }
