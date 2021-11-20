@@ -134,8 +134,8 @@
 
                                 //for para agregar la información dinámica a las cajitas de texto...
                                 for (j = 0; j <= result.length - 1; j++) {
-                                    cajitas = cajitas + '<input type="text" value="' + result[j].informacion + '" style="width: fit-content">';
-                                    //cajitas = cajitas + '<span class="input" role="textbox" contenteditable>' + result[1].informacion + '</span>';
+                                    //cajitas = cajitas + '<input type="text" value="' + result[j].informacion + '" style="width: fit-content">';
+                                    cajitas = cajitas + '<span class="input" role="textbox" contenteditable>' + result[1].informacion + '</span>';
                                 }
 
                                 $ul.append(
@@ -216,100 +216,83 @@
 
 
 <form asp-action="Index" method="get">
+ 
+    <div class="card">
 
-    <div class="page-body">
-        <div class="container-fluid">
+        <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+            <li class="nav-item">
+                <a href="#master" onclick="loadMaster()" class="nav-link active"
+                   data-bs-toggle="tab"><strong>MASTER</strong></a>
+            </li>
+            @foreach (var item in Model)
+            {
+                <li class="nav-item">
+                    <a href="#proyecto_@item.ProyectoID" class="nav-link"
+                       data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
+                </li>
+            }
+        </ul>
 
-            <div class="row row-deck row-cards">
+        <div class="card-body">
 
-                <div class="col-lg-12">
-                    <div class="row row-cards">
+            <div class="tab-content">
 
-                        <div class="col-md-12">
-                            <div class="card">
+                <div class="tab-pane show active" id="master">
 
-                                <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
-                                    <li class="nav-item">
-                                        <a href="#master" onclick="loadMaster()" class="nav-link active"
-                                           data-bs-toggle="tab"><strong>MASTER</strong></a>
-                                    </li>
-                                    @foreach (var item in Model)
-                                    {
-                                        <li class="nav-item">
-                                            <a href="#proyecto_@item.ProyectoID" class="nav-link"
-                                               data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
-                                        </li>
-                                    }
-                                </ul>
+                    <div class="row align-items-center">
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
 
-                                <div class="card-body">
-
-                                    <div class="tab-content">                                       
-
-                                        <div class="tab-pane show active" id="master">
-
-
-                                            <div class="row align-items-center">
-                                                <div class="col-auto ms-auto d-print-none">
-                                                    <div class="btn-list">
-
-                                                        <span class="d-none d-sm-inline">
-                                                            <a href="#" class="btn btn-primary">
-                                                                Clonar
-                                                            </a>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>                                            
-
-                                            <div class="empty" id="emptyPy">
-                                                <div class="empty-img">
-                                                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
-                                                </div>
-                                                <p class="empty-title">Cargando "MASTER"</p>
-                                            </div>
-
-                                        </div>
-
-
-                                        @foreach (var item in Model)
-                                        {
-                                            <div class="tab-pane" id="proyecto_@item.ProyectoID">
-
-                                                @if (item.Permiso == "EDITOR")
-                                                {
-                                                    <div class="row align-items-center">
-                                                        <div class="col-auto ms-auto d-print-none">
-                                                            <div class="btn-list">
-
-                                                                <span class="d-none d-sm-inline">
-                                                                    <a href="#" class="btn btn-primary">
-                                                                        Editar
-                                                                    </a>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                }
-
-                                                <div class="empty" id="emptyPy_@item.TB_PROYECTO.NombreProyecto">
-                                                    <div class="empty-img">
-                                                        <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
-                                                    </div>
-                                                    <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
-                                                </div>
-
-                                            </div>
-                                        }
-
-                                    </div>
-                                </div>
+                                <span class="d-none d-sm-inline">
+                                    <a href="#" class="btn btn-primary">
+                                        Clonar
+                                    </a>
+                                </span>
                             </div>
                         </div>
                     </div>
+
+                    <div class="empty" id="emptyPy">
+                        <div class="empty-img">
+                            <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                        </div>
+                        <p class="empty-title">Cargando "MASTER"</p>
+                    </div>
+
                 </div>
+
+                @foreach (var item in Model)
+                {
+                    <div class="tab-pane" id="proyecto_@item.ProyectoID">
+
+                        @if (item.Permiso == "EDITOR")
+                        {
+                            <div class="row align-items-center">
+                                <div class="col-auto ms-auto d-print-none">
+                                    <div class="btn-list">
+
+                                        <span class="d-none d-sm-inline">
+                                            <a href="#" class="btn btn-primary">
+                                                Editar
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="empty" id="emptyPy_@item.TB_PROYECTO.NombreProyecto">
+                            <div class="empty-img">
+                                <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                            </div>
+                            <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
+                        </div>
+
+                    </div>
+                }
+
             </div>
         </div>
-    </div>
 
+    </div>   
 </form>
