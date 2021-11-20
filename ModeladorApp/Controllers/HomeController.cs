@@ -70,6 +70,14 @@ namespace ModeladorApp.Controllers
             return info;
         }
 
+        public IActionResult Arbol() {
+
+
+            return View();
+        }
+
+
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

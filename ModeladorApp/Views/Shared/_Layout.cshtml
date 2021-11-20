@@ -20,7 +20,7 @@
 <body class="antialiased">
 
     <div class="wrapper">
-        
+
         <header class="navbar navbar-expand-md navbar-dark d-print-none">
             <div class="container-xl">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
@@ -32,14 +32,16 @@
                     </a>
                 </h1>
                 <div class="navbar-nav flex-row order-md-last">
+                    
                     <ul class="nav">
 
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-light" style="cursor:pointer"><strong>OCULTAR PANEL</strong></a>
-                        </li>
+                        </li>*@
 
                         <partial name="_LoginPartial" />
                     </ul>
+
                 </div>
 
                 <div class="collapse navbar-collapse" id="navbar-menu">
@@ -57,8 +59,21 @@
                                 </a>
                             </li>
 
-                            <li class="nav-item">
+                            <!--<li class="nav-item">
                                 <a class="nav-link" asp-controller="Home" asp-action="Index">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">-->
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="4" width="6" height="5" rx="2"></rect><rect x="4" y="13" width="6" height="7" rx="2"></rect><rect x="14" y="4" width="6" height="7" rx="2"></rect><rect x="14" y="15" width="6" height="5" rx="2"></rect></svg>
+                                    </span>
+                                    <span class="nav-link-title">
+                                        Modelador
+                                    </span>
+                                </a>
+                            </li>-->
+
+
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Home" asp-action="Arbol">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <!-- Download SVG icon from http://tabler-icons.io/i/home -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="4" y="4" width="6" height="5" rx="2"></rect><rect x="4" y="13" width="6" height="7" rx="2"></rect><rect x="14" y="4" width="6" height="7" rx="2"></rect><rect x="14" y="15" width="6" height="5" rx="2"></rect></svg>
@@ -68,7 +83,7 @@
                                     </span>
                                 </a>
                             </li>
-                          
+
                         </ul>
                     </div>
                 </div>
@@ -105,6 +120,8 @@
     <script src="~/js/litepicker.js"></script>
     <script src="~/js/tom-select.base.min.js"></script>
 
+    
+    
 
     @RenderSection("Scripts", required: false)
 </body>
