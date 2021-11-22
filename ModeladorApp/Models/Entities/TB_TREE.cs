@@ -8,11 +8,16 @@ namespace ModeladorApp.Models.Entities
 {
     public class TB_TREE
     {
-        [Display(Name = "Título")]
+        [Display(Name = "Nombre")]
         public string title { get; set; }
         public bool lazy { get; set; }
         [Key]       
         public int id { get; set; }
-        public int parentId { get; set; }
+        public int parentId { get; set; }       
+        public string subtitle { get; set; }
+        public int proyectoId { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
+        public DateTime fechaCreacion { get; set; }
     }
 }

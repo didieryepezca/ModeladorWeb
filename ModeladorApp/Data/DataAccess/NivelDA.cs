@@ -16,7 +16,7 @@ namespace ModeladorApp.Data.DataAccess
             {
                 IQueryable<TB_TREE> query = db.TB_TREE;
 
-                query = query.Where(item => item.parentId == 0);
+                query = query.Where(item => item.parentId == 0 && item.proyectoId == 0);
 
                 query = query.OrderBy(p => p.id);
 
