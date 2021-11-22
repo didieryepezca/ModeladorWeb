@@ -24,6 +24,22 @@ namespace ModeladorApp.Data.DataAccess
             }
         }
 
+        public IEnumerable<TB_TREE> GetLvlFromPyUsuario(int projectId)
+        {
+            var ana = new List<TB_TREE>();
+
+            using (var db = new ApplicationDbContext())
+            {
+                IQueryable<TB_TREE> query = db.TB_TREE;
+
+                query = query.Where(item => item.parentId == 0 && item.proyectoId == projectId);
+
+                query = query.OrderBy(p => p.id);
+
+                return query.ToList();
+            }
+        }
+
         public IEnumerable<TB_TREE> GetSubLvl(int pId)
         {
             var ana = new List<TB_TREE>();

@@ -44,13 +44,27 @@
 
     <script type="text/javascript">
 
-        window.onload = loadMaster();
+        window.onload = loadTree();
 
         var CLIPBOARD = null;
 
-        async function loadMaster() {
+        async function loadTree(vIdProject) {
 
-            var data = await funGetMasterData()
+            var data;
+            
+            if (typeof (vIdProject) === 'undefined') {
+
+                console.log("id de proyecto indefinido");
+                data = await funGetMasterData()
+
+            } else {
+
+                console.log(vIdProject);
+                data = await funGetPyFromUsuario(vIdProject)
+ 
+            }
+            console.log(data);
+            
 
             //console.log(data)
 
@@ -61,7 +75,7 @@
 
                 $(function () {
 
-                    $("#tree").fancytree({
+                    $("#tree_master").fancytree({
 
                         titlesTabbable: true, // Add all node titles to TAB chain
                         quicksearch: true, // Jump to nodes when pressing first character
@@ -359,6 +373,7 @@
             } //--------> End If
         }
 
+        //---------------- carga de proyecto MASTER
         function funGetMasterData() {
             var url = "/Home/funGetLvl";
             return $.get(url, {}, function (data) {
@@ -366,9 +381,17 @@
             });
         };
 
+        //---------------- carga de proyecto de Usuario...
+        function funGetPyFromUsuario(vIdProject) {
+            var url = "/Home/funGetLvlFromPyUsuario";
+            return $.get(url, { idProyecto: vIdProject}, function (data) {
+                //console.log(data);
+            });
+        };
+
         function expandOrContract() {
 
-            $("#tree").fancytree("getRootNode").visit(function (node) {
+            $("#tree_master").fancytree("getRootNode").visit(function (node) {
                 if (node.isExpanded() == true) {
                     node.setExpanded(false);
                 } else {
@@ -385,14 +408,14 @@
     <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
 
         <li class="nav-item">
-            <a href="#master" class="nav-link active"
+            <a href="#master" onclick="loadTree()" class="nav-link active"
                data-bs-toggle="tab"><strong>MASTER</strong></a>
         </li>
 
         @foreach (var item in Model)
         {
             <li class="nav-item">
-                <a href="#proyecto_@item.ProyectoID" class="nav-link"
+                <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID')" class="nav-link"
                    data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
             </li>
         }
@@ -428,7 +451,7 @@
                     </a>
                 </span>
 
-                <table id="tree">
+                <table id="tree_master">
                     <colgroup>
                         <col width="2%" />
                         <col width="33%" />
@@ -498,6 +521,11 @@
                         <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
                     </div>
 
+
+
+
+
+
                 </div>
             }
 
@@ -551,7 +579,7 @@
                             <line x1="12" y1="5" x2="12" y2="19" />
                             <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
-                        Crear
+                        Clonar
                     </a>
                 </div>
             </div>

@@ -61,6 +61,17 @@ namespace ModeladorApp.Controllers
             return master;
         }
 
+        public List<TB_TREE> funGetLvlFromPyUsuario(int idProyecto)
+        {
+            var da = new NivelDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(2500);
+            var pyUsuario = da.GetLvlFromPyUsuario(idProyecto).ToList();
+
+            return pyUsuario;
+        }
+
         public JsonResult funGetSubLvls(int parent)
         {
             var da = new NivelDA();
