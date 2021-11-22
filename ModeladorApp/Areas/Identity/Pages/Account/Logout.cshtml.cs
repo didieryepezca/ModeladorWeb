@@ -33,7 +33,8 @@ namespace ModeladorApp.Areas.Identity.Pages.Account
             _logger.LogInformation("User logged out.");
             if (returnUrl != null)
             {
-                return LocalRedirect(returnUrl);
+                //cambiamos para que cuando salgan y vuelvan a entrar entremos a prollectos.
+                return LocalRedirect("~/Proyectos/VerProyectos");
             }
             else
             {
