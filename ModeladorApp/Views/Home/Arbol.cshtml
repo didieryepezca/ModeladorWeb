@@ -59,9 +59,7 @@
         //    });
         //};
 
-        var CLIPBOARD = null;
-
-        //var datos = [{ title: "Folder 2", key: "2", folder: true, lazy: true }]
+        var CLIPBOARD = null;       
 
         var datos = [
             {
@@ -141,7 +139,7 @@
                 //    cache: false
                 //},
                 
-                // Called when a lazy node is expanded for the first time:
+                // Llamada cada vez que se expande un nodo LAZY.
                 lazyLoad: function (event, data) {
                   
                     var node = data.node;     //obtenemos el nodo             
@@ -152,7 +150,7 @@
                         data: { parent: node.data.id },
                         cache: false
                     };
-                    //console.log(newSourceOption)
+                    
                 },             
 
                 extensions: ["edit", "dnd5", "table", "gridnav"],
@@ -185,8 +183,8 @@
                 },
                 table: {
                     indentation: 20,
-                    nodeColumnIdx: 2,
-                    checkboxColumnIdx: 0,
+                    nodeColumnIdx: 1,
+                    //checkboxColumnIdx: 0, //para poner checkboxes en la columna 1
                 },
                 gridnav: {
                     autofocusInput: false,
@@ -213,7 +211,7 @@
 
                     // (Index #0 is rendered by fancytree by adding the checkbox)
                     // Set column #1 info from node data:
-                    $tdList.eq(1).text(node.getIndexHier());
+                    $tdList.eq(0).text(node.getIndexHier());
                     // (Index #2 is rendered by fancytree)
                     // Set column #3 info from node data:
                     //$tdList
@@ -335,9 +333,7 @@
                         return false;
                     }
                 });
-
-
-            //console.log(datos)
+           
             /*
              * Tooltips
              */
@@ -494,8 +490,8 @@
             <table id="tree">
                 <colgroup>
                     <col width="30px" />
-                    <col width="50px" />
                     <col width="450px" />
+                    <col width="50px" />
                     <col width="50px" />
                     <col width="50px" />
                     <col width="30px" />
@@ -508,9 +504,8 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th></th>
                         <th>#</th>
-                        <th></th>
+                        <th>Identificador - Título</th>
                         <th>1</th>
                         <th>2</th>
                         <th>3</th>
@@ -528,15 +523,19 @@
                         <th>15</th>
                         <th>16</th>
                         <th>17</th>
+                        <th>18</th>
+                        <th>19</th>
+                        <th>20</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!-- Define a row template for all invariant markup: -->
-                    <tr>
-
+                    <tr>                      
                         <td></td>
-                        <td></td>
-                        <td></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
                         <td><input name="" type="input" /></td>
                         <td><input name="" type="input" /></td>
                         <td><input name="" type="input" /></td>
