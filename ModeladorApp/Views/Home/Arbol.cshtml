@@ -50,32 +50,35 @@
 
         async function loadTree(vIdProject) {
 
+            var treeReach;
             var data;
-            
-            if (typeof (vIdProject) === 'undefined') {
 
-                console.log("id de proyecto indefinido");
+            if (typeof (vIdProject) === 'undefined') {
+                console.log(vIdProject);
                 data = await funGetMasterData()
+                treeReach = "tree_master";
 
             } else {
-
-                console.log(vIdProject);
                 data = await funGetPyFromUsuario(vIdProject)
- 
+                treeReach = "tree_" + vIdProject;
             }
-            console.log(data);
-            
-
-            //console.log(data)
+            //console.log(data);
 
             if (data.length >= 1) {
 
-                $("#master").show(); //mostramos el arbol
-                $("#emptyPy").hide();
+                if (typeof (vIdProject) === 'undefined') {
+                    console.log("id de proyecto indefinido");
+                    $("#proyecto_master").show(); //mostramos el arbol
+                    $("#loader_master").hide();
+                } else {
+                    console.log(vIdProject);
+                    $("#proyecto_" + vIdProject).show();
+                    $("#loader_" + vIdProject).hide();
+                }
 
                 $(function () {
 
-                    $("#tree_master").fancytree({
+                    $("#" + treeReach).fancytree({
 
                         titlesTabbable: true, // Add all node titles to TAB chain
                         quicksearch: true, // Jump to nodes when pressing first character
@@ -370,6 +373,18 @@
 
                 }); //---------> End Fancytree..
 
+            } else {
+
+                if (typeof (vIdProject) === 'undefined') {
+                    console.log("id de proyecto indefinido");
+                    $("#proyecto_master").show(); //mostramos el arbol
+                    $("#loader_master").hide();
+                } else {
+                    console.log(vIdProject);
+                    $("#proyecto_" + vIdProject).show();
+                    $("#loader_" + vIdProject).hide();
+                }
+
             } //--------> End If
         }
 
@@ -384,12 +399,12 @@
         //---------------- carga de proyecto de Usuario...
         function funGetPyFromUsuario(vIdProject) {
             var url = "/Home/funGetLvlFromPyUsuario";
-            return $.get(url, { idProyecto: vIdProject}, function (data) {
+            return $.get(url, { idProyecto: vIdProject }, function (data) {
                 //console.log(data);
             });
         };
 
-        function expandOrContract() {
+        function expandOrContract(vIdProyecto) {
 
             $("#tree_master").fancytree("getRootNode").visit(function (node) {
                 if (node.isExpanded() == true) {
@@ -425,7 +440,7 @@
     <div class="card">
 
         @*Loader*@
-        <div class="card-body" id="emptyPy">
+        <div class="card-body" id="loader_master">
             <div class="empty">
                 <div class="empty-img">
                     <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
@@ -437,13 +452,15 @@
 
         <div class="tab-content">
 
-            <div class="tab-pane show active" id="master" style="display:none">
+            <div class="tab-pane show active" id="proyecto_master" style="display:none">
 
+               
                 <span class="d-none d-sm-inline">
-                    <a onclick="expandOrContract()" class="btn btn-secondary">
+                    <a onclick="expandOrContract(0)" class="btn btn-secondary">
                         Expandir/Contraer
                     </a>
                 </span>
+                
 
                 <span class="d-none d-sm-inline">
                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
@@ -496,7 +513,7 @@
 
             @foreach (var item in Model)
             {
-                <div class="tab-pane" id="proyecto_@item.ProyectoID">
+                <div class="tab-pane" id="proyecto_@item.ProyectoID" style="display:none">
 
                     @if (item.Permiso == "EDITOR")
                     {
@@ -514,7 +531,7 @@
                         </div>
                     }
 
-                    <div class="empty" id="emptyPy_@item.TB_PROYECTO.NombreProyecto">
+                    <div class="empty" id="loader_@item.ProyectoID" style="display:none">
                         <div class="empty-img">
                             <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
                         </div>
@@ -522,19 +539,52 @@
                     </div>
 
 
+                    <table id="tree_@item.ProyectoID">
+                        <colgroup>
+                            <col width="2%" />
+                            <col width="33%" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Identificador</th>
+                                <th>Nombre</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
 
-
-
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Define a row template for all invariant markup: -->
+                            <tr>
+                                <td></td>
+                                <td><input name="" style="width:44%" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
 
                 </div>
             }
 
         </div>
-
     </div>
-
-
-
 
     <div class="modal modal-blur fade" id="modal-new-project" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
