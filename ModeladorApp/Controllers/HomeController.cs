@@ -38,7 +38,7 @@ namespace ModeladorApp.Controllers
             return View(proyectos);
         }
 
-        public List<TB_NIVEL> funGetMaster()
+        public List<TB_NIVEL> funGetMaster(string mode, int parent)
         {
             var da = new NivelDA();
             

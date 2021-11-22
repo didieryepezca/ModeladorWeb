@@ -1,8 +1,8 @@
 ﻿
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1"/>
-    
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+
     <title>ON - Modelador Web</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-awesome/ui.fancytree.min.css">
@@ -43,145 +43,203 @@
     </style>
 
     <script type="text/javascript">
+
+        window.onload = loadMaster();
+       
+
+        async function loadMaster() {
+            var data = await funGetMasterData()
+            console.log(data)
+        }
+      
+        function funGetMasterData() {
+            var url = "/Home/funGetMaster";
+            return $.get(url, {}, function (data) {
+                //console.log(data);
+            });
+        };
+
         var CLIPBOARD = null;
 
+        //var datos = [{ title: "Folder 2", key: "2", folder: true, lazy: true }]
+
+        var datos = [
+            {
+                "title": "Books", "expanded": false, "folder": true, "children": [
+                    { "title": "Art of War", "type": "book", "author": "Sun Tzu", "year": -500, "qty": 21, "price": 5.95 },
+                    { "title": "The Hobbit", "type": "book", "author": "J.R.R. Tolkien", "year": 1937, "qty": 32, "price": 8.97 },
+                    { "title": "The Little Prince", "type": "book", "author": "Antoine de Saint-Exupery", "year": 1943, "qty": 2946, "price": 6.82 },
+                    { "title": "Don Quixote", "type": "book", "author": "Miguel de Cervantes", "year": 1615, "qty": 932, "price": 15.99 }
+                ]
+            },
+            {
+                "title": "Music", "folder": true, "children": [
+                    { "title": "Nevermind", "type": "music", "author": "Nirvana", "year": 1991, "qty": 916, "price": 15.95 },
+                    { "title": "Autobahn", "type": "music", "author": "Kraftwerk", "year": 1974, "qty": 2261, "price": 23.98 },
+                    { "title": "Kind of Blue", "type": "music", "author": "Miles Davis", "year": 1959, "qty": 9735, "price": 21.90 },
+                    { "title": "Back in Black", "type": "music", "author": "AC/DC", "year": 1980, "qty": 3895, "price": 17.99 },
+                    { "title": "The Dark Side of the Moon", "type": "music", "author": "Pink Floyd", "year": 1973, "qty": 263, "price": 17.99 },
+                    { "title": "Sgt. Pepper's Lonely Hearts Club Band", "type": "music", "author": "The Beatles", "year": 1967, "qty": 521, "price": 13.98 }
+                ]
+            },
+            {
+                "title": "Electronics & Computers", "expanded": false, "folder": true, "children": [
+                    {
+                        "title": "Cell Phones", "folder": true, "children": [
+                            { "title": "Moto G", "type": "phone", "author": "Motorola", "year": 2014, "qty": 332, "price": 224.99 },
+                            { "title": "Galaxy S8", "type": "phone", "author": "Samsung", "year": 2016, "qty": 952, "price": 509.99 },
+                            { "title": "iPhone SE", "type": "phone", "author": "Apple", "year": 2016, "qty": 444, "price": 282.75 },
+                            { "title": "G6", "type": "phone", "author": "LG", "year": 2017, "qty": 951, "price": 309.99 },
+                            { "title": "Lumia", "type": "phone", "author": "Microsoft", "year": 2014, "qty": 32, "price": 205.95 },
+                            { "title": "Xperia", "type": "phone", "author": "Sony", "year": 2014, "qty": 77, "price": 195.95 },
+                            { "title": "3210", "type": "phone", "author": "Nokia", "year": 1999, "qty": 3, "price": 85.99 }
+                        ]
+                    },
+                    {
+                        "title": "Computers", "folder": true, "children": [
+                            { "title": "ThinkPad", "type": "computer", "author": "IBM", "year": 1992, "qty": 16, "price": 749.90 },
+                            { "title": "C64", "type": "computer", "author": "Commodore", "year": 1982, "qty": 83, "price": 595.00 },
+                            { "title": "MacBook Pro", "type": "computer", "author": "Apple", "year": 2006, "qty": 482, "price": 1949.95 },
+                            { "title": "Sinclair ZX Spectrum", "type": "computer", "author": "Sinclair Research", "year": 1982, "qty": 1, "price": 529 },
+                            { "title": "Apple II", "type": "computer", "author": "Apple", "year": 1977, "qty": 17, "price": 1298 },
+                            { "title": "PC AT", "type": "computer", "author": "IBM", "year": 1984, "qty": 3, "price": 1235.00 }
+                        ]
+                    }
+                ]
+            },
+            { "title": "More...", "folder": true, "lazy": true }
+        ]
+
+        console.log(datos);
+
         $(function () {
-            $("#tree")
-                .fancytree({
-                    checkbox: true,
-                    checkboxAutoHide: true,
-                    titlesTabbable: true, // Add all node titles to TAB chain
-                    quicksearch: true, // Jump to nodes when pressing first character
-                    // source: SOURCE,
-                    source: [
-                        {
-                            "title": "Books", "expanded": false, "folder": true, "children": [
-                                { "title": "Art of War", "type": "book", "author": "Sun Tzu", "year": -500, "qty": 21, "price": 5.95 },
-                                { "title": "The Hobbit", "type": "book", "author": "J.R.R. Tolkien", "year": 1937, "qty": 32, "price": 8.97 },
-                                { "title": "The Little Prince", "type": "book", "author": "Antoine de Saint-Exupery", "year": 1943, "qty": 2946, "price": 6.82 },
-                                { "title": "Don Quixote", "type": "book", "author": "Miguel de Cervantes", "year": 1615, "qty": 932, "price": 15.99 }
-                            ]
-                        },
-                        {
-                            "title": "Music", "folder": true, "children": [
-                                { "title": "Nevermind", "type": "music", "author": "Nirvana", "year": 1991, "qty": 916, "price": 15.95 },
-                                { "title": "Autobahn", "type": "music", "author": "Kraftwerk", "year": 1974, "qty": 2261, "price": 23.98 },
-                                { "title": "Kind of Blue", "type": "music", "author": "Miles Davis", "year": 1959, "qty": 9735, "price": 21.90 },
-                                { "title": "Back in Black", "type": "music", "author": "AC/DC", "year": 1980, "qty": 3895, "price": 17.99 },
-                                { "title": "The Dark Side of the Moon", "type": "music", "author": "Pink Floyd", "year": 1973, "qty": 263, "price": 17.99 },
-                                { "title": "Sgt. Pepper's Lonely Hearts Club Band", "type": "music", "author": "The Beatles", "year": 1967, "qty": 521, "price": 13.98 }
-                            ]
-                        },
-                        {
-                            "title": "Electronics & Computers", "expanded": false, "folder": true, "children": [
-                                {
-                                    "title": "Cell Phones", "folder": true, "children": [
-                                        { "title": "Moto G", "type": "phone", "author": "Motorola", "year": 2014, "qty": 332, "price": 224.99 },
-                                        { "title": "Galaxy S8", "type": "phone", "author": "Samsung", "year": 2016, "qty": 952, "price": 509.99 },
-                                        { "title": "iPhone SE", "type": "phone", "author": "Apple", "year": 2016, "qty": 444, "price": 282.75 },
-                                        { "title": "G6", "type": "phone", "author": "LG", "year": 2017, "qty": 951, "price": 309.99 },
-                                        { "title": "Lumia", "type": "phone", "author": "Microsoft", "year": 2014, "qty": 32, "price": 205.95 },
-                                        { "title": "Xperia", "type": "phone", "author": "Sony", "year": 2014, "qty": 77, "price": 195.95 },
-                                        { "title": "3210", "type": "phone", "author": "Nokia", "year": 1999, "qty": 3, "price": 85.99 }
-                                    ]
-                                },
-                                {
-                                    "title": "Computers", "folder": true, "children": [
-                                        { "title": "ThinkPad", "type": "computer", "author": "IBM", "year": 1992, "qty": 16, "price": 749.90 },
-                                        { "title": "C64", "type": "computer", "author": "Commodore", "year": 1982, "qty": 83, "price": 595.00 },
-                                        { "title": "MacBook Pro", "type": "computer", "author": "Apple", "year": 2006, "qty": 482, "price": 1949.95 },
-                                        { "title": "Sinclair ZX Spectrum", "type": "computer", "author": "Sinclair Research", "year": 1982, "qty": 1, "price": 529 },
-                                        { "title": "Apple II", "type": "computer", "author": "Apple", "year": 1977, "qty": 17, "price": 1298 },
-                                        { "title": "PC AT", "type": "computer", "author": "IBM", "year": 1984, "qty": 3, "price": 1235.00 }
-                                    ]
-                                }
-                            ]
-                        },
-                        { "title": "More...", "folder": true, "lazy": true }
-                    ],
+            $("#tree").fancytree({
+               
+                titlesTabbable: true, // Add all node titles to TAB chain
+                quicksearch: true, // Jump to nodes when pressing first character
+                source: datos,
+                //---------------------------------------
+                //source: $.ajax({
+                //    dataType: "json",
+                //    url: "/Home/funGetMaster",
+                //    success: function (data) {
+                //        console.log(data)
+                //    }
+                //}),
+                //--------------------------------------
+                //source: [{
+                //    title: "Root",
+                //    key: "1",
+                //    lazy: true,
+                //    folder: true
+                //}],
 
-                    extensions: ["edit", "dnd5", "table", "gridnav"],
+                //-------------------------------------- key seria el ID
+                //source: {
+                //    url: "/Home/funGetMaster",
+                //    data: { key: 01 },
+                //    cache: false
+                //},
+                
+                // Called when a lazy node is expanded for the first time:
+                //lazyLoad: function (event, data) {
+                //    console.log("hola");
+                //    var node = data.node;                  
+                    
+                //    // Load child nodes via Ajax GET /getTreeData?mode=children&parent=1234                   
+                //    //-------------------------------------- node.key seria el Parent ID
+                //    data.result = {
+                //        //url: "/Home/funGetMaster?parent=" + node.key,
+                //        url: "/Home/funGetMaster",
+                //        data: { mode: "children", parent: node.key },
+                //        cache: false
+                //    };
+                //    //console.log(newSourceOption)
+                //},
+                
 
-                    dnd5: {
-                        preventVoidMoves: true,
-                        preventRecursion: true,
-                        autoExpandMS: 400,
-                        dragStart: function (node, data) {
-                            return true;
-                        },
-                        dragEnter: function (node, data) {
-                            // return ["before", "after"];
-                            return true;
-                        },
-                        dragDrop: function (node, data) {
-                            data.otherNode.moveTo(node, data.hitMode);
-                        },
-                    },
-                    edit: {
-                        triggerStart: ["f2", "shift+click", "mac+enter"],
-                        close: function (event, data) {
-                            if (data.save && data.isNew) {
-                                // Quick-enter: add new nodes until we hit [enter] on an empty title
-                                $("#tree").trigger("nodeCommand", {
-                                    cmd: "addSibling",
-                                });
-                            }
-                        },
-                    },
-                    table: {
-                        indentation: 20,
-                        nodeColumnIdx: 2,
-                        checkboxColumnIdx: 0,
-                    },
-                    gridnav: {
-                        autofocusInput: false,
-                        handleCursorKeys: true,
-                    },
+                //lazyLoad: function (event, data) {
+                //    data.result = { url: "../demo/ajax-sub2.json" };
+                //},
 
-                    lazyLoad: function (event, data) {
-                        data.result = { url: "../demo/ajax-sub2.json" };
-                    },
-                    createNode: function (event, data) {
-                        var node = data.node,
-                            $tdList = $(node.tr).find(">td");
+                extensions: ["edit", "dnd5", "table", "gridnav"],
 
-                        // Span the remaining columns if it's a folder.
-                        // We can do this in createNode instead of renderColumns, because
-                        // the `isFolder` status is unlikely to change later
-                        if (node.isFolder()) {
-                            $tdList
-                                .eq(2)
-                                .prop("colspan", 6)
-                                .nextAll()
-                                .remove();
+                dnd5: {
+                    preventVoidMoves: true,
+                    preventRecursion: true,
+                    autoExpandMS: 400,
+                    dragStart: function (node, data) {
+                        return true;
+                    },
+                    dragEnter: function (node, data) {
+                        // return ["before", "after"];
+                        return true;
+                    },
+                    dragDrop: function (node, data) {
+                        data.otherNode.moveTo(node, data.hitMode);
+                    },
+                },
+                edit: {
+                    triggerStart: ["f2", "shift+click", "mac+enter"],
+                    close: function (event, data) {
+                        if (data.save && data.isNew) {
+                            // Quick-enter: add new nodes until we hit [enter] on an empty title
+                            $("#tree").trigger("nodeCommand", {
+                                cmd: "addSibling",
+                            });
                         }
                     },
-                    renderColumns: function (event, data) {
-                        var node = data.node,
-                            $tdList = $(node.tr).find(">td");
+                },
+                table: {
+                    indentation: 20,
+                    nodeColumnIdx: 2,
+                    checkboxColumnIdx: 0,
+                },
+                gridnav: {
+                    autofocusInput: false,
+                    handleCursorKeys: true,
+                },
+                createNode: function (event, data) {
+                    var node = data.node,
+                        $tdList = $(node.tr).find(">td");
 
-                        // (Index #0 is rendered by fancytree by adding the checkbox)
-                        // Set column #1 info from node data:
-                        $tdList.eq(1).text(node.getIndexHier());
-                        // (Index #2 is rendered by fancytree)
-                        // Set column #3 info from node data:
+                    // Span the remaining columns if it's a folder.
+                    // We can do this in createNode instead of renderColumns, because
+                    // the `isFolder` status is unlikely to change later
+                    if (node.isFolder()) {
                         $tdList
-                            .eq(3)
-                            .find("input")
-                            .val(node.key);
-                        $tdList
-                            .eq(4)
-                            .find("input")
-                            .val(node.data.foo);
+                            .eq(2)
+                            .prop("colspan", 6)
+                            .nextAll()
+                            .remove();
+                    }
+                },
+                renderColumns: function (event, data) {
+                    var node = data.node,
+                        $tdList = $(node.tr).find(">td");
 
-                        // Static markup (more efficiently defined as html row template):
-                        // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
-                        // ...
-                    },
-                    modifyChild: function (event, data) {
-                        data.tree.info(event.type, data);
-                    },
-                })
+                    // (Index #0 is rendered by fancytree by adding the checkbox)
+                    // Set column #1 info from node data:
+                    $tdList.eq(1).text(node.getIndexHier());
+                    // (Index #2 is rendered by fancytree)
+                    // Set column #3 info from node data:
+                    //$tdList
+                    //    .eq(3)
+                    //    .find("input")
+                    //    .val(node.key);
+                    $tdList
+                        .eq(4)
+                        .find("input")
+                        .val(node.data.foo);
+
+                    // Static markup (more efficiently defined as html row template):
+                    // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
+                    // ...
+                },
+                modifyChild: function (event, data) {
+                    data.tree.info(event.type, data);
+                },
+            })
                 .on("nodeCommand", function (event, data) {
                     // Custom event handler that is triggered by keydown-handler and
                     // context menu:
@@ -285,6 +343,8 @@
                     }
                 });
 
+
+            //console.log(datos)
             /*
              * Tooltips
              */
@@ -301,39 +361,39 @@
                 delegate: "span.fancytree-node",
                 menu: [
                     {
-                        title: "Edit <kbd>[F2]</kbd>",
+                        title: "Editar <kbd>[F2]</kbd>",
                         cmd: "rename",
                         uiIcon: "ui-icon-pencil",
                     },
                     {
-                        title: "Delete <kbd>[Del]</kbd>",
+                        title: "Eliminar <kbd>[Del]</kbd>",
                         cmd: "remove",
                         uiIcon: "ui-icon-trash",
                     },
                     { title: "----" },
                     {
-                        title: "New sibling <kbd>[Ctrl+N]</kbd>",
+                        title: "Nvo Hermano <kbd>[Ctrl+N]</kbd>",
                         cmd: "addSibling",
                         uiIcon: "ui-icon-plus",
                     },
                     {
-                        title: "New child <kbd>[Ctrl+Shift+N]</kbd>",
+                        title: "Nvo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
                         cmd: "addChild",
                         uiIcon: "ui-icon-arrowreturn-1-e",
                     },
                     { title: "----" },
                     {
-                        title: "Cut <kbd>Ctrl+X</kbd>",
+                        title: "Cortar <kbd>Ctrl+X</kbd>",
                         cmd: "cut",
                         uiIcon: "ui-icon-scissors",
                     },
                     {
-                        title: "Copy <kbd>Ctrl-C</kbd>",
+                        title: "Copiar <kbd>Ctrl-C</kbd>",
                         cmd: "copy",
                         uiIcon: "ui-icon-copy",
                     },
                     {
-                        title: "Paste as child<kbd>Ctrl+V</kbd>",
+                        title: "Pegar as child<kbd>Ctrl+V</kbd>",
                         cmd: "paste",
                         uiIcon: "ui-icon-clipboard",
                         disabled: true,
@@ -357,7 +417,24 @@
                     }, 100);
                 },
             });
+
+
+
         });
+
+
+        function expandOrContract() {         
+
+            $("#tree").fancytree("getRootNode").visit(function (node) {               
+                if (node.isExpanded() == true) {
+                    node.setExpanded(false);
+                } else {
+                    node.setExpanded(true);
+                }                
+            });
+        }
+
+
     </script>
 </head>
 
@@ -415,6 +492,12 @@
     <div class="tab-content">
         <div class="tab-pane show active" id="master">
 
+            <span class="d-none d-sm-inline">
+                <a onclick="expandOrContract()" class="btn btn-primary">
+                    Expandir/Contraer
+                </a>
+            </span>
+
             <table id="tree">
                 <colgroup>
                     <col width="30px" />
@@ -457,27 +540,27 @@
                 <tbody>
                     <!-- Define a row template for all invariant markup: -->
                     <tr>
-                        <td class="alignCenter"></td>
-                        <td></td>
-                        <td></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
-                        <td><input name="" type="input" /></td>
 
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
+                        <td><input name="" type="input" /></td>
                     </tr>
                 </tbody>
             </table>
@@ -494,9 +577,9 @@
 
     </div>
 
-        <!-- (Irrelevant source removed.) -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree-all-deps.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree.min.js"></script>
+    <!-- (Irrelevant source removed.) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree-all-deps.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree.min.js"></script>
 
 </body>
 
