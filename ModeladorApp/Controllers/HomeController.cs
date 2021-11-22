@@ -77,6 +77,27 @@ namespace ModeladorApp.Controllers
         }
 
 
+        public List<TB_TREE> funGetLvl()
+        {
+            var da = new NivelDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(2500);
+            var master = da.GetLvl().ToList();
+
+            return master;
+        }
+
+        public JsonResult funGetSubLvls(int parent)
+        {
+            var da = new NivelDA();
+
+            System.Threading.Thread.Sleep(1500);
+            var subMenus = da.GetSubLvl(parent);
+
+            return Json(subMenus);
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

@@ -44,20 +44,20 @@
 
     <script type="text/javascript">
 
-        window.onload = loadMaster();
+        //window.onload = loadMaster();
        
 
-        async function loadMaster() {
-            var data = await funGetMasterData()
-            console.log(data)
-        }
+        //async function loadMaster() {
+        //    var data = await funGetMasterData()
+        //    console.log(data)
+        //}
       
-        function funGetMasterData() {
-            var url = "/Home/funGetMaster";
-            return $.get(url, {}, function (data) {
-                //console.log(data);
-            });
-        };
+        //function funGetMasterData() {
+        //    var url = "/Home/funGetMaster";
+        //    return $.get(url, {}, function (data) {
+        //        //console.log(data);
+        //    });
+        //};
 
         var CLIPBOARD = null;
 
@@ -117,15 +117,15 @@
                
                 titlesTabbable: true, // Add all node titles to TAB chain
                 quicksearch: true, // Jump to nodes when pressing first character
-                source: datos,
+                /*source: datos,*/
                 //---------------------------------------
-                //source: $.ajax({
-                //    dataType: "json",
-                //    url: "/Home/funGetMaster",
-                //    success: function (data) {
-                //        console.log(data)
-                //    }
-                //}),
+                source: $.ajax({
+                    dataType: "json",
+                    url: "/Home/funGetLvl",
+                    success: function (data) {
+                        //console.log(data)
+                    }
+                }),
                 //--------------------------------------
                 //source: [{
                 //    title: "Root",
@@ -142,25 +142,18 @@
                 //},
                 
                 // Called when a lazy node is expanded for the first time:
-                //lazyLoad: function (event, data) {
-                //    console.log("hola");
-                //    var node = data.node;                  
+                lazyLoad: function (event, data) {
+                  
+                    var node = data.node;     //obtenemos el nodo             
+                    /*console.log(node.data.id);*/ // obtenemos el id para mandarlo como parent                                 
                     
-                //    // Load child nodes via Ajax GET /getTreeData?mode=children&parent=1234                   
-                //    //-------------------------------------- node.key seria el Parent ID
-                //    data.result = {
-                //        //url: "/Home/funGetMaster?parent=" + node.key,
-                //        url: "/Home/funGetMaster",
-                //        data: { mode: "children", parent: node.key },
-                //        cache: false
-                //    };
-                //    //console.log(newSourceOption)
-                //},
-                
-
-                //lazyLoad: function (event, data) {
-                //    data.result = { url: "../demo/ajax-sub2.json" };
-                //},
+                    data.result = {
+                        url: "/Home/funGetSubLvls",                       
+                        data: { parent: node.data.id },
+                        cache: false
+                    };
+                    //console.log(newSourceOption)
+                },             
 
                 extensions: ["edit", "dnd5", "table", "gridnav"],
 
