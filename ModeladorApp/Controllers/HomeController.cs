@@ -42,8 +42,13 @@ namespace ModeladorApp.Controllers
         //---------------------------------TREE VIEW REAL
         public IActionResult Arbol()
         {
+            var user = userManager.GetUserAsync(User);
+            var userId = user.Result.Id;
 
-            return View();
+            var daPer = new HomeDA();
+            var proyectos = daPer.getProyectosWithPermisos(userId);
+
+            return View(proyectos);
         }
         public List<TB_TREE> funGetLvl()
         {

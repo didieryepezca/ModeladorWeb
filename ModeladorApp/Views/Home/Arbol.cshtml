@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PERMISOS>
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
@@ -44,530 +44,441 @@
 
     <script type="text/javascript">
 
-        //window.onload = loadMaster();
-       
+        window.onload = loadMaster();
 
-        //async function loadMaster() {
-        //    var data = await funGetMasterData()
-        //    console.log(data)
-        //}
-      
-        //function funGetMasterData() {
-        //    var url = "/Home/funGetMaster";
-        //    return $.get(url, {}, function (data) {
-        //        //console.log(data);
-        //    });
-        //};
+        var CLIPBOARD = null;
 
-        var CLIPBOARD = null;       
+        async function loadMaster() {
 
-        //var datos = [
-        //    {
-        //        "title": "Books", "expanded": false, "folder": true, "children": [
-        //            { "title": "Art of War", "type": "book", "author": "Sun Tzu", "year": -500, "qty": 21, "price": 5.95 },
-        //            { "title": "The Hobbit", "type": "book", "author": "J.R.R. Tolkien", "year": 1937, "qty": 32, "price": 8.97 },
-        //            { "title": "The Little Prince", "type": "book", "author": "Antoine de Saint-Exupery", "year": 1943, "qty": 2946, "price": 6.82 },
-        //            { "title": "Don Quixote", "type": "book", "author": "Miguel de Cervantes", "year": 1615, "qty": 932, "price": 15.99 }
-        //        ]
-        //    },
-        //    {
-        //        "title": "Music", "folder": true, "children": [
-        //            { "title": "Nevermind", "type": "music", "author": "Nirvana", "year": 1991, "qty": 916, "price": 15.95 },
-        //            { "title": "Autobahn", "type": "music", "author": "Kraftwerk", "year": 1974, "qty": 2261, "price": 23.98 },
-        //            { "title": "Kind of Blue", "type": "music", "author": "Miles Davis", "year": 1959, "qty": 9735, "price": 21.90 },
-        //            { "title": "Back in Black", "type": "music", "author": "AC/DC", "year": 1980, "qty": 3895, "price": 17.99 },
-        //            { "title": "The Dark Side of the Moon", "type": "music", "author": "Pink Floyd", "year": 1973, "qty": 263, "price": 17.99 },
-        //            { "title": "Sgt. Pepper's Lonely Hearts Club Band", "type": "music", "author": "The Beatles", "year": 1967, "qty": 521, "price": 13.98 }
-        //        ]
-        //    },
-        //    {
-        //        "title": "Electronics & Computers", "expanded": false, "folder": true, "children": [
-        //            {
-        //                "title": "Cell Phones", "folder": true, "children": [
-        //                    { "title": "Moto G", "type": "phone", "author": "Motorola", "year": 2014, "qty": 332, "price": 224.99 },
-        //                    { "title": "Galaxy S8", "type": "phone", "author": "Samsung", "year": 2016, "qty": 952, "price": 509.99 },
-        //                    { "title": "iPhone SE", "type": "phone", "author": "Apple", "year": 2016, "qty": 444, "price": 282.75 },
-        //                    { "title": "G6", "type": "phone", "author": "LG", "year": 2017, "qty": 951, "price": 309.99 },
-        //                    { "title": "Lumia", "type": "phone", "author": "Microsoft", "year": 2014, "qty": 32, "price": 205.95 },
-        //                    { "title": "Xperia", "type": "phone", "author": "Sony", "year": 2014, "qty": 77, "price": 195.95 },
-        //                    { "title": "3210", "type": "phone", "author": "Nokia", "year": 1999, "qty": 3, "price": 85.99 }
-        //                ]
-        //            },
-        //            {
-        //                "title": "Computers", "folder": true, "children": [
-        //                    { "title": "ThinkPad", "type": "computer", "author": "IBM", "year": 1992, "qty": 16, "price": 749.90 },
-        //                    { "title": "C64", "type": "computer", "author": "Commodore", "year": 1982, "qty": 83, "price": 595.00 },
-        //                    { "title": "MacBook Pro", "type": "computer", "author": "Apple", "year": 2006, "qty": 482, "price": 1949.95 },
-        //                    { "title": "Sinclair ZX Spectrum", "type": "computer", "author": "Sinclair Research", "year": 1982, "qty": 1, "price": 529 },
-        //                    { "title": "Apple II", "type": "computer", "author": "Apple", "year": 1977, "qty": 17, "price": 1298 },
-        //                    { "title": "PC AT", "type": "computer", "author": "IBM", "year": 1984, "qty": 3, "price": 1235.00 }
-        //                ]
-        //            }
-        //        ]
-        //    },
-        //    { "title": "More...", "folder": true, "lazy": true }
-        //]
+            var data = await funGetMasterData()
 
-        //console.log(datos);
+            //console.log(data)
 
-        $(function () {
-            $("#tree").fancytree({
-               
-                titlesTabbable: true, // Add all node titles to TAB chain
-                quicksearch: true, // Jump to nodes when pressing first character
-                /*source: datos,*/
-                //---------------------------------------
-                source: $.ajax({
-                    dataType: "json",
-                    url: "/Home/funGetLvl",
-                    success: function (data) {
-                        //console.log(data)
-                    }
-                }),
-                //--------------------------------------
-                //source: [{
-                //    title: "Root",
-                //    key: "1",
-                //    lazy: true,
-                //    folder: true
-                //}],
+            if (data.length >= 1) {
 
-                //-------------------------------------- key seria el ID
-                //source: {
-                //    url: "/Home/funGetMaster",
-                //    data: { key: 01 },
-                //    cache: false
-                //},
-                
-                // Llamada cada vez que se expande un nodo LAZY.
-                lazyLoad: function (event, data) {
-                  
-                    var node = data.node;     //obtenemos el nodo             
-                    /*console.log(node.data.id);*/ // obtenemos el id para mandarlo como parent                                 
+                $("#master").show(); //mostramos el arbol
+                $("#emptyPy").hide();
 
-                    console.log(node.data.parentId)
+                $(function () {
 
-                    data.result = {
-                        url: "/Home/funGetSubLvls",                       
-                        data: { parent: node.data.id },
-                        cache: false
-                    };
-                    
-                },             
+                    $("#tree").fancytree({
 
-                extensions: ["edit", "dnd5", "table", "gridnav"],
+                        titlesTabbable: true, // Add all node titles to TAB chain
+                        quicksearch: true, // Jump to nodes when pressing first character
+                        source: data,
+                        // Llamada cada vez que se expande un nodo LAZY.
+                        lazyLoad: function (event, data) {
 
-                dnd5: {
-                    preventVoidMoves: true,
-                    preventRecursion: true,
-                    autoExpandMS: 400,
-                    dragStart: function (node, data) {
-                        return true;
-                    },
-                    dragEnter: function (node, data) {
-                        // return ["before", "after"];
-                        return true;
-                    },
-                    dragDrop: function (node, data) {
-                        data.otherNode.moveTo(node, data.hitMode);
-                    },
-                },
-                edit: {
-                    triggerStart: ["f2", "shift+click", "mac+enter"],
-                    close: function (event, data) {
-                        if (data.save && data.isNew) {
-                            // Quick-enter: add new nodes until we hit [enter] on an empty title
-                            $("#tree").trigger("nodeCommand", {
-                                cmd: "addSibling",
-                            });
-                        }
-                    },
-                },
-                table: {
-                    indentation: 20,
-                    nodeColumnIdx: 1,
-                    //checkboxColumnIdx: 0, //para poner checkboxes en la columna 1
-                },
-                gridnav: {
-                    autofocusInput: false,
-                    handleCursorKeys: true,
-                },
-                createNode: function (event, data) {
-                    var node = data.node,
-                        $tdList = $(node.tr).find(">td");
+                            var node = data.node;     //obtenemos el nodo
+                            /*console.log(node.data.id);*/ // obtenemos el id para mandarlo como parent
 
-                    // Span the remaining columns if it's a folder.
-                    // We can do this in createNode instead of renderColumns, because
-                    // the `isFolder` status is unlikely to change later
-                    if (node.isFolder()) {
-                        $tdList
-                            .eq(2)
-                            .prop("colspan", 6)
-                            .nextAll()
-                            .remove();
-                    }
-                },
-                renderColumns: function (event, data) {
-                    var node = data.node,
-                        $tdList = $(node.tr).find(">td");
+                            console.log(node.data.parentId)
 
-                    // (Index #0 is rendered by fancytree by adding the checkbox)
-                    // Set column #1 info from node data:
-                    $tdList.eq(0).text(node.getIndexHier());
-                    // (Index #2 is rendered by fancytree)
-                    // Podemos setear la información en la columna 2 como por ejemplo el parentId
-                    //$tdList
-                    //    .eq(2)
-                    //    .find("input")
-                    //    .val(node.data.subtitle);
-
-                    $tdList
-                        .eq(4)
-                        .find("input")
-                        .val(node.data.foo);
-
-                    // Static markup (more efficiently defined as html row template):
-                    // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
-                    // ...
-                },
-                modifyChild: function (event, data) {
-                    data.tree.info(event.type, data);
-                },
-            })
-                .on("nodeCommand", function (event, data) {
-                    // Custom event handler that is triggered by keydown-handler and
-                    // context menu:
-                    var refNode,
-                        moveMode,
-                        tree = $.ui.fancytree.getTree(this),
-                        node = tree.getActiveNode();
-
-                    switch (data.cmd) {
-                        case "addChild":
-                        case "addSibling":
-                        case "indent":
-                        case "moveDown":
-                        case "moveUp":
-                        case "outdent":
-                        case "remove":
-                        case "rename":
-                            tree.applyCommand(data.cmd, node);
-                            break;
-                        case "cut":
-                            CLIPBOARD = { mode: data.cmd, data: node };
-                            break;
-                        case "copy":
-                            CLIPBOARD = {
-                                mode: data.cmd,
-                                data: node.toDict(true, function (dict, node) {
-                                    delete dict.key;
-                                }),
+                            data.result = {
+                                url: "/Home/funGetSubLvls",
+                                data: { parent: node.data.id },
+                                cache: false
                             };
-                            break;
-                        case "clear":
-                            CLIPBOARD = null;
-                            break;
-                        case "paste":
-                            if (CLIPBOARD.mode === "cut") {
-                                // refNode = node.getPrevSibling();
-                                CLIPBOARD.data.moveTo(node, "child");
-                                CLIPBOARD.data.setActive();
-                            } else if (CLIPBOARD.mode === "copy") {
-                                node.addChildren(
-                                    CLIPBOARD.data
-                                ).setActive();
+
+                        },
+                        /* AJAX: Ejemplo 1*/
+                        //---------------------------------------
+                        //source: $.ajax({
+                        //    dataType: "json",
+                        //    url: "/Home/funGetLvl",
+                        //    success: function (data) {
+                        //        //console.log(data)
+                        //    }
+                        //}),
+                        //--------------------------------------
+                        /* AJAX: Ejemplo 2*/
+                        //-------------------------------------- key seria el ID
+                        //source: {
+                        //    url: "/Home/funGetMaster",
+                        //    data: { key: 01 },
+                        //    cache: false
+                        //},
+
+                        extensions: ["edit", "dnd5", "table", "gridnav"],
+
+                        dnd5: {
+                            preventVoidMoves: true,
+                            preventRecursion: true,
+                            autoExpandMS: 400,
+                            dragStart: function (node, data) {
+                                return true;
+                            },
+                            dragEnter: function (node, data) {
+                                // return ["before", "after"];
+                                return true;
+                            },
+                            dragDrop: function (node, data) {
+                                data.otherNode.moveTo(node, data.hitMode);
+                            },
+                        },
+                        edit: {
+                            triggerStart: ["f2", "shift+click", "mac+enter"],
+                            close: function (event, data) {
+                                if (data.save && data.isNew) {
+                                    // Quick-enter: add new nodes until we hit [enter] on an empty title
+                                    $("#tree").trigger("nodeCommand", {
+                                        cmd: "addSibling",
+                                    });
+                                }
+                            },
+                        },
+                        table: {
+                            indentation: 20,
+                            nodeColumnIdx: 1,
+                            //checkboxColumnIdx: 0, //para poner checkboxes en la columna 1
+                        },
+                        gridnav: {
+                            autofocusInput: false,
+                            handleCursorKeys: true,
+                        },
+                        createNode: function (event, data) {
+                            var node = data.node,
+                                $tdList = $(node.tr).find(">td");
+
+                            // Span the remaining columns if it's a folder.
+                            // We can do this in createNode instead of renderColumns, because
+                            // the `isFolder` status is unlikely to change later
+                            if (node.isFolder()) {
+                                $tdList
+                                    .eq(2)
+                                    .prop("colspan", 6)
+                                    .nextAll()
+                                    .remove();
                             }
-                            break;
-                        default:
-                            alert("Unhandled command: " + data.cmd);
-                            return;
-                    }
-                })
-                .on("keydown", function (e) {
-                    var cmd = null;
+                        },
+                        renderColumns: function (event, data) {
+                            var node = data.node,
+                                $tdList = $(node.tr).find(">td");
 
-                    // console.log(e.type, $.ui.fancytree.eventToString(e));
-                    switch ($.ui.fancytree.eventToString(e)) {
-                        case "ctrl+shift+n":
-                        case "meta+shift+n": // mac: cmd+shift+n
-                            cmd = "addChild";
-                            break;
-                        case "ctrl+c":
-                        case "meta+c": // mac
-                            cmd = "copy";
-                            break;
-                        case "ctrl+v":
-                        case "meta+v": // mac
-                            cmd = "paste";
-                            break;
-                        case "ctrl+x":
-                        case "meta+x": // mac
-                            cmd = "cut";
-                            break;
-                        case "ctrl+n":
-                        case "meta+n": // mac
-                            cmd = "addSibling";
-                            break;
-                        case "del":
-                        case "meta+backspace": // mac
-                            cmd = "remove";
-                            break;
-                        // case "f2":  // already triggered by ext-edit pluging
-                        //   cmd = "rename";
-                        //   break;
-                        case "ctrl+up":
-                        case "ctrl+shift+up": // mac
-                            cmd = "moveUp";
-                            break;
-                        case "ctrl+down":
-                        case "ctrl+shift+down": // mac
-                            cmd = "moveDown";
-                            break;
-                        case "ctrl+right":
-                        case "ctrl+shift+right": // mac
-                            cmd = "indent";
-                            break;
-                        case "ctrl+left":
-                        case "ctrl+shift+left": // mac
-                            cmd = "outdent";
-                    }
-                    if (cmd) {
-                        $(this).trigger("nodeCommand", { cmd: cmd });
-                        return false;
-                    }
-                });
-           
-            /*
-             * Tooltips
-             */
-            // $("#tree").tooltip({
-            //   content: function () {
-            //     return $(this).attr("title");
-            //   }
-            // });
+                            // (Index #0 is rendered by fancytree by adding the checkbox)
+                            // Set column #1 info from node data:
+                            $tdList.eq(0).text(node.getIndexHier());
+                            // (Index #2 is rendered by fancytree)
+                            // Podemos setear la información en la columna 2 como por ejemplo el parentId
+                            $tdList
+                                .eq(2)
+                                .find("input")
+                                .val(node.data.subtitle);
 
-            /*
-             * Context menu (https://github.com/mar10/jquery-ui-contextmenu)
-             */
-            $("#tree").contextmenu({
-                delegate: "span.fancytree-node",
-                menu: [
-                    {
-                        title: "Editar <kbd>[F2]</kbd>",
-                        cmd: "rename",
-                        uiIcon: "ui-icon-pencil",
-                    },
-                    {
-                        title: "Eliminar <kbd>[Del]</kbd>",
-                        cmd: "remove",
-                        uiIcon: "ui-icon-trash",
-                    },
-                    { title: "----" },
-                    {
-                        title: "Nvo Hermano <kbd>[Ctrl+N]</kbd>",
-                        cmd: "addSibling",
-                        uiIcon: "ui-icon-plus",
-                    },
-                    {
-                        title: "Nvo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
-                        cmd: "addChild",
-                        uiIcon: "ui-icon-arrowreturn-1-e",
-                    },
-                    { title: "----" },
-                    {
-                        title: "Cortar <kbd>Ctrl+X</kbd>",
-                        cmd: "cut",
-                        uiIcon: "ui-icon-scissors",
-                    },
-                    {
-                        title: "Copiar <kbd>Ctrl-C</kbd>",
-                        cmd: "copy",
-                        uiIcon: "ui-icon-copy",
-                    },
-                    {
-                        title: "Pegar as child<kbd>Ctrl+V</kbd>",
-                        cmd: "paste",
-                        uiIcon: "ui-icon-clipboard",
-                        disabled: true,
-                    },
-                ],
-                beforeOpen: function (event, ui) {
-                    var node = $.ui.fancytree.getNode(ui.target);
-                    $("#tree").contextmenu(
-                        "enableEntry",
-                        "paste",
-                        !!CLIPBOARD
-                    );
-                    node.setActive();
-                },
-                select: function (event, ui) {
-                    var that = this;
-                    // delay the event, so the menu can close and the click event does
-                    // not interfere with the edit control
-                    setTimeout(function () {
-                        $(that).trigger("nodeCommand", { cmd: ui.cmd });
-                    }, 100);
-                },
+                            $tdList
+                                .eq(4)
+                                .find("input")
+                                .val(node.data.foo);
+
+                            // Static markup (more efficiently defined as html row template):
+                            // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
+                            // ...
+                        },
+                        modifyChild: function (event, data) {
+                            data.tree.info(event.type, data);
+                        },
+                    })
+                        .on("nodeCommand", function (event, data) {
+                            // Custom event handler that is triggered by keydown-handler and
+                            // context menu:
+                            var refNode,
+                                moveMode,
+                                tree = $.ui.fancytree.getTree(this),
+                                node = tree.getActiveNode();
+
+                            switch (data.cmd) {
+                                case "addChild":
+                                case "addSibling":
+                                case "indent":
+                                case "moveDown":
+                                case "moveUp":
+                                case "outdent":
+                                case "remove":
+                                case "rename":
+                                    tree.applyCommand(data.cmd, node);
+                                    break;
+                                case "cut":
+                                    CLIPBOARD = { mode: data.cmd, data: node };
+                                    break;
+                                case "copy":
+                                    CLIPBOARD = {
+                                        mode: data.cmd,
+                                        data: node.toDict(true, function (dict, node) {
+                                            delete dict.key;
+                                        }),
+                                    };
+                                    break;
+                                case "clear":
+                                    CLIPBOARD = null;
+                                    break;
+                                case "paste":
+                                    if (CLIPBOARD.mode === "cut") {
+                                        // refNode = node.getPrevSibling();
+                                        CLIPBOARD.data.moveTo(node, "child");
+                                        CLIPBOARD.data.setActive();
+                                    } else if (CLIPBOARD.mode === "copy") {
+                                        node.addChildren(
+                                            CLIPBOARD.data
+                                        ).setActive();
+                                    }
+                                    break;
+                                default:
+                                    alert("Unhandled command: " + data.cmd);
+                                    return;
+                            }
+                        })
+                        .on("keydown", function (e) {
+                            var cmd = null;
+
+                            // console.log(e.type, $.ui.fancytree.eventToString(e));
+                            switch ($.ui.fancytree.eventToString(e)) {
+                                case "ctrl+shift+n":
+                                case "meta+shift+n": // mac: cmd+shift+n
+                                    cmd = "addChild";
+                                    break;
+                                case "ctrl+c":
+                                case "meta+c": // mac
+                                    cmd = "copy";
+                                    break;
+                                case "ctrl+v":
+                                case "meta+v": // mac
+                                    cmd = "paste";
+                                    break;
+                                case "ctrl+x":
+                                case "meta+x": // mac
+                                    cmd = "cut";
+                                    break;
+                                case "ctrl+n":
+                                case "meta+n": // mac
+                                    cmd = "addSibling";
+                                    break;
+                                case "del":
+                                case "meta+backspace": // mac
+                                    cmd = "remove";
+                                    break;
+                                // case "f2":  // already triggered by ext-edit pluging
+                                //   cmd = "rename";
+                                //   break;
+                                case "ctrl+up":
+                                case "ctrl+shift+up": // mac
+                                    cmd = "moveUp";
+                                    break;
+                                case "ctrl+down":
+                                case "ctrl+shift+down": // mac
+                                    cmd = "moveDown";
+                                    break;
+                                case "ctrl+right":
+                                case "ctrl+shift+right": // mac
+                                    cmd = "indent";
+                                    break;
+                                case "ctrl+left":
+                                case "ctrl+shift+left": // mac
+                                    cmd = "outdent";
+                            }
+                            if (cmd) {
+                                $(this).trigger("nodeCommand", { cmd: cmd });
+                                return false;
+                            }
+                        });
+
+                    /*
+                     * Tooltips
+                     */
+                    // $("#tree").tooltip({
+                    //   content: function () {
+                    //     return $(this).attr("title");
+                    //   }
+                    // });
+
+                    /*
+                     * Context menu (https://github.com/mar10/jquery-ui-contextmenu)
+                     */
+                    $("#tree").contextmenu({
+                        delegate: "span.fancytree-node",
+                        menu: [
+                            {
+                                title: "Editar <kbd>[F2]</kbd>",
+                                cmd: "rename",
+                                uiIcon: "ui-icon-pencil",
+                            },
+                            {
+                                title: "Eliminar <kbd>[Del]</kbd>",
+                                cmd: "remove",
+                                uiIcon: "ui-icon-trash",
+                            },
+                            { title: "----" },
+                            {
+                                title: "Nvo Hermano <kbd>[Ctrl+N]</kbd>",
+                                cmd: "addSibling",
+                                uiIcon: "ui-icon-plus",
+                            },
+                            {
+                                title: "Nvo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
+                                cmd: "addChild",
+                                uiIcon: "ui-icon-arrowreturn-1-e",
+                            },
+                            { title: "----" },
+                            {
+                                title: "Cortar <kbd>Ctrl+X</kbd>",
+                                cmd: "cut",
+                                uiIcon: "ui-icon-scissors",
+                            },
+                            {
+                                title: "Copiar <kbd>Ctrl-C</kbd>",
+                                cmd: "copy",
+                                uiIcon: "ui-icon-copy",
+                            },
+                            {
+                                title: "Pegar as child<kbd>Ctrl+V</kbd>",
+                                cmd: "paste",
+                                uiIcon: "ui-icon-clipboard",
+                                disabled: true,
+                            },
+                        ],
+                        beforeOpen: function (event, ui) {
+                            var node = $.ui.fancytree.getNode(ui.target);
+                            $("#tree").contextmenu(
+                                "enableEntry",
+                                "paste",
+                                !!CLIPBOARD
+                            );
+                            node.setActive();
+                        },
+                        select: function (event, ui) {
+                            var that = this;
+                            // delay the event, so the menu can close and the click event does
+                            // not interfere with the edit control
+                            setTimeout(function () {
+                                $(that).trigger("nodeCommand", { cmd: ui.cmd });
+                            }, 100);
+                        },
+                    });
+
+                }); //---------> End Fancytree..
+
+            } //--------> End If
+        }
+
+        function funGetMasterData() {
+            var url = "/Home/funGetLvl";
+            return $.get(url, {}, function (data) {
+                //console.log(data);
             });
+        };
 
+        function expandOrContract() {
 
-
-        });
-
-
-        function expandOrContract() {         
-
-            $("#tree").fancytree("getRootNode").visit(function (node) {               
+            $("#tree").fancytree("getRootNode").visit(function (node) {
                 if (node.isExpanded() == true) {
                     node.setExpanded(false);
                 } else {
                     node.setExpanded(true);
-                }                
+                }
             });
         }
-
 
     </script>
 </head>
 
 <body class="example">
-    @*<h1>
-            Example: tree grid with keyboard navigation, DnD, and editing
-            capabilites
-        </h1>
-        <div class="description">
-            Bringing it all together: this sample combines different extensions
-            and custom events to implement an editable tree grid:
-            <ul>
-                <li>'ext-dnd5' to re-order nodes using drag-and-drop.</li>
-                <li>
-                    'ext-table' + 'ext-gridnav' to implement a tree grid.<br />
-                    Try <kbd>UP / DOWN / LEFT / RIGHT</kbd>, <kbd>TAB</kbd>,
-                    <kbd>Shift+TAB</kbd>
-                    to navigate between grid cells. Note that embedded input
-                    controls remain functional.
-                </li>
-                <li>
-                    'ext-edit': inline editing.<br />
-                    Try <kbd>F2</kbd> to rename a node.<br />
-                    <kbd>Ctrl+N</kbd>, <kbd>Ctrl+Shift+N</kbd> to add nodes
-                    (Quick-enter: add new nodes until [enter] is hit on an empty
-                    title).
-                </li>
-                <li>
-                    Extended keyboard shortcuts:<br />
-                    <kbd>Ctrl+C</kbd>, <kbd>Ctrl+X</kbd>, <kbd>Ctrl+V</kbd> for
-                    copy/paste,<br />
-                    <kbd>Ctrl+UP</kbd>, <kbd>Ctrl+DOWN</kbd>,
-                    <kbd>Ctrl+LEFT</kbd>, <kbd>Ctrl+RIGHT</kbd>
-                    to move nodes around and change indentation.<br>
-                    (On macOS, add <kbd>Shift</kbd> to the keystrokes.)
-                </li>
-            </ul>
-        </div>*@
 
     <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+
         <li class="nav-item">
             <a href="#master" class="nav-link active"
                data-bs-toggle="tab"><strong>MASTER</strong></a>
         </li>
-        <li class="nav-item">
-            <a href="#py1" class="nav-link"
-               data-bs-toggle="tab">Proyecto 1 </a>
-        </li>
-        <li class="nav-item">
-            <a href="#py2" class="nav-link"
-               data-bs-toggle="tab">Proyecto 2</a>
-        </li>
+
+        @foreach (var item in Model)
+        {
+            <li class="nav-item">
+                <a href="#proyecto_@item.ProyectoID" class="nav-link"
+                   data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
+            </li>
+        }
+
     </ul>
 
-    <div class="tab-content">
-        <div class="tab-pane show active" id="master">
+    <div class="card">
 
-            <span class="d-none d-sm-inline">
-                <a onclick="expandOrContract()" class="btn btn-primary">
-                    Expandir/Contraer
-                </a>
-            </span>
-
-            <table id="tree">
-                <colgroup>
-                    <col width="30px" />
-                    <col width="450px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Identificador</th>
-                        <th>Nombre</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-                        <th>6</th>
-                        <th>7</th>
-                        <th>8</th>
-                        <th>9</th>
-                        <th>10</th>
-                        <th>11</th>
-                        <th>12</th>
-                        <th>13</th>
-                        <th>14</th>
-                        <th>15</th>
-                        <th>16</th>
-                        <th>17</th>
-                        <th>18</th>
-                        <th>19</th>
-                        <th>20</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Define a row template for all invariant markup: -->
-                    <tr>                      
-                        <td></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                        <td><input name=""/></td>
-                    </tr>
-                </tbody>
-            </table>
-
+        @*Loader*@
+        <div class="card-body">
+            <div class="empty" id="emptyPy">
+                <div class="empty-img">
+                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                </div>
+                <p class="empty-title">Cargando "MASTER"</p>
+            </div>
         </div>
+        @*Loader*@
 
-        <div class="tab-pane show" id="py1">
-            <a><strong>Este es mi proyecto 1!</strong></a>
-        </div>
+        <div class="tab-content">
 
-        <div class="tab-pane show" id="py2">
-            <a><strong>Este es mi proyecto 2!</strong></a>
+            <div class="tab-pane show active" id="master" style="display:none">
+
+                <span class="d-none d-sm-inline">
+                    <a onclick="expandOrContract()" class="btn btn-secondary">
+                        Expandir/Contraer
+                    </a>
+                </span>
+
+                <span class="d-none d-sm-inline">
+                    <a href="#" class="btn btn-primary">
+                        Clonar
+                    </a>
+                </span>
+
+                <table id="tree">
+                    <colgroup>
+                        <col width="2%" />
+                        <col width="33%" />
+                        <col width="30px" />
+                        <col width="30px" />
+                        <col width="30px" />
+                        <col width="30px" />
+                        <col width="30px" />
+                        <col width="50px" />
+                        <col width="50px" />
+                        <col width="50px" />
+                        <col width="50px" />
+                        <col width="50px" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Identificador</th>
+                            <th>Nombre</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Define a row template for all invariant markup: -->
+                        <tr>
+                            <td></td>
+                            <td><input name="" style="width:44%" /></td>
+                            <td><input name="" /></td>
+                            <td><input name="" /></td>
+                            <td><input name="" /></td>
+                            <td><input name="" /></td>
+                            <td><input name="" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="tab-pane show" id="py1">
+                <a><strong>Este es mi proyecto 1!</strong></a>
+            </div>
+
+            <div class="tab-pane show" id="py2">
+                <a><strong>Este es mi proyecto 2!</strong></a>
+            </div>
+
         </div>
 
     </div>
