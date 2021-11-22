@@ -50,8 +50,9 @@
 
         async function loadTree(vIdProject) {
 
-            var treeReach;
-            var data;
+            var treeReach; //la que rendizará los datos en la tabla.
+            var data; // la que contendra la data de la función asyncrona.
+            var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
                 console.log(vIdProject);
@@ -66,12 +67,17 @@
 
             if (data.length >= 1) {
 
-                if (typeof (vIdProject) === 'undefined') {
+                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
+
+                    tempPyId = vIdProject;
                     console.log("id de proyecto indefinido");
-                    $("#proyecto_0").show(); //mostramos el arbol
+                    $("#proyecto_0").show(); //mostramos el arbol de master
                     $("#loader_0").hide();
                 } else {
                     console.log(vIdProject);
+
+                    tempPyId = vIdProject;
+
                     $("#proyecto_" + vIdProject).show();
                     $("#loader_" + vIdProject).hide();
                 }
@@ -375,7 +381,7 @@
 
             } else {
 
-                if (typeof (vIdProject) === 'undefined') {
+                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
                     console.log("id de proyecto indefinido");
                     $("#proyecto_0").show(); //mostramos el arbol
                     $("#loader_0").hide();
