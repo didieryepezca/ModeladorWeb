@@ -402,8 +402,8 @@
     <div class="card">
 
         @*Loader*@
-        <div class="card-body">
-            <div class="empty" id="emptyPy">
+        <div class="card-body" id="emptyPy">
+            <div class="empty">
                 <div class="empty-img">
                     <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
                 </div>
@@ -471,13 +471,35 @@
 
             </div>
 
-            <div class="tab-pane show" id="py1">
-                <a><strong>Este es mi proyecto 1!</strong></a>
-            </div>
+            @foreach (var item in Model)
+            {
+                <div class="tab-pane" id="proyecto_@item.ProyectoID">
 
-            <div class="tab-pane show" id="py2">
-                <a><strong>Este es mi proyecto 2!</strong></a>
-            </div>
+                    @if (item.Permiso == "EDITOR")
+                    {
+                        <div class="row align-items-center">
+                            <div class="col-auto ms-auto d-print-none">
+                                <div class="btn-list">
+
+                                    <span class="d-none d-sm-inline">
+                                        <a href="#" class="btn btn-primary">
+                                            Editar
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="empty" id="emptyPy_@item.TB_PROYECTO.NombreProyecto">
+                        <div class="empty-img">
+                            <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                        </div>
+                        <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
+                    </div>
+
+                </div>
+            }
 
         </div>
 
