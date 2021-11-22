@@ -38,45 +38,13 @@ namespace ModeladorApp.Controllers
             return View(proyectos);
         }
 
-        public List<TB_NIVEL> funGetMaster(string mode, int parent)
+
+        //---------------------------------TREE VIEW REAL
+        public IActionResult Arbol()
         {
-            var da = new NivelDA();
-            
-            //Un momento por favor xD
-            System.Threading.Thread.Sleep(2500);
-            var master = da.GetMaster().ToList();           
-
-            return master;
-        }
-
-        public JsonResult funGetSubNiveles(int parentId) {
-
-            var da = new NivelDA();
-
-            System.Threading.Thread.Sleep(1500);
-            var subMenus = da.GetSubNiveles(parentId);
-
-            return Json(subMenus);
-        }
-
-        public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
-        {
-            var da = new NivelInfoDA();
-
-            //Un momento por favor xD
-            System.Threading.Thread.Sleep(1000);
-            var info = da.GetNivelInfo(lvlId).ToList();
-
-            return info;
-        }
-
-        public IActionResult Arbol() {
-
 
             return View();
         }
-
-
         public List<TB_TREE> funGetLvl()
         {
             var da = new NivelDA();
@@ -98,11 +66,43 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
 
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var da = new NivelInfoDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(1000);
+            var info = da.GetNivelInfo(lvlId).ToList();
+
+            return info;
         }
+        //---------------------------------TREE VIEW REAL
+
+
+
+
+        //---------------------------------TREE VIEW ANTERIOR
+        public List<TB_NIVEL> funGetMaster(string mode, int parent)
+        {
+            var da = new NivelDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(2500);
+            var master = da.GetMaster().ToList();
+
+            return master;
+        }
+
+        public JsonResult funGetSubNiveles(int parentId)
+        {
+            var da = new NivelDA();
+
+            System.Threading.Thread.Sleep(1500);
+            var subMenus = da.GetSubNiveles(parentId);
+
+            return Json(subMenus);
+        }
+        //---------------------------------TREE VIEW ANTERIOR
+        
     }
 }
