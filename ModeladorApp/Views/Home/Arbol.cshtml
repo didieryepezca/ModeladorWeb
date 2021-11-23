@@ -152,8 +152,8 @@
                                         cmd: "addSibling",
                                     });
 
-                                    console.log("Se presionó ENTER");
-                                    console.log("------------------->>");
+                                    //console.log("Se presionó ENTER");
+                                    //console.log("------------------->>");
                                     //console.log(data.node.title); //enviar como title
                                     //console.log(data.node.parent.data.id) //enviar como parent id 
                                     //console.log(data.node.parent.data.proyectoId) //enviar como proyectoId         
@@ -241,7 +241,7 @@
                                 tree = $.ui.fancytree.getTree(this),
                                 node = tree.getActiveNode();
 
-                            console.log("nuevo nodo");
+                            //console.log("nuevo nodo");
                             //console.log("--------------------->>Add")
                             //console.log(node.data.id) //enviar como parent id
                             //console.log(node.childNode) //enviar como parent id
@@ -255,6 +255,24 @@
                                 case "moveUp":
                                 case "outdent":
                                 case "remove":
+
+                                    //console.log("se elimino");
+                                    //console.log(node.data.id); // id a eliminar padre e hijos.
+                                    //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "/Home/funDeleteLvlAndSublvls",
+                                        data: {
+                                            "Id": node.data.id,
+                                        },
+                                        success: function (response) {
+                                            //console.log(response);                                            
+                                        },
+                                    });                                   
+                                   
+                                    //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+
                                 case "rename":
                                     tree.applyCommand(data.cmd, node);
                                     break;

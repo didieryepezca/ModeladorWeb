@@ -119,6 +119,39 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
+
+        public int funDeleteLvlAndSublvls(int Id)
+        {
+            var result = "0";
+            var da = new NivelDA();
+            try
+            {
+                var modelcount = da.DeleteLevel(Id);
+                List<TB_TREE> sublevelsToDelete = new List<TB_TREE>();
+                sublevelsToDelete = da.GetSubLvl(Id).ToList();
+
+                for (int i = 0; i < sublevelsToDelete.Count; i++)
+                {
+                    try
+                    {
+                        da.DeleteLevel(sublevelsToDelete[i].id);                       
+                    }
+                    catch (Exception fe)
+                    {
+                        result = fe.Message;
+                        Console.WriteLine(result);
+                    }
+                }                
+                return modelcount;
+            }
+            catch (Exception se)
+            {
+                result = se.Message;
+                return 0;
+            }
+        }
+
+
         //---------------------------------TREE VIEW REAL
 
 

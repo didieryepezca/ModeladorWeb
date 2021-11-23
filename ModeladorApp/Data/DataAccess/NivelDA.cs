@@ -71,6 +71,18 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
+        public int DeleteLevel(int Id)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var file = db.TB_TREE.Where(item => item.id == Id).SingleOrDefault();
+                db.TB_TREE.Remove(file);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
 
 
         //--------------------------------- TREE VIEW ANTERIOR
