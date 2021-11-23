@@ -154,10 +154,11 @@
 
                                     console.log("Se presionó ENTER");
                                     console.log("------------------->>");
-                                    console.log(data.node.title); //enviar como title
-                                    console.log(data.node.parent.data.id) //enviar como parent id 
-                                    console.log(data.node.parent.data.proyectoId) //enviar como proyectoId                                     
-
+                                    //console.log(data.node.title); //enviar como title
+                                    //console.log(data.node.parent.data.id) //enviar como parent id 
+                                    //console.log(data.node.parent.data.proyectoId) //enviar como proyectoId         
+                                                                                                         
+                                   
                                     //------------------------>>AJAX GRABAR NVO NODO
                                     $.ajax({
                                         type: "POST",
@@ -169,10 +170,13 @@
                                             "projectId": data.node.parent.data.proyectoId
                                         },
                                         success: function (response) {
+                                            
                                             //console.log(response);                                            
                                         },                                        
                                     });                                
-                                    //------------------------>>AJAX GRABAR NVO NODO
+                                    //------------------------>>AJAX GRABAR NVO NODO                                    
+                                    
+                                    data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
                                 }
                             },
                         },
