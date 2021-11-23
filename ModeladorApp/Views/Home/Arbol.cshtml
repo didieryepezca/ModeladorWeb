@@ -54,7 +54,7 @@
             var treeReach; //la que rendizará los datos en la tabla.
             var data; // la que contendra la data de la función asyncrona.
 
-            console.log(tempPyId + " var Temporal");
+            //console.log(tempPyId + " var Temporal");
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
 
@@ -76,7 +76,7 @@
                     $("#proyecto_" + tempPyId).removeClass('active');
                     $('#proyecto_0').attr('class', "tab-pane active");
 
-                    $("#loader_0").hide();
+                    $("#loader").hide();
                 }
 
                 $(function () {
@@ -94,7 +94,7 @@
                             var node = data.node;     //obtenemos el nodo
                             /*console.log(node.data.id);*/ // obtenemos el id para mandarlo como parent
 
-                            console.log(node.data.parentId)
+                            //console.log(node.data.parentId)
 
                             data.result = {
                                 url: "/Home/funGetSubLvls",
@@ -387,7 +387,7 @@
                 //console.log("proyecto de usuario");
                 tempPyId = vIdProject;
 
-                $("#loader_" + vIdProject).hide();
+                //$("#loader").hide();
 
             } //--------> End If
         }
@@ -444,12 +444,12 @@
     <div class="card">
 
         @*Loader*@
-        <div class="card-body" id="loader_0">
+        <div class="card-body" id="loader">
             <div class="empty">
                 <div class="empty-img">
                     <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
                 </div>
-                <p class="empty-title">Cargando "MASTER"</p>
+                <p class="empty-title">Cargando proyectos...</p>
             </div>
         </div>
         @*Loader*@
@@ -542,14 +542,7 @@
                                 }
                             </div>
                         </div>
-                    </div>
-
-                    <div class="empty" id="loader_@item.ProyectoID" style="display:none">
-                        <div class="empty-img">
-                            <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
-                        </div>
-                        <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
-                    </div>
+                    </div>                  
 
 
                     <table id="tree_@item.ProyectoID">
