@@ -146,10 +146,33 @@
                             triggerStart: ["f2", "shift+click", "mac+enter"],
                             close: function (event, data) {
                                 if (data.save && data.isNew) {
-                                    // Quick-enter: add new nodes until we hit [enter] on an empty title
+                                    // Quick-enter: add new nodes until we hit [enter] on an empty title                                   
+
                                     $("#tree").trigger("nodeCommand", {
                                         cmd: "addSibling",
                                     });
+
+                                    console.log("Se presionó ENTER");
+                                    console.log("------------------->>");
+                                    console.log(data.node.title); //enviar como title
+                                    console.log(data.node.parent.data.id) //enviar como parent id 
+                                    console.log(data.node.parent.data.proyectoId) //enviar como proyectoId                                     
+
+                                    //------------------------>>AJAX GRABAR NVO NODO
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "/Home/funInsertLvl",
+                                        data: {
+                                            "titulo": data.node.title,
+                                            "parent": data.node.parent.data.id,
+                                            "projectId": data.node.parent.data.proyectoId
+                                        },
+                                        success: function (response) {
+                                            //console.log(response);                                            
+                                        },                                        
+                                    });                                
+                                    //------------------------>>AJAX GRABAR NVO NODO
                                 }
                             },
                         },
@@ -165,6 +188,8 @@
                         createNode: function (event, data) {
                             var node = data.node,
                                 $tdList = $(node.tr).find(">td");
+
+                            //console.log("Desglose de nodo...");
 
                             // Span the remaining columns if it's a folder.
                             // We can do this in createNode instead of renderColumns, because
@@ -189,7 +214,7 @@
                             $tdList
                                 .eq(2)
                                 .find("input")
-                                .val(node.data.subtitle);
+                                .val();
 
                             $tdList
                                 .eq(4)
@@ -211,6 +236,12 @@
                                 moveMode,
                                 tree = $.ui.fancytree.getTree(this),
                                 node = tree.getActiveNode();
+
+                            console.log("nuevo nodo");
+                            //console.log("--------------------->>Add")
+                            //console.log(node.data.id) //enviar como parent id
+                            //console.log(node.childNode) //enviar como parent id
+                            //console.log("--------------------->>Add")
 
                             switch (data.cmd) {
                                 case "addChild":
@@ -480,27 +511,15 @@
                 <table id="tree_0">
                     <colgroup>
                         <col width="2%" />
-                        <col width="33%" />
-                        <col width="30px" />
-                        <col width="30px" />
-                        <col width="30px" />
-                        <col width="30px" />
-                        <col width="30px" />
-                        <col width="50px" />
-                        <col width="50px" />
-                        <col width="50px" />
-                        <col width="50px" />
-                        <col width="50px" />
+                        <col width="40%" />
+                        <col width="58%" />
+                       
                     </colgroup>
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Identificador</th>
-                            <th>Nombre</th>
-                            <th>2</th>
-                            <th>3</th>
-                            <th>4</th>
-                            <th>5</th>
+                            <th>Identificador - Nombre</th>
+                            <th>1</th>                          
 
                         </tr>
                     </thead>
@@ -508,12 +527,9 @@
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
                             <td></td>
-                            <td><input name="" style="width:44%" /></td>
+                            <td><input name="" style="width:30%" /></td>
                             <td><input name="" /></td>
-                            <td><input name="" /></td>
-                            <td><input name="" /></td>
-                            <td><input name="" /></td>
-                            <td><input name="" /></td>
+                            
                         </tr>
                     </tbody>
                 </table>
@@ -563,12 +579,9 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Identificador</th>
-                                <th>Nombre</th>
-                                <th>2</th>
-                                <th>3</th>
-                                <th>4</th>
-                                <th>5</th>
+                                <th>Identificador - Nombre</th>
+                                <th>1</th>
+                               
 
                             </tr>
                         </thead>
@@ -577,11 +590,7 @@
                             <tr>
                                 <td></td>
                                 <td><input name="" style="width:44%" /></td>
-                                <td><input name="" /></td>
-                                <td><input name="" /></td>
-                                <td><input name="" /></td>
-                                <td><input name="" /></td>
-                                <td><input name="" /></td>
+                                <td><input name="" /></td>                               
                             </tr>
                         </tbody>
                     </table>

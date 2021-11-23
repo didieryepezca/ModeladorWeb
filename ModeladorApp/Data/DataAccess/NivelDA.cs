@@ -60,6 +60,18 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+        public int InserNewLevel(TB_TREE lvl)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                db.Add(lvl);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
 
         //--------------------------------- TREE VIEW ANTERIOR
         public IEnumerable<TB_NIVEL> GetMaster()

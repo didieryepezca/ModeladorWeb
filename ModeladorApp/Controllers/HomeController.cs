@@ -92,6 +92,33 @@ namespace ModeladorApp.Controllers
 
             return info;
         }
+
+        public int funInsertLvl(string titulo, int parent, int projectId)
+        {
+            var result = "0";
+            var nda = new NivelDA();
+
+            try
+            {
+                TB_TREE t = new TB_TREE();
+
+                t.title = titulo;
+                t.lazy = true;
+                t.parentId = parent;
+                t.proyectoId = projectId;
+                t.fechaCreacion = DateTime.Now;
+                
+                var modelcount = nda.InserNewLevel(t);
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+
+                result = e.Message;
+                return 0;
+            }
+        }
         //---------------------------------TREE VIEW REAL
 
 
