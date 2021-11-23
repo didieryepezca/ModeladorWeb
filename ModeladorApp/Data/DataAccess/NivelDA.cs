@@ -71,6 +71,21 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
+
+        public int UpdateLvlName(int Id, string nombre)
+        {
+            var result = 0;
+
+            using (var db = new ApplicationDbContext())
+            {
+                var lvl = db.TB_TREE.Where(item => item.id == Id).FirstOrDefault();
+                lvl.title = nombre;
+
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
         public int DeleteLevel(int Id)
         {
             var result = 0;

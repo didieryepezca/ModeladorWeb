@@ -144,7 +144,8 @@
                         },
                         edit: {
                             triggerStart: ["f2", "shift+click", "mac+enter"],
-                            close: function (event, data) {
+                            close: function (event, data) {                               
+
                                 if (data.save && data.isNew) {
                                     // Quick-enter: add new nodes until we hit [enter] on an empty title
 
@@ -231,6 +232,23 @@
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
+                            //console.log("--------------------->>Updt")
+                            //console.log(data.childNode.data.id);
+                            //console.log(data.childNode.title); //nombre a actualizar
+                            //------------------------>>AJAX Actualizar Nombre de Nodo.
+                              $.ajax({
+                                  type: "POST",
+                                  dataType: "json",
+                                  url: "/Home/funUpdateLvlName",
+                                  data: {
+                                      "Id": data.childNode.data.id,
+                                      "nombre": data.childNode.title,
+                                  },
+                                  success: function (response) {
+                                      //console.log(response);
+                                  },
+                              });
+                           //------------------------>>AJAX Actualizar Nombre de Nodo
                         },
                     })
                         .on("nodeCommand", function (event, data) {
@@ -278,7 +296,8 @@
                                     break;
 
                                 case "rename":
-                                    tree.applyCommand(data.cmd, node);
+                                    tree.applyCommand(data.cmd, node);                                 
+
                                     break;
                                 case "cut":
                                     CLIPBOARD = { mode: data.cmd, data: node };
