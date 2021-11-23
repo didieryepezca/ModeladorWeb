@@ -47,15 +47,17 @@
         window.onload = loadTree();
 
         var CLIPBOARD = null;
+        var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
         async function loadTree(vIdProject) {
 
             var treeReach; //la que rendizará los datos en la tabla.
             var data; // la que contendra la data de la función asyncrona.
-            var tempPyId; // servirá para deshacernos de la vista del proyecto.
+
+            console.log(tempPyId + " var Temporal");
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
-                console.log(vIdProject);
+
                 data = await funGetMasterData()
                 treeReach = "tree_0";
 
@@ -69,20 +71,17 @@
 
                 if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
 
-                    tempPyId = vIdProject;
-                    console.log("id de proyecto indefinido");
-                    $("#proyecto_0").show(); //mostramos el arbol de master
+                    //console.log("id de proyecto indefinido---");
+
+                    $("#proyecto_" + tempPyId).removeClass('active');
+                    $('#proyecto_0').attr('class', "tab-pane active");
+
                     $("#loader_0").hide();
-                } else {
-                    console.log(vIdProject);
-
-                    tempPyId = vIdProject;
-
-                    $("#proyecto_" + vIdProject).show();
-                    $("#loader_" + vIdProject).hide();
                 }
 
                 $(function () {
+
+                    //$("#tree_" + tempPyId).fancytree("destroy"); // para destruir un FancyTree...
 
                     $("#" + treeReach).fancytree({
 
@@ -129,6 +128,10 @@
                             preventRecursion: true,
                             autoExpandMS: 400,
                             dragStart: function (node, data) {
+
+
+                                //function saveData(node.data.id);
+
                                 return true;
                             },
                             dragEnter: function (node, data) {
@@ -316,7 +319,7 @@
                     /*
                      * Context menu (https://github.com/mar10/jquery-ui-contextmenu)
                      */
-                    $("#tree").contextmenu({
+                    $("#" + treeReach).contextmenu({
                         delegate: "span.fancytree-node",
                         menu: [
                             {
@@ -360,7 +363,7 @@
                         ],
                         beforeOpen: function (event, ui) {
                             var node = $.ui.fancytree.getNode(ui.target);
-                            $("#tree").contextmenu(
+                            $("#" + treeReach).contextmenu(
                                 "enableEntry",
                                 "paste",
                                 !!CLIPBOARD
@@ -381,15 +384,10 @@
 
             } else {
 
-                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
-                    console.log("id de proyecto indefinido");
-                    $("#proyecto_0").show(); //mostramos el arbol
-                    $("#loader_0").hide();
-                } else {
-                    console.log(vIdProject);
-                    $("#proyecto_" + vIdProject).show();
-                    $("#loader_" + vIdProject).hide();
-                }
+                //console.log("proyecto de usuario");
+                tempPyId = vIdProject;
+
+                $("#loader_" + vIdProject).hide();
 
             } //--------> End If
         }
@@ -458,7 +456,7 @@
 
         <div class="tab-content">
 
-            <div class="tab-pane show active" id="proyecto_0" style="display:none">
+            <div class="tab-pane" id="proyecto_0">
 
                 <div class="row align-items-center">
                     <div class="col-auto ms-auto d-print-none">
@@ -477,7 +475,7 @@
 
                         </div>
                     </div>
-                </div>              
+                </div>
 
                 <table id="tree_0">
                     <colgroup>
@@ -524,78 +522,78 @@
 
             @foreach (var item in Model)
             {
-        <div class="tab-pane" id="proyecto_@item.ProyectoID" style="display:none">
+                <div class="tab-pane" id="proyecto_@item.ProyectoID">
 
-            <div class="row align-items-center">
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-                        <span class="d-none d-sm-inline">
-                            <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
-                                Expandir/Contraer
-                            </a>
-                        </span>
-                        @if (item.Permiso == "EDITOR")
-                        {
-                            <span class="d-none d-sm-inline">
-                                <a href="#" class="btn btn-primary">
-                                    Editar
-                                </a>
-                            </span>
-                        }
+                    <div class="row align-items-center">
+                        <div class="col-auto ms-auto d-print-none">
+                            <div class="btn-list">
+                                <span class="d-none d-sm-inline">
+                                    <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
+                                        Expandir/Contraer
+                                    </a>
+                                </span>
+                                @if (item.Permiso == "EDITOR")
+                                {
+                                    <span class="d-none d-sm-inline">
+                                        <a href="#" class="btn btn-primary">
+                                            Editar
+                                        </a>
+                                    </span>
+                                }
+                            </div>
+                        </div>
                     </div>
+
+                    <div class="empty" id="loader_@item.ProyectoID" style="display:none">
+                        <div class="empty-img">
+                            <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
+                        </div>
+                        <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
+                    </div>
+
+
+                    <table id="tree_@item.ProyectoID">
+                        <colgroup>
+                            <col width="2%" />
+                            <col width="33%" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="30px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                            <col width="50px" />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Identificador</th>
+                                <th>Nombre</th>
+                                <th>2</th>
+                                <th>3</th>
+                                <th>4</th>
+                                <th>5</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Define a row template for all invariant markup: -->
+                            <tr>
+                                <td></td>
+                                <td><input name="" style="width:44%" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                                <td><input name="" /></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </div>
-            </div>
-
-            <div class="empty" id="loader_@item.ProyectoID" style="display:none">
-                <div class="empty-img">
-                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
-                </div>
-                <p class="empty-title">Cargando "@item.TB_PROYECTO.NombreProyecto"</p>
-            </div>
-
-
-            <table id="tree_@item.ProyectoID">
-                <colgroup>
-                    <col width="2%" />
-                    <col width="33%" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="30px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                    <col width="50px" />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Identificador</th>
-                        <th>Nombre</th>
-                        <th>2</th>
-                        <th>3</th>
-                        <th>4</th>
-                        <th>5</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Define a row template for all invariant markup: -->
-                    <tr>
-                        <td></td>
-                        <td><input name="" style="width:44%" /></td>
-                        <td><input name="" /></td>
-                        <td><input name="" /></td>
-                        <td><input name="" /></td>
-                        <td><input name="" /></td>
-                        <td><input name="" /></td>
-                    </tr>
-                </tbody>
-            </table>
-
-        </div>
             }
 
         </div>
