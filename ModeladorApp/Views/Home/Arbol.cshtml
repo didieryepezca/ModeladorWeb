@@ -159,23 +159,32 @@
                                     //console.log(data.node.parent.data.id) //enviar como parent id
                                     //console.log(data.node.parent.data.proyectoId) //enviar como proyectoId
 
-
                                     //------------------------>>AJAX GRABAR NVO NODO
-                                    $.ajax({
-                                        type: "POST",
-                                        dataType: "json",
-                                        url: "/Home/funInsertLvl",
-                                        data: {
-                                            "titulo": data.node.title,
-                                            "parent": data.node.parent.data.id,
-                                            "projectId": data.node.parent.data.proyectoId
-                                        },
-                                        success: function (response) {
+                                    //console.log(data.node.parent.data);
+                                    if (typeof (data.node.parent.data.parentId) === 'undefined') {
 
-                                            //console.log(response);
-                                        },
-                                    });
+                                        swal({
+                                            title: "ADVERTENCIA",
+                                            text: "Se agregará un nodo hermano temporal, más no se guardará en tu proyecto.",
+                                            type: "warning"
+                                        });
+
+                                    } else {
+                                         $.ajax({
+                                            type: "POST",
+                                            dataType: "json",
+                                            url: "/Home/funInsertLvl",
+                                            data: {
+                                                "titulo": data.node.title,
+                                                "parent": data.node.parent.data.id,
+                                                "projectId": data.node.parent.data.proyectoId
+                                            },
+                                            success: function (response) {
+                                                //console.log(response);
+                                                },
+                                            });
                                     //------------------------>>AJAX GRABAR NVO NODO
+                                    }                      
 
                                     data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
                                 }
@@ -235,19 +244,22 @@
                             //console.log("--------------------->>Updt")
                             //console.log(data.childNode.data.id);
                             //console.log(data.childNode.title); //nombre a actualizar
+
+                            //console.log("------------>>")
+                            //console.log(event);
                             //------------------------>>AJAX Actualizar Nombre de Nodo.
-                              $.ajax({
-                                  type: "POST",
-                                  dataType: "json",
-                                  url: "/Home/funUpdateLvlName",
-                                  data: {
-                                      "Id": data.childNode.data.id,
-                                      "nombre": data.childNode.title,
-                                  },
-                                  success: function (response) {
-                                      //console.log(response);
-                                  },
-                              });
+                              //$.ajax({
+                              //    type: "POST",
+                              //    dataType: "json",
+                              //    url: "/Home/funUpdateLvlName",
+                              //    data: {
+                              //        "Id": data.childNode.data.id,
+                              //        "nombre": data.childNode.title,
+                              //    },
+                              //    success: function (response) {
+                              //        //console.log(response);
+                              //    },
+                              //});
                            //------------------------>>AJAX Actualizar Nombre de Nodo
                         },
                     })
@@ -267,6 +279,8 @@
                             switch (data.cmd) {
                                 case "addChild":
                                 case "addSibling":
+                                    //console.log("------------>>")
+                                    //console.log(data.cmd)
                                 case "indent":
                                 case "moveDown":
                                 case "moveUp":
