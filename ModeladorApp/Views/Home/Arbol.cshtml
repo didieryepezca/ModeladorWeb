@@ -240,26 +240,34 @@
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
-                            //console.log("--------------------->>Updt")
+                            
                             //console.log(data.childNode.data.id);
                             //console.log(data.childNode.title); //nombre a actualizar
+                           
+                            console.log("------------>>")                            
+                            //console.log(data.node.parent);
+                            console.log(data);
 
-                            //console.log("------------>>")
-                            //console.log(event);
-                            //------------------------>>AJAX Actualizar Nombre de Nodo.
-                              $.ajax({
-                                  type: "POST",
-                                  dataType: "json",
-                                  url: "/Home/funUpdateLvlName",
-                                  data: {
-                                      "Id": data.childNode.data.id,
-                                      "nombre": data.childNode.title,
-                                  },
-                                  success: function (response) {
-                                      //console.log(response);
-                                  },
-                              });
+                            if (data.node.parent != null) {                              
+                              //------------------------>>AJAX Actualizar Nombre de Nodo.
+                              //$.ajax({
+                              //    type: "POST",
+                              //    dataType: "json",
+                              //    url: "/Home/funUpdateLvlName",
+                              //    data: {
+                              //        "Id": data.childNode.data.id,
+                              //        "nombre": data.childNode.title,
+                              //    },
+                              //    success: function (response) {
+                              //        //console.log(response);
+                              //    },
+                              //});
                            //------------------------>>AJAX Actualizar Nombre de Nodo
+
+                            } else {
+                                console.log("No se puede realizar nada sin nodo padre.");
+                            }
+                            
                         },
                     })
                         .on("nodeCommand", function (event, data) {
