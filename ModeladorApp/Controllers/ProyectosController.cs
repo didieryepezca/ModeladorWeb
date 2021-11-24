@@ -168,9 +168,7 @@ namespace ModeladorApp.Controllers
             }
         }
 
-
-
-        public int FunInsertPermiso(int py, string user, string per)
+        public string FunAgregarPermiso(int proyectoId, string userConcedido, string per)
         {
             var result = "0";
 
@@ -179,32 +177,40 @@ namespace ModeladorApp.Controllers
             var userLoggedName = userLogged.Result.UsuarioNombreCompleto;
 
             var daUser = new UsuariosDA();
-
             var da = new PermisosDA();
 
             try
             {
-                var usuConcedido = daUser.GetUserById(user);
-                var usuConcName = usuConcedido.UsuarioNombreCompleto;
+                int duplicatePermiso = da.checkDuplicatePermiso(proyectoId, userConcedido, per).Count();
 
-                TB_PERMISOS permiso = new TB_PERMISOS();
+                if (duplicatePermiso >= 1)
+                {
+                    return "PERMISO EXISTENTE";
+                }
+                else {
 
-                permiso.ProyectoID = py;
-                permiso.UsuarioCreacionId = userLoggedId;
-                permiso.UsuarioCreacionName = userLoggedName;
-                permiso.Permiso = per;
-                permiso.UsuarioConcedidoId = user;
-                permiso.UsuarioConcedidoName = usuConcName;
-                permiso.FechaPermisoCreado = DateTime.Now;
+                    var usuConcedido = daUser.GetUserById(userConcedido);
+                    var usuConcName = usuConcedido.UsuarioNombreCompleto;
 
-                var modelcount = da.InsertPermiso(permiso);
+                    TB_PERMISOS permiso = new TB_PERMISOS();
 
-                return modelcount;
+                    permiso.ProyectoID = proyectoId;
+                    permiso.UsuarioCreacionId = userLoggedId;
+                    permiso.UsuarioCreacionName = userLoggedName;
+                    permiso.Permiso = per;
+                    permiso.UsuarioConcedidoId = userConcedido;
+                    permiso.UsuarioConcedidoName = usuConcName;
+                    permiso.FechaPermisoCreado = DateTime.Now;
+
+                    var modelcount = da.InsertPermiso(permiso);
+
+                    return "AGREGADO";
+                }                
             }
             catch (Exception e)
             {
                 result = e.Message;
-                return 0;
+                return "ERROR";
             }
         }
 

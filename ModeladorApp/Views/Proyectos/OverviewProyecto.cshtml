@@ -9,17 +9,18 @@
 
     function AddPermiso() {
 
+        ArrayCamposPermiso = [];
         //var tipos = $("input[type='radio']");
         //var tipoSeleccionado = tipos.filter(":checked");
 
-        var proyecto = $('#selectProyecto').val();
+        var pyId = $('#txtPyId').val();
         var usuario = $('#selectUsuario').val();
         var permiso = $('form input[type=radio]:checked').val();
 
         var ArrayCamposPermiso = [];
 
-        if (proyecto != "" && proyecto != null) {
-            ArrayCamposPermiso.push(proyecto);
+        if (pyId != "" && pyId != null) {
+            ArrayCamposPermiso.push(pyId);
         }
 
         if (usuario != "" && usuario != null) {
@@ -32,44 +33,33 @@
 
         var nroCamposLlenos = ArrayCamposPermiso.length;
 
+        //console.log(pyId);
+        //console.log(usuario);
+        //console.log(permiso);
+
         if (nroCamposLlenos == 3) {
 
-            url = "/Permisos/FunInsertPermiso";
-            $.get(url, { py: proyecto, user: usuario, per: permiso }, function (data) {
+            url = "/Proyectos/FunAgregarPermiso";
+            $.get(url, { proyectoId: pyId, userConcedido: usuario, per: permiso }, function (data) {
 
                 //console.log(data);
-                if (data >= 1) {
+                if (data == "AGREGADO") {
+                    Swal.fire('Agregado !', 'El permiso se agregó con éxito.', 'success').then((result) => {
+                        location.reload(); //refrescar pantalla para que aparezca el proyecto creado.
 
-                    swal({
-                        title: "OK",
-                        text: "Se Añadio el Permiso con Exito",
-                        type: "success"
-                    }
-                        , function () {
-                            //window.location = "http://172.17.1.38:8188/Home/Index";
-                            window.location = "https://localhost:5001/Permisos/VerPermisos";
-                        }
-                    );
+                    })
                 }
-                else {
-                    swal({
-                        title: "ERROR",
-                        text: "Hubo un problema al Agregar el Permiso",
-                        type: "warning"
-                    });
+                else if (data == "PERMISO EXISTENTE") {
+                    Swal.fire('ADVERTENCIA', 'El Permiso que intentas agregar ya existe.', 'warning')
                 }
-
             });
 
+            $("#selectUsuario").val("");
             $('#modal-permiso').modal('toggle');
 
         } else {
 
-            swal({
-                title: "ERROR",
-                text: "Te falta completar Campos",
-                type: "warning"
-            });
+            Swal.fire('ADVERTENCIA', 'Por favor completa todos los campos.', 'warning')
 
         }
     }
