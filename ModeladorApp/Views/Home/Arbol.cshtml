@@ -49,34 +49,37 @@
         var CLIPBOARD = null;
         var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
-        async function loadTree(vIdProject) {
+        async function loadTree(vIdProject) {            
 
             var treeReach; //la que rendizará los datos en la tabla.
-            var data; // la que contendra la data de la función asyncrona.
-
-            //console.log(tempPyId + " var Temporal");
+            var data; // la que contendra la data de la función asyncrona.        
+                    
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
 
                 data = await funGetMasterData()
                 treeReach = "tree_0";
-
+               
             } else {
                 data = await funGetPyFromUsuario(vIdProject)
-                treeReach = "tree_" + vIdProject;
+                treeReach = "tree_" + vIdProject;               
+                tempPyId = vIdProject;
             }
-            //console.log(data);
-
+         
             if (data.length >= 1) {
 
-                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
+                $("#loader").hide();
 
-                    //console.log("id de proyecto indefinido---");
-
+                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {                    
+                 
                     $("#proyecto_" + tempPyId).removeClass('active');
                     $('#proyecto_0').attr('class', "tab-pane active");
+                                        
+                } else {                    
 
-                    $("#loader").hide();
+                    $("#proyecto_0").removeClass('active');
+                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");
+                   
                 }
 
                 $(function () {
@@ -165,7 +168,7 @@
 
                                         swal({
                                             title: "ADVERTENCIA",
-                                            text: "Se agregará un nodo hermano temporal, más no se guardará en tu proyecto.",
+                                            text: "Intentas agregar un nodo hermano a la raiz del Árbol, aparecerá en la vista temporal, mas no se guardarán los cambios.",
                                             type: "warning"
                                         });
                                         
@@ -489,10 +492,7 @@
 
             } else {
 
-                //console.log("proyecto de usuario");
-                tempPyId = vIdProject;
-
-                //$("#loader").hide();
+                //console.log("proyecto de usuario");                
 
             } //--------> End If
         }
