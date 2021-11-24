@@ -249,7 +249,7 @@
                                 try {
                                     if (data.childNode.data.id != null) {
                                        //console.log("entro al update")                                    
-                                       //------------------------>>AJAX Actualizar Nombre de Nodo
+                                       //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                         $.ajax({
                                             type: "POST",
                                             dataType: "json",
@@ -262,15 +262,33 @@
                                                 //console.log(response);
                                             },
                                         });
-                                        //------------------------>>AJAX Actualizar Nombre de Nodo                                                   
+                                        //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                     }
                                 } catch (error) {
                                     console.log("entro al error")
                                     console.error(error);                                   
                                 }                                                          
 
-                            } else {
-                                console.log("No se puede realizar nada sin nodo padre.");
+                            } else if (data.childNode.data.id != null) {
+                                //console.log("No se puede realizar nada sin nodo padre.");
+                                //console.log(data.childNode.data.id) //id para actualizar nombre del nodo padre
+                                //console.log(data.childNode.title) //nuevo titulo de nodo padre. 
+
+                                //------------------------>>AJAX Actualizar Nombre de Nodo Padre
+                                $.ajax({
+                                    type: "POST",
+                                    dataType: "json",
+                                    url: "/Home/funUpdateLvlName",
+                                    data: {
+                                        "Id": data.childNode.data.id,
+                                        "nombre": data.childNode.title,
+                                    },
+                                    success: function (response) {
+                                        //console.log(response);
+                                    },
+                                });
+                                //------------------------>>AJAX Actualizar Nombre de Nodo Padre
+                                
                             }
                             
                         },
