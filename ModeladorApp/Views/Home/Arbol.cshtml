@@ -53,6 +53,7 @@
             var treeReach; //la que rendizará los datos en la tabla.
             var data; // la que contendra la data de la función asyncrona.        
                     
+            console.log(vPermiso);
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
 
@@ -163,7 +164,7 @@
                                         data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
                                     } else {
 
-                                        Swal.fire('ADVERTENCIA', 'No tienes permiso EDITOR de éste proyecto, pero se agregará la información solamente a la vista temporal.', 'warning')
+                                        Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
                                     }
                                 }
                             },
@@ -228,7 +229,7 @@
                                 //console.log("Tiene parent")                               
                                 //Buscar que solo actualice nodos cuando tienen un id
                                 try {
-                                    if (data.childNode.data.id != null) {
+                                    if (data.childNode.data.id != null && vPermiso == "EDITOR") {
                                        //console.log("entro al update")                                    
                                        //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                         $.ajax({
@@ -250,7 +251,7 @@
                                     //console.error(error);                                   
                                 }                                                          
 
-                            } else if (data.childNode.data.id != null) {
+                            } else if (data.childNode.data.id != null && vPermiso == "EDITOR") {
                                 //console.log("No se puede realizar nada sin nodo padre.");
                                 //console.log(data.childNode.data.id) //id para actualizar nombre del nodo padre
                                 //console.log(data.childNode.title) //nuevo titulo de nodo padre. 
@@ -300,7 +301,7 @@
                                 case "remove":
                                     tree.applyCommand(data.cmd, node);
 
-                                    if (data.cmd == "remove") {
+                                    if (data.cmd == "remove" && vPermiso == "EDITOR") {
 
                                         //console.log(node.data.id); // id a eliminar padre e hijos.
                                         //------------------------>>AJAX Eliminar Nivel Padre e Hijos
@@ -540,7 +541,7 @@
         {
             <li class="nav-item">
                 <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
-                   data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
+                   data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
             </li>
         }
 
