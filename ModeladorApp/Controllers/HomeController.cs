@@ -24,22 +24,9 @@ namespace ModeladorApp.Controllers
             this.userManager = userManager;
             _logger = logger;            
         }
-
-        [Authorize]
-        public IActionResult Index()
-        {
-            var user = userManager.GetUserAsync(User);
-            ViewBag.usuarioId = user.Result.Id;
-            var userId = user.Result.Id;
-
-            var daPer = new HomeDA();
-            var proyectos = daPer.getProyectosWithPermisos(userId);          
-
-            return View(proyectos);
-        }
-
-
+        
         //---------------------------------TREE VIEW REAL
+        [Authorize]
         public IActionResult Arbol()
         {
             var user = userManager.GetUserAsync(User);
@@ -172,8 +159,20 @@ namespace ModeladorApp.Controllers
 
 
 
-
         //---------------------------------TREE VIEW ANTERIOR
+        [Authorize]
+        public IActionResult Index()
+        {
+            var user = userManager.GetUserAsync(User);
+            ViewBag.usuarioId = user.Result.Id;
+            var userId = user.Result.Id;
+
+            var daPer = new HomeDA();
+            var proyectos = daPer.getProyectosWithPermisos(userId);
+
+            return View(proyectos);
+        }
+
         public List<TB_NIVEL> funGetMaster(string mode, int parent)
         {
             var da = new NivelDA();
