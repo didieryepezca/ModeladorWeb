@@ -52,7 +52,8 @@ namespace ModeladorApp.Controllers
             {
                 ViewBag.tipo = "que puedo Ver";
             }
-            else {
+            else
+            {
                 ViewBag.tipo = "que puedo Editar";
             }
 
@@ -61,7 +62,7 @@ namespace ModeladorApp.Controllers
 
 
         [Authorize]
-        public IActionResult OverviewProyecto(int proyectoId) 
+        public IActionResult OverviewProyecto(int proyectoId)
         {
             var user = userManager.GetUserAsync(User);
             var userId = user.Result.Id;
@@ -98,7 +99,7 @@ namespace ModeladorApp.Controllers
             var cDa = new ProyectoDA();
 
             try
-            {               
+            {
                 var modelcount = cDa.UpdateProyecto(vIdPy, vNombre, vDescripcion);
 
                 return modelcount;
@@ -109,6 +110,51 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
+
+        public int FunInsertProyecto(string nombre, string descripcion)
+        {
+            var result = "0";
+            var user = userManager.GetUserAsync(User);           
+
+            var da = new ProyectoDA();
+            var pda = new PermisosDA();
+            try {
+
+                TB_PROYECTO py = new TB_PROYECTO();
+                py.NombreProyecto = nombre;
+                py.DescripcionProyecto = descripcion;
+                py.FechaCreado = DateTime.Now;
+                py.FechaUltimaEdicion = DateTime.Now;
+                py.PropietarioID = user.Result.Id;
+                py.PropietarioName = user.Result.UsuarioNombreCompleto;
+
+                var pyCount = da.InsertPy(py);                
+
+                //Permisos.
+                TB_PERMISOS permiso = new TB_PERMISOS();
+
+                permiso.ProyectoID = py.ProyectoID;
+                permiso.UsuarioCreacionId = user.Result.Id;
+                permiso.UsuarioCreacionName = user.Result.UsuarioNombreCompleto;
+                permiso.Permiso = "EDITOR";
+                permiso.UsuarioConcedidoId = user.Result.Id;
+                permiso.UsuarioConcedidoName = user.Result.UsuarioNombreCompleto;
+                permiso.FechaPermisoCreado = DateTime.Now;
+
+                var perCount = pda.InsertPermiso(permiso);
+
+                int totalInserts = pyCount + perCount;
+
+                return totalInserts;
+            }
+            catch(Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
 
         public int FunInsertPermiso(int py, string user, string per)
         {

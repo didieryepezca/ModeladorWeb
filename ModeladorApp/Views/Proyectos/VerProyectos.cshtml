@@ -2,6 +2,48 @@
 
 <script type="text/javascript">
 
+    var ArrayCamposProyecto = [];
+
+    function createProject() {
+
+        var nombre = $("#txtPyNombre").val();
+        var desc = $("#txtPyDescripcion").val();
+
+        if (nombre != "" && nombre != null) {
+            ArrayCamposProyecto.push(nombre);
+        }
+
+        if (desc != "" && desc != null) {
+            ArrayCamposProyecto.push(desc);
+        }
+
+        var nroCamposLlenos = ArrayCamposProyecto.length;
+
+        if (nroCamposLlenos == 2) {
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Home/funCreateProject",
+                data: {
+                    "nombre": nombre,
+                    "descripcion": desc,
+                },
+                success: function (response) {
+                    if (response >= 2) {
+                        Swal.fire('Proyecto Creado !', '', 'success')
+                    }
+                },
+            });
+
+        } else {
+
+            Swal.fire('ATENCION', 'Por favor llena ambos campos', 'warning')
+        }
+
+
+    }
+
     function deteleProject(id, nombre) {
 
         Swal.fire({

@@ -158,6 +158,17 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+        public int InsertPy(TB_PROYECTO py)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                db.Add(py);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
 
     }
 }
