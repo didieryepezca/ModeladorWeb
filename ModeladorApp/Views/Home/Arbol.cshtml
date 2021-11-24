@@ -48,7 +48,7 @@
         var CLIPBOARD = null;
         var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
-        async function loadTree(vIdProject) {            
+        async function loadTree(vIdProject, vPermiso) {            
 
             var treeReach; //la que rendizará los datos en la tabla.
             var data; // la que contendra la data de la función asyncrona.        
@@ -77,13 +77,10 @@
                 } else {                    
 
                     $("#proyecto_0").removeClass('active');
-                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");
-                   
+                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");                   
                 }
 
-                $(function () {
-
-                    //$("#tree_" + tempPyId).fancytree("destroy"); // para destruir un FancyTree...
+                $(function () {                   
 
                     $("#" + treeReach).fancytree({
 
@@ -95,7 +92,6 @@
 
                             var node = data.node;     //obtenemos el nodo
                             /*console.log(node.data.id);*/ // obtenemos el id para mandarlo como parent
-
                             //console.log(node.data.parentId)
 
                             data.result = {
@@ -103,25 +99,7 @@
                                 data: { parent: node.data.id },
                                 cache: false
                             };
-
-                        },
-                        /* AJAX: Ejemplo 1*/
-                        //---------------------------------------
-                        //source: $.ajax({
-                        //    dataType: "json",
-                        //    url: "/Home/funGetLvl",
-                        //    success: function (data) {
-                        //        //console.log(data)
-                        //    }
-                        //}),
-                        //--------------------------------------
-                        /* AJAX: Ejemplo 2*/
-                        //-------------------------------------- key seria el ID
-                        //source: {
-                        //    url: "/Home/funGetMaster",
-                        //    data: { key: 01 },
-                        //    cache: false
-                        //},
+                        },                      
 
                         extensions: ["edit", "dnd5", "table", "gridnav"],
 
@@ -165,10 +143,10 @@
                                     //console.log(data.node.parent.data);
                                     if (typeof (data.node.parent.data.parentId) === 'undefined') {
 
-                                        Swal.fire('ADVERTENCIA', 'Intentas agregar un nodo hermano a la raiz del Árbol, aparecerá en la vista temporal, mas no se guardarán los cambios.', 'warning')                                       
-                                        
-                                    } else {
-                                         $.ajax({
+                                        Swal.fire('ADVERTENCIA', 'Intentas agregar un nodo hermano a la raiz del Árbol, aparecerá en la vista temporal, mas no se guardarán los cambios.', 'warning')
+
+                                    } else if (vPermiso == "EDITOR") {
+                                        $.ajax({
                                             type: "POST",
                                             dataType: "json",
                                             url: "/Home/funInsertLvl",
@@ -179,11 +157,14 @@
                                             },
                                             success: function (response) {
                                                 //console.log(response);
-                                                },
-                                            });
-                                    //------------------------>>AJAX GRABAR NVO NODO
+                                            },
+                                        });
+                                        //------------------------>>AJAX GRABAR NVO NODO
                                         data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
-                                    }                                         
+                                    } else {
+
+                                        Swal.fire('ADVERTENCIA', 'No tienes permiso EDITOR de éste proyecto, pero se agregará la información solamente a la vista temporal.', 'warning')
+                                    }
                                 }
                             },
                         },
@@ -244,7 +225,7 @@
                             //console.log("------------>>")                         
                             
                             if (data.node.parent != null) {                               
-                                console.log("Tiene parent")                               
+                                //console.log("Tiene parent")                               
                                 //Buscar que solo actualice nodos cuando tienen un id
                                 try {
                                     if (data.childNode.data.id != null) {
@@ -265,8 +246,8 @@
                                         //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                     }
                                 } catch (error) {
-                                    console.log("entro al error")
-                                    console.error(error);                                   
+                                    //console.log("entro al error")
+                                    //console.error(error);                                   
                                 }                                                          
 
                             } else if (data.childNode.data.id != null) {
@@ -400,8 +381,7 @@
                                     break;
                                 case "del":
                                 case "meta+backspace": // mac
-                                    cmd = "remove";
-                                    console.log("se elimino ---");
+                                    cmd = "remove";                                   
                                     break;
                                 // case "f2":  // already triggered by ext-edit pluging
                                 //   cmd = "rename";
@@ -559,7 +539,7 @@
         @foreach (var item in Model)
         {
             <li class="nav-item">
-                <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID')" class="nav-link"
+                <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
                    data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</a>
             </li>
         }
