@@ -166,11 +166,7 @@
                                     //console.log(data.node.parent.data);
                                     if (typeof (data.node.parent.data.parentId) === 'undefined') {
 
-                                        swal({
-                                            title: "ADVERTENCIA",
-                                            text: "Intentas agregar un nodo hermano a la raiz del Árbol, aparecerá en la vista temporal, mas no se guardarán los cambios.",
-                                            type: "warning"
-                                        });
+                                        Swal.fire('ADVERTENCIA', 'Intentas agregar un nodo hermano a la raiz del Árbol, aparecerá en la vista temporal, mas no se guardarán los cambios.', 'warning')                                       
                                         
                                     } else {
                                          $.ajax({
@@ -527,11 +523,7 @@
         //Mensajito para la informacion que se puede editar proyecto
         function EdicionInfo() {
 
-            swal({
-                title: "EDITOR",
-                text: "En éste proyecto tienes permisos de EDICIÓN, ya sea porque tu lo creaste o porque te ortorgaron dicho permiso.",
-                type: "info"
-            });
+            Swal.fire('EDITOR', 'En éste proyecto tienes permisos de EDICIÓN, ya sea porque tu lo creaste o porque te ortorgaron dicho permiso.', 'info')
 
         }
 

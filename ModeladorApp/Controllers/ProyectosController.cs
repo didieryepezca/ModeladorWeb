@@ -30,6 +30,8 @@ namespace ModeladorApp.Controllers
         {
             var user = userManager.GetUserAsync(User);
             var userId = user.Result.Id;
+            ViewBag.currentUser = userId;
+
 
             var da = new ProyectoDA();
 

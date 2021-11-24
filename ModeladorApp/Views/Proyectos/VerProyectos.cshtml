@@ -1,5 +1,39 @@
 ﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PROYECTO>
 
+<script type="text/javascript">
+
+    function deteleProject(id, nombre) {
+
+        Swal.fire({
+            title: '¿Estás seguro que deseas Eliminar:  ' + nombre + ' ?',
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: `Si`,
+            denyButtonText: `Don't save`,
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                Swal.fire('Eliminando...', '', 'success')
+                confirmDeleteProject(id)
+
+            } else if (result.isDenied) {
+                Swal.fire('No', '', 'info')
+            }
+        })
+    }
+
+
+    function confirmDeleteProject(vId) {
+
+        console.log(vId);
+
+
+    }
+
+</script>
+
+
+
 <form asp-action="VerProyectos" method="get">
 
     <div class="container-fluid">
@@ -65,7 +99,7 @@
             <div class="row row-deck row-cards">
 
                 <div class="col-md-12 col-lg-12">
-                    <div class="row row-cards">
+                    <div class="row row-cards">                        
 
                         @foreach (var item in Model.GroupBy(test => test.TB_PERMISOS).Select(p => p.First()).ToList())
                         {
@@ -77,11 +111,13 @@
                                         </div>
                                     </div>
                                     <div class="card-body">
+
                                         <h3 class="card-title">
                                             <a style="color:blue" asp-action="OverviewProyecto" asp-route-proyectoId="@item.ProyectoID">
-                                            @Html.DisplayFor(modelItem => item.NombreProyecto)</a>
-                                        </h3>                                       
-                                                                       
+                                                @Html.DisplayFor(modelItem => item.NombreProyecto)
+                                            </a>
+                                        </h3>
+
                                         <div class="card-meta d-flex justify-content-between">
                                             <span><strong>Colaboradores: </strong></span>
                                             <div class="d-flex align-items-center">
@@ -93,7 +129,7 @@
 
                                                     <span title="@nombreCompleto"
                                                           class="avatar avatar-sm avatar-rounded">@firstLetters</span>
-                                                }
+                                                    }
                                             </div>
                                             <span><strong>Creado por:</strong> @Html.DisplayFor(modelItem => item.PropietarioName)</span>
                                         </div>
@@ -106,6 +142,17 @@
                                             </div>
                                             <span><strong>Creación:</strong> @Html.DisplayFor(modelItem => item.FechaCreado)</span>
                                         </div>
+
+
+                                        @if (ViewBag.currentUser == item.PropietarioID) { 
+                                            <div class="card-footer text-end">
+                                                <div class="d-flex">
+                                                    <a class="btn btn-link" style="color:red" 
+                                                       onclick="deteleProject(@item.ProyectoID, '@item.NombreProyecto')">Eliminar</a>
+                                                </div>
+                                            </div>
+                                        }  
+
                                     </div>
                                 </div>
                             </div>
