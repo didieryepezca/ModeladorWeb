@@ -6,9 +6,9 @@
 
         var ArrayCamposProyecto = [];
 
-        function createProject() {
-
-            console.log("crear proyecto");
+        function crearProyecto() {
+           
+            ArrayCamposProyecto = [];
 
             var nombre = $('#txtPyNombre').val();
             var desc = $('#txtPyDescripcion').val();
@@ -24,33 +24,29 @@
             var nroCamposLlenos = ArrayCamposProyecto.length;
 
             if (nroCamposLlenos == 2) {               
-
+                Swal.fire('Proyecto Creado !', '', 'success')
                 $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: "/Home/funCreateProject",
+                    type: "POST",               
+                    url: "/Proyectos/funCreateProject",
                     data: {
                         "nombre": nombre,
                         "descripcion": desc,                        
                     },
                     success: function (response) {
-                        //console.log(response);
+                        
                         console.log(response);
                         if (response >= 3) {
                             Swal.fire('Proyecto Creado !', '', 'success').then((result) => {
-
-                                location.reload();
-                                //if (result) {
-                                //    // Do Stuff here for success
-
-                                //} else {
-                                //    // something other stuff
-                                //}
+                                location.reload(); //refrescar pantalla para que aparezca el proyecto creado.                              
 
                             })
                         }
                     },
                 });
+
+                $('#txtPyNombre').val("");
+                $('#txtPyDescripcion').val("");
+                $('#modal-new-project').modal('toggle');
             }
             else {
 
@@ -257,7 +253,7 @@
                         <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                             Cancelar
                         </a>
-                        <a onclick="createProject()" class="btn btn-primary ms-auto">
+                        <a onclick="crearProyecto()" class="btn btn-primary ms-auto">
                             <svg xmlns="http://www.w3.org/2000/svg"
                                  class="icon" width="24" height="24"
                                  viewBox="0 0 24 24" stroke-width="2"
