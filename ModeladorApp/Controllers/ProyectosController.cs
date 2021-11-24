@@ -111,15 +111,18 @@ namespace ModeladorApp.Controllers
             }
         }
 
-        public int FunInsertProyecto(string nombre, string descripcion)
+        public int funCreateProject(string nombre, string descripcion)
         {
             var result = "0";
             var user = userManager.GetUserAsync(User);           
 
             var da = new ProyectoDA();
             var pda = new PermisosDA();
+            var nda = new NivelDA();
+
             try {
 
+                //Proyecto
                 TB_PROYECTO py = new TB_PROYECTO();
                 py.NombreProyecto = nombre;
                 py.DescripcionProyecto = descripcion;
@@ -143,7 +146,18 @@ namespace ModeladorApp.Controllers
 
                 var perCount = pda.InsertPermiso(permiso);
 
-                int totalInserts = pyCount + perCount;
+                //Inicialización del respectivo Árbol
+                TB_TREE newTree = new TB_TREE();
+
+                newTree.title = nombre;
+                newTree.lazy = true;
+                newTree.parentId = 0;
+                newTree.proyectoId = py.ProyectoID;
+                newTree.fechaCreacion = DateTime.Now;
+
+                var nCount = nda.InserNewLevel(newTree);
+
+                int totalInserts = pyCount + perCount + nCount;
 
                 return totalInserts;
             }

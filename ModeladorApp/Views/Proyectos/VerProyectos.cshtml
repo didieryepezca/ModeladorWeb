@@ -1,261 +1,277 @@
 ﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PROYECTO>
 
-<script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
-    var ArrayCamposProyecto = [];
+    <script type="text/javascript">
 
-    function createProject() {
+        var ArrayCamposProyecto = [];
 
-        var nombre = $("#txtPyNombre").val();
-        var desc = $("#txtPyDescripcion").val();
+        function createProject() {
 
-        if (nombre != "" && nombre != null) {
-            ArrayCamposProyecto.push(nombre);
-        }
+            console.log("crear proyecto");
 
-        if (desc != "" && desc != null) {
-            ArrayCamposProyecto.push(desc);
-        }
+            var nombre = $('#txtPyNombre').val();
+            var desc = $('#txtPyDescripcion').val();
 
-        var nroCamposLlenos = ArrayCamposProyecto.length;
-
-        if (nroCamposLlenos == 2) {
-
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/Home/funCreateProject",
-                data: {
-                    "nombre": nombre,
-                    "descripcion": desc,
-                },
-                success: function (response) {
-                    if (response >= 2) {
-                        Swal.fire('Proyecto Creado !', '', 'success')
-                    }
-                },
-            });
-
-        } else {
-
-            Swal.fire('ATENCION', 'Por favor llena ambos campos', 'warning')
-        }
-
-
-    }
-
-    function deteleProject(id, nombre) {
-
-        Swal.fire({
-            title: '¿Estás seguro que deseas Eliminar:  ' + nombre + ' ?',
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: `Si`,
-            denyButtonText: `Don't save`,
-        }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
-            if (result.isConfirmed) {
-                Swal.fire('Eliminando...', '', 'success')
-                confirmDeleteProject(id)
-
-            } else if (result.isDenied) {
-                Swal.fire('No', '', 'info')
+            if (nombre != "" && nombre != null) {
+                ArrayCamposProyecto.push(nombre);
             }
-        })
-    }
 
+            if (desc != "" && desc != null) {
+                ArrayCamposProyecto.push(desc);
+            }
 
-    function confirmDeleteProject(vId) {
+            var nroCamposLlenos = ArrayCamposProyecto.length;
 
-        console.log(vId);
+            if (nroCamposLlenos == 2) {               
 
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Home/funCreateProject",
+                    data: {
+                        "nombre": nombre,
+                        "descripcion": desc,                        
+                    },
+                    success: function (response) {
+                        //console.log(response);
+                        console.log(response);
+                        if (response >= 3) {
+                            Swal.fire('Proyecto Creado !', '', 'success').then((result) => {
 
-    }
+                                location.reload();
+                                //if (result) {
+                                //    // Do Stuff here for success
 
-</script>
+                                //} else {
+                                //    // something other stuff
+                                //}
 
-
-
-<form asp-action="VerProyectos" method="get">
-
-    <div class="container-fluid">
-        <!-- Page title -->
-        <div class="page-header d-print-none">
-            <div class="row align-items-center">
-                <div class="col">
-                    <!-- Page pre-title -->
-                    <div class="page-pretitle">
-                        Inicio
-                    </div>
-                    <h2 class="page-title">
-                        Proyectos: @ViewBag.tipo
-                    </h2>
-                </div>
-
-                <!-- Page title actions -->
-                <div class="col-auto ms-auto d-print-none">
-                    <div class="btn-list">
-
-                        <!--<div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first">
-
-                            <div class="input-icon">
-                                <span class="input-icon-addon">-->
-                                    <!-- Download SVG icon from http://tabler-icons.io/i/search -->
-                                    <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg>
-                                </span>
-                                <input type="text" name="nombre" class="form-control" placeholder="Buscar…" aria-label="Search in website">
-                            </div>
-
-                        </div>-->
-
-                        <span class="d-none d-sm-inline">
-                            <select class="form-select" name="tipoProyecto">
-                                @*<option selected="@ViewBag.permiso">@ViewBag.permiso</option>*@
-                                <option value="ALL">TODOS LOS PROYECTOS</option>
-                                <option value="VIEWER">PROYECTOS QUE PUEDO VER</option>
-                                <option value="EDITOR">PROYECTOS QUE PUEDO EDITAR</option>
-                            </select>
-                        </span>
-                        @{
-                            var search = 'B';
+                            })
                         }
-                        <button type="submit" value="@search" name="accion" class="btn btn-white d-none d-sm-inline-block">
-                            Buscar
-                        </button>
+                    },
+                });
+            }
+            else {
 
-                        <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-new-project">
-                            <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                            Crear Proyecto
-                        </a>
+                Swal.fire('ATENCION', 'Por favor llena ambos campos', 'warning')
+            }
 
+        }
+
+        function deteleProject(id, nombre) {
+
+            Swal.fire({
+                title: '¿Estás seguro que deseas Eliminar:  ' + nombre + ' ?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Si`,
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Eliminando...', '', 'success')
+                    confirmDeleteProject(id)
+
+                } else if (result.isDenied) {
+                    Swal.fire('No', '', 'info')
+                }
+            })
+        }
+
+
+        function confirmDeleteProject(vId) {
+
+            console.log(vId);
+
+
+        }
+
+    </script>
+
+
+
+    <form asp-action="VerProyectos" method="get">
+
+        <div class="container-fluid">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <!-- Page pre-title -->
+                        <div class="page-pretitle">
+                            Inicio
+                        </div>
+                        <h2 class="page-title">
+                            Proyectos: @ViewBag.tipo
+                        </h2>
+                    </div>
+
+                    <!-- Page title actions -->
+                    <div class="col-auto ms-auto d-print-none">
+                        <div class="btn-list">
+
+                            <!--<div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first">
+
+                                <div class="input-icon">
+                                    <span class="input-icon-addon">-->
+                            <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                            <!--<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><circle cx="10" cy="10" r="7"></circle><line x1="21" y1="21" x2="15" y2="15"></line></svg>
+                                    </span>
+                                    <input type="text" name="nombre" class="form-control" placeholder="Buscar…" aria-label="Search in website">
+                                </div>
+
+                            </div>-->
+
+                            <span class="d-none d-sm-inline">
+                                <select class="form-select" name="tipoProyecto">
+                                    @*<option selected="@ViewBag.permiso">@ViewBag.permiso</option>*@
+                                    <option value="ALL">TODOS LOS PROYECTOS</option>
+                                    <option value="VIEWER">PROYECTOS QUE PUEDO VER</option>
+                                    <option value="EDITOR">PROYECTOS QUE PUEDO EDITAR</option>
+                                </select>
+                            </span>
+                            @{
+                                var search = 'B';
+                            }
+                            <button type="submit" value="@search" name="accion" class="btn btn-white d-none d-sm-inline-block">
+                                Buscar
+                            </button>
+
+                            <a href="#" class="btn btn-primary d-none d-sm-inline-block" data-bs-toggle="modal" data-bs-target="#modal-new-project">
+                                <!-- Download SVG icon from http://tabler-icons.io/i/plus -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
+                                Crear Proyecto
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="page-body">
-        <div class="container-fluid">
+        <div class="page-body">
+            <div class="container-fluid">
 
-            <div class="row row-deck row-cards">
+                <div class="row row-deck row-cards">
 
-                <div class="col-md-12 col-lg-12">
-                    <div class="row row-cards">                        
+                    <div class="col-md-12 col-lg-12">
+                        <div class="row row-cards">
 
-                        @foreach (var item in Model.GroupBy(test => test.TB_PERMISOS).Select(p => p.First()).ToList())
-                        {
-                            <div class="col-4">
-                                <div class="card">
-                                    <div class="progress card-progress">
-                                        <div class="progress-bar bg-green" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                            <span class="visually-hidden">20% Complete</span>
-                                        </div>
-                                    </div>
-                                    <div class="card-body">
-
-                                        <h3 class="card-title">
-                                            <a style="color:blue" asp-action="OverviewProyecto" asp-route-proyectoId="@item.ProyectoID">
-                                                @Html.DisplayFor(modelItem => item.NombreProyecto)
-                                            </a>
-                                        </h3>
-
-                                        <div class="card-meta d-flex justify-content-between">
-                                            <span><strong>Colaboradores: </strong></span>
-                                            <div class="d-flex align-items-center">
-                                                @foreach (var p in item.TB_PERMISOS)
-                                                {
-                                                    string nombreCompleto = p.UsuarioConcedidoName;
-
-                                                    var firstLetters = new String(nombreCompleto.Split(' ').Select(x => x[0]).ToArray());
-
-                                                    <span title="@nombreCompleto"
-                                                          class="avatar avatar-sm avatar-rounded">@firstLetters</span>
-                                                    }
+                            @foreach (var item in Model.GroupBy(test => test.TB_PERMISOS).Select(p => p.First()).ToList())
+                            {
+                                <div class="col-4">
+                                    <div class="card">
+                                        <div class="progress card-progress">
+                                            <div class="progress-bar bg-green" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="visually-hidden">20% Complete</span>
                                             </div>
-                                            <span><strong>Creado por:</strong> @Html.DisplayFor(modelItem => item.PropietarioName)</span>
                                         </div>
+                                        <div class="card-body">
 
-                                        <div class="card-meta d-flex justify-content-between">
-                                            <div class="d-flex align-items-center">
-                                                <!-- Download SVG icon from http://tabler-icons.io/i/check -->
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
-                                                <span><strong>Última edición:</strong> @Html.DisplayFor(modelItem => item.FechaUltimaEdicion)</span>
-                                            </div>
-                                            <span><strong>Creación:</strong> @Html.DisplayFor(modelItem => item.FechaCreado)</span>
-                                        </div>
+                                            <h3 class="card-title">
+                                                <a style="color:blue" asp-action="OverviewProyecto" asp-route-proyectoId="@item.ProyectoID">
+                                                    @Html.DisplayFor(modelItem => item.NombreProyecto)
+                                                </a>
+                                            </h3>
 
+                                            <div class="card-meta d-flex justify-content-between">
+                                                <span><strong>Colaboradores: </strong></span>
+                                                <div class="d-flex align-items-center">
+                                                    @foreach (var p in item.TB_PERMISOS)
+                                                    {
+                                                        string nombreCompleto = p.UsuarioConcedidoName;
 
-                                        @if (ViewBag.currentUser == item.PropietarioID) { 
-                                            <div class="card-footer text-end">
-                                                <div class="d-flex">
-                                                    <a class="btn btn-link" style="color:red" 
-                                                       onclick="deteleProject(@item.ProyectoID, '@item.NombreProyecto')">Eliminar</a>
+                                                        var firstLetters = new String(nombreCompleto.Split(' ').Select(x => x[0]).ToArray());
+
+                                                        <span title="@nombreCompleto"
+                                                              class="avatar avatar-sm avatar-rounded">@firstLetters</span>
+                                                        }
                                                 </div>
+                                                <span><strong>Creado por:</strong> @Html.DisplayFor(modelItem => item.PropietarioName)</span>
                                             </div>
-                                        }  
 
+                                            <div class="card-meta d-flex justify-content-between">
+                                                <div class="d-flex align-items-center">
+                                                    <!-- Download SVG icon from http://tabler-icons.io/i/check -->
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon me-2" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M5 12l5 5l10 -10"></path></svg>
+                                                    <span><strong>Última edición:</strong> @Html.DisplayFor(modelItem => item.FechaUltimaEdicion)</span>
+                                                </div>
+                                                <span><strong>Creación:</strong> @Html.DisplayFor(modelItem => item.FechaCreado)</span>
+                                            </div>
+
+
+                                            @if (ViewBag.currentUser == item.PropietarioID)
+                                            {
+                                                <div class="card-footer text-end">
+                                                    <div class="d-flex">
+                                                        <a class="btn btn-link" style="color:red"
+                                                           onclick="deteleProject(@item.ProyectoID, '@item.NombreProyecto')">Eliminar</a>
+                                                    </div>
+                                                </div>
+                                            }
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
 
-    <div class="modal modal-blur fade" id="modal-new-project" tabindex="-1" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Crear Proyecto</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+        <div class="modal modal-blur fade" id="modal-new-project" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear Proyecto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
 
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="mb-3">
-                                <label class="form-label">Nombre</label>
-                                <input id="txtPyNombre" type="text" class="form-control" 
-                                       name="example-text-input" placeholder="Escribe un Nombre para tu Proyecto">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Nombre</label>
+                                    <input id="txtPyNombre" type="text" class="form-control"
+                                           name="example-text-input" placeholder="Escribe un Nombre para tu Proyecto">
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="col-lg-12">
-                            <div>
-                                <label class="form-label">Describe tu proyecto</label>
-                                <textarea id="txtPyDescripcion" class="form-control" rows="8"></textarea>
+                            <div class="col-lg-12">
+                                <div>
+                                    <label class="form-label">Describe tu proyecto</label>
+                                    <textarea id="txtPyDescripcion" class="form-control" rows="8"></textarea>
+                                </div>
                             </div>
+
+
                         </div>
+                    </div>
 
-
-                    </div>                   
-                </div>
-
-                <div class="modal-footer">
-                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                        Cancelar
-                    </a>
-                    <a onclick="createProject()" class="btn btn-primary ms-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                             class="icon" width="24" height="24"
-                             viewBox="0 0 24 24" stroke-width="2"
-                             stroke="currentColor"
-                             fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                            <line x1="12" y1="5" x2="12" y2="19" />
-                            <line x1="5" y1="12" x2="19" y2="12" />
-                        </svg>
-                        Crear
-                    </a>
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </a>
+                        <a onclick="createProject()" class="btn btn-primary ms-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="icon" width="24" height="24"
+                                 viewBox="0 0 24 24" stroke-width="2"
+                                 stroke="currentColor"
+                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
+                            Crear
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</form>
+    </form>
