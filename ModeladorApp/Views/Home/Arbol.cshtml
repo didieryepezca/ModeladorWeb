@@ -168,7 +168,7 @@
                                             text: "Se agregará un nodo hermano temporal, más no se guardará en tu proyecto.",
                                             type: "warning"
                                         });
-
+                                        
                                     } else {
                                          $.ajax({
                                             type: "POST",
@@ -184,9 +184,8 @@
                                                 },
                                             });
                                     //------------------------>>AJAX GRABAR NVO NODO
-                                    }                      
-
-                                    data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
+                                        data.node.parent.resetLazy() //Recarga de nodo padre para obtener los ids de la data creada.
+                                    }                                         
                                 }
                             },
                         },
@@ -248,18 +247,18 @@
                             //console.log("------------>>")
                             //console.log(event);
                             //------------------------>>AJAX Actualizar Nombre de Nodo.
-                              //$.ajax({
-                              //    type: "POST",
-                              //    dataType: "json",
-                              //    url: "/Home/funUpdateLvlName",
-                              //    data: {
-                              //        "Id": data.childNode.data.id,
-                              //        "nombre": data.childNode.title,
-                              //    },
-                              //    success: function (response) {
-                              //        //console.log(response);
-                              //    },
-                              //});
+                              $.ajax({
+                                  type: "POST",
+                                  dataType: "json",
+                                  url: "/Home/funUpdateLvlName",
+                                  data: {
+                                      "Id": data.childNode.data.id,
+                                      "nombre": data.childNode.title,
+                                  },
+                                  success: function (response) {
+                                      //console.log(response);
+                                  },
+                              });
                            //------------------------>>AJAX Actualizar Nombre de Nodo
                         },
                     })
