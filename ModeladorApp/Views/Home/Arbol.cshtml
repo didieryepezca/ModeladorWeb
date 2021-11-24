@@ -242,27 +242,34 @@
                             data.tree.info(event.type, data);
                             
                             //console.log(data.childNode.data.id);
-                            //console.log(data.childNode.title); //nombre a actualizar
-                           
-                            console.log("------------>>")                            
-                            //console.log(data.node.parent);
-                            console.log(data);
-
-                            if (data.node.parent != null) {                              
-                              //------------------------>>AJAX Actualizar Nombre de Nodo.
-                              //$.ajax({
-                              //    type: "POST",
-                              //    dataType: "json",
-                              //    url: "/Home/funUpdateLvlName",
-                              //    data: {
-                              //        "Id": data.childNode.data.id,
-                              //        "nombre": data.childNode.title,
-                              //    },
-                              //    success: function (response) {
-                              //        //console.log(response);
-                              //    },
-                              //});
-                           //------------------------>>AJAX Actualizar Nombre de Nodo
+                            //console.log(data.childNode.title); //nombre a actualizar                           
+                            //console.log("------------>>")                         
+                            
+                            if (data.node.parent != null) {                               
+                                console.log("Tiene parent")                               
+                                //Buscar que solo actualice nodos cuando tienen un id
+                                try {
+                                    if (data.childNode.data.id != null) {
+                                       //console.log("entro al update")                                    
+                                       //------------------------>>AJAX Actualizar Nombre de Nodo
+                                        $.ajax({
+                                            type: "POST",
+                                            dataType: "json",
+                                            url: "/Home/funUpdateLvlName",
+                                            data: {
+                                                "Id": data.childNode.data.id,
+                                                "nombre": data.childNode.title,
+                                            },
+                                            success: function (response) {
+                                                //console.log(response);
+                                            },
+                                        });
+                                        //------------------------>>AJAX Actualizar Nombre de Nodo                                                   
+                                    }
+                                } catch (error) {
+                                    console.log("entro al error")
+                                    console.error(error);                                   
+                                }                                                          
 
                             } else {
                                 console.log("No se puede realizar nada sin nodo padre.");
