@@ -22,7 +22,6 @@
             width: 180px;
             font-size: 63%;
         }
-
             .ui-menu kbd {
                 /* Keyboard shortcuts for ui-contextmenu titles */
                 float: right;
@@ -203,16 +202,10 @@
                             // Set column #1 info from node data:
                             $tdList.eq(0).text(node.getIndexHier());
                             // (Index #2 is rendered by fancytree)
-                            // Podemos setear la información en la columna 2 como por ejemplo el parentId
-                            $tdList
-                                .eq(2)
-                                .find("input")
-                                .val();
-
-                            $tdList
-                                .eq(4)
-                                .find("input")
-                                .val(node.data.foo);
+                            // Podemos setear la información en la columna 2 (la que continua al titulo.)
+                            //$tdList.eq(2).find("input").val("hola");
+                            //$tdList.eq(2).html("<input type='text' name='like' value='Enter Text'>");
+                            //---------------------------------------------------------->>>                           
 
                             // Static markup (more efficiently defined as html row template):
                             // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
@@ -350,6 +343,14 @@
                                         ).setActive();
                                     }
                                     break;
+                                case "newcolumn":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Nueva columna");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    
+                                    addColumn(treeReach, node.data.id);
+                                    break;
                                 default:
                                     alert("Unhandled command: " + data.cmd);
                                     return;
@@ -462,6 +463,11 @@
                                 uiIcon: "ui-icon-clipboard",
                                 disabled: true,
                             },
+                            {
+                                title: "Nva Columna",
+                                cmd: "newcolumn",
+                                uiIcon: "ui-icon-plus",
+                            },
                         ],
                         beforeOpen: function (event, ui) {
                             var node = $.ui.fancytree.getNode(ui.target);
@@ -523,6 +529,12 @@
 
             Swal.fire('EDITOR', 'Puedes editar éste proyecto en su respectiva pestaña EDITOR, ya sea porque es tuyo o porque te concedieron dicho permiso.', 'info')
 
+        }
+
+        function addColumn(tree, nodoId) {
+            console.log(tree,nodoId)
+            $('#' + tree + ' thead tr').append('<th id=th' + nodoId +'>Col</th>');
+            $('#' + tree + ' tbody tr').append('<td id=td' + nodoId +'><input type="text" placeholder="Ingrese algo"></td>');
         }
 
     </script>
@@ -588,14 +600,12 @@
                         <col width="2%"/>
                         <col width="58%"/>
                         <col width="1%"/>
-
                     </colgroup>
                     <thead>
                         <tr>
                             <th>#</th>
                             <th>Identificador - Nombre</th>
-                            <th>1</th>
-
+                            @*<th>1</th>*@
                         </tr>
                     </thead>
                     <tbody>
@@ -603,7 +613,7 @@
                         <tr>
                             <td></td>
                             <td><input name="" /></td>
-                            <td><input name="" /></td>
+                            @*<td><input name="" /></td>*@
 
                         </tr>
                     </tbody>
