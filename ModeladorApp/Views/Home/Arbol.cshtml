@@ -524,6 +524,17 @@
             });
         }
 
+        //Mensajito para la informacion que se puede editar proyecto
+        function EdicionInfo() {
+
+            swal({
+                title: "EDITOR",
+                text: "En éste proyecto tienes permisos de EDICIÓN, ya sea porque tu lo creaste o porque te ortorgaron dicho permiso.",
+                type: "info"
+            });
+
+        }
+
     </script>
 </head>
 
@@ -625,8 +636,8 @@
                                 @if (item.Permiso == "EDITOR")
                                 {
                                     <span class="d-none d-sm-inline">
-                                        <a href="#" class="btn btn-primary">
-                                            Editar
+                                        <a onclick="EdicionInfo()" class="btn btn-primary">
+                                            Puedes editar este proyecto
                                         </a>
                                     </span>
                                 }
