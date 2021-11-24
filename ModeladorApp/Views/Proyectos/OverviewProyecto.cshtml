@@ -46,11 +46,12 @@
                 if (data == "AGREGADO") {
                     Swal.fire('Agregado !', 'El permiso se agregó con éxito.', 'success').then((result) => {
                         location.reload(); //refrescar pantalla para que aparezca el proyecto creado.
-
                     })
                 }
                 else if (data == "PERMISO EXISTENTE") {
                     Swal.fire('ADVERTENCIA', 'El Permiso que intentas agregar ya existe.', 'warning')
+                } else {
+                    Swal.fire('ERROR', 'Hubo un problema no controlado por la aplicación.', 'error')
                 }
             });
 
