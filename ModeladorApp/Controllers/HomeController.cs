@@ -69,38 +69,6 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
 
-        public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
-        {
-            var da = new NivelInfoDA();
-
-            //Un momento por favor xD
-            System.Threading.Thread.Sleep(1000);
-            var info = da.GetNivelInfo(lvlId).ToList();
-
-            return info;
-        }
-
-        public int funUpdateInfo(int id, string informacion)
-        {
-            var user = userManager.GetUserAsync(User);
-            var userName = user.Result.UsuarioNombreCompleto;
-
-            var result = "0";
-            var da = new NivelInfoDA();
-            try
-            {
-                var modelcount = da.UpdateNivelInfo(id, userName, informacion);
-                return modelcount;
-            }
-            catch (Exception e)
-            {
-                result = e.Message;
-                return 0;
-            }
-        }
-
-
-
         public int funInsertLvl(string titulo, int parent, int projectId)
         {
             var result = "0";
@@ -174,6 +142,66 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
+
+
+        public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
+        {
+            var da = new NivelInfoDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(1000);
+            var info = da.GetNivelInfo(lvlId).ToList();
+
+            return info;
+        }
+
+        public int funInsertInfo(int idLvl, string info)
+        {
+            var result = "0";
+            var nda = new NivelInfoDA();
+            var user = userManager.GetUserAsync(User);
+            var userName = user.Result.UsuarioNombreCompleto;
+            try
+            {
+                TB_NIVEL_INFO t = new TB_NIVEL_INFO();
+
+                t.NivelID = idLvl;
+                t.Informacion = info;
+                t.Usuario = userName;
+                t.FechaIngreso = DateTime.Now;               
+
+                var modelcount = nda.InsertNivelInfo(t);
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+
+                result = e.Message;
+                return 0;
+            }
+        }
+
+        public int funUpdateInfo(int id, string informacion)
+        {
+            var user = userManager.GetUserAsync(User);
+            var userName = user.Result.UsuarioNombreCompleto;
+
+            var result = "0";
+            var da = new NivelInfoDA();
+            try
+            {
+                var modelcount = da.UpdateNivelInfo(id, userName, informacion);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
 
 
         //---------------------------------TREE VIEW REAL

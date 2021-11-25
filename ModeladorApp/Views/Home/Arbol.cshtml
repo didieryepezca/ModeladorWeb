@@ -235,7 +235,7 @@
 
                             for (i = 2; i <= 51; i++) {
 
-                                $tdList.eq(i).html('<input id="' + treeReach + '_colvalue' + i + '" onchange="ingresarInfoGrilla(`tree_'+pySelected+'`,`' + i +'`)" type="text" placeholder="Ingrese algo">');
+                                $tdList.eq(i).html('<input id="' + treeReach + '_colvalue' + i + '" onchange="ingresarInfoGrilla( `' + node.data.id +'`,`tree_' + pySelected + '`,`' + i + '`)" type="text" placeholder="Ingrese algo">');
                             }
                              //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
@@ -603,10 +603,23 @@
             });
         }
 
-        function ingresarInfoGrilla(tree, i) {
+        function ingresarInfoGrilla(lvlId,tree, i) {
             //console.log(tree, i);
             var valorCaja = $('#' + tree + '_colvalue' + i).val();
             //console.log(valorCaja);
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Home/funInsertInfo",
+                data: {
+                    "idLvl": lvlId,
+                    "info": valorCaja,
+                },
+                success: function (response) {
+                    //console.log(response);
+                },
+            });
 
         }
 
