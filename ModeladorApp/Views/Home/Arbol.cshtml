@@ -222,7 +222,7 @@
                                 $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
                                 colName = colName + '<th id="' + treeReach +'_th'+i+'" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
                             }
-                            $('#' + treeReach + '_head').append(colName).fadeIn(300000);
+                            $('#head_' + treeReach).append(colName).fadeIn(300000);
                             
                             // cajas para ingresar los valores, creadas estáticamente en el código HTML
                             for (i = 2; i <= 51; i++) {
@@ -653,10 +653,9 @@
                         <col width="1%"/>
                     </colgroup>
                     <thead>
-                        <tr id="tree_0_head">
+                        <tr id="head_tree_0">
                             <th>#</th>
-                            <th>Identificador - Nombre</th>
-                            @*<th><input id="tree_0_colname1" type="text" placeholder="nombre 1"></th>*@
+                            <th>Identificador - Nombre</th>                            
                             
                         </tr>
                     </thead>
@@ -755,18 +754,66 @@
                             <col width="1%" />                            
                         </colgroup>
                         <thead>
-                            <tr>
+                            <tr id="head_tree_@item.ProyectoID">
                                 <th>#</th>
-                                <th>Identificador - Nombre</th>
-                                <th>1</th>
+                                <th>Identificador - Nombre</th>                                
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Define a row template for all invariant markup: -->
                             <tr>
                                 <td></td>
-                                <td><input name="" /></td>
-                                <td><input name="" /></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
