@@ -206,15 +206,35 @@
                             var node = data.node,
                                 $tdList = $(node.tr).find(">td");
 
+
+                            //console.log(data);
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
                             $tdList.eq(0).text(node.getIndexHier());
                             // (Index #2 is rendered by fancytree)
-                            // Podemos setear la información en la columna 2 (la que continua al titulo.)
-                            //$tdList.eq(2).find("input").val("hola");
-                            //$tdList.eq(2).html("<input type='text' name='like' value='Enter Text'>");
-                            //---------------------------------------------------------->>>                           
 
+                            //---------------------------------------------------------->>>   
+                            // 50 cajas para nombres de  columnas.
+                            var colName = "";
+
+                            for (i = 1; i <= 50; i++) {
+                                colName = colName + '<th><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
+                            }
+                            $('#' + treeReach + '_head').append(colName).fadeIn(300000);
+                            
+                            // cajas para ingresar los valores, creadas estáticamente en el código HTML
+                            for (i = 2; i <= 51; i++) {
+                                
+                                $tdList.eq(i).html('<input type="text" placeholder="Ingrese algo">');
+                            }
+                            
+                        
+                            // Podemos setear la información en la columna 2 (la que continua al titulo.)
+                            //$tdList.eq(2).find("input").val("hola");                            
+                            //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
+
+                            //$('#'+treeReach+'_colname1').val("valor");
+                            
                             // Static markup (more efficiently defined as html row template):
                             // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
                             // ...
@@ -631,18 +651,69 @@
                         <col width="1%"/>
                     </colgroup>
                     <thead>
-                        <tr>
+                        <tr id="tree_0_head">
                             <th>#</th>
                             <th>Identificador - Nombre</th>
-                            @*<th>1</th>*@
+                            @*<th><input id="tree_0_colname1" type="text" placeholder="nombre 1"></th>*@
+                            
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
                             <td></td>
-                            <td><input name="" /></td>
-                            @*<td><input name="" /></td>*@
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            
 
                         </tr>
                     </tbody>
