@@ -38,6 +38,14 @@
         td input[type="input"] {
             width: 40px;
         }
+
+        /*scroll horizontal para ver las columnas que van añadiendo a derecha*/
+        div.tab-pane {           
+            overflow: auto;
+            white-space: nowrap;
+        }         
+
+
     </style>
 
     <script type="text/javascript">
@@ -343,13 +351,26 @@
                                         ).setActive();
                                     }
                                     break;
+                                case "showgrid":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Mostrar columnas");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "hidegrid":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("ocultar columnas");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
                                 case "newcolumn":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Nueva columna");
                                     console.log(node)
-                                    //console.log(node.data.id); // id del nodo.
-                                    
-                                    addColumn(treeReach, node.data.id);
+                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //addColumn(treeReach, node.data.id);
                                     break;
                                 default:
                                     alert("Unhandled command: " + data.cmd);
@@ -437,37 +458,45 @@
                             },
                             { title: "----" },
                             {
-                                title: "Nvo Hermano <kbd>[Ctrl+N]</kbd>",
+                                title: "Nuevo Hermano <kbd>[Ctrl+N]</kbd>",
                                 cmd: "addSibling",
                                 uiIcon: "ui-icon-plus",
                             },
                             {
-                                title: "Nvo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
+                                title: "Nuevo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
                                 cmd: "addChild",
                                 uiIcon: "ui-icon-arrowreturn-1-e",
-                            },
-                            { title: "----" },
-                            {
-                                title: "Cortar <kbd>Ctrl+X</kbd>",
-                                cmd: "cut",
-                                uiIcon: "ui-icon-scissors",
+                            }, {
+                                title: "Mostrar Grilla",
+                                cmd: "showgrid",
                             },
                             {
-                                title: "Copiar <kbd>Ctrl-C</kbd>",
-                                cmd: "copy",
-                                uiIcon: "ui-icon-copy",
+                                title: "Ocultar Grilla",
+                                cmd: "hidegrid",
                             },
                             {
-                                title: "Pegar as child<kbd>Ctrl+V</kbd>",
-                                cmd: "paste",
-                                uiIcon: "ui-icon-clipboard",
-                                disabled: true,
-                            },
-                            {
-                                title: "Nva Columna",
+                                title: "Nueva Columna",
                                 cmd: "newcolumn",
                                 uiIcon: "ui-icon-plus",
                             },
+                            //{ title: "----" },
+                            //{
+                            //    title: "Cortar <kbd>Ctrl+X</kbd>",
+                            //    cmd: "cut",
+                            //    uiIcon: "ui-icon-scissors",
+                            //},
+                            //{
+                            //    title: "Copiar <kbd>Ctrl-C</kbd>",
+                            //    cmd: "copy",
+                            //    uiIcon: "ui-icon-copy",
+                            //},
+                            //{
+                            //    title: "Pegar as child<kbd>Ctrl+V</kbd>",
+                            //    cmd: "paste",
+                            //    uiIcon: "ui-icon-clipboard",
+                            //    disabled: true,
+                            //},                            
+                            
                         ],
                         beforeOpen: function (event, ui) {
                             var node = $.ui.fancytree.getNode(ui.target);
@@ -531,11 +560,11 @@
 
         }
 
-        function addColumn(tree, nodoId) {
-            console.log(tree,nodoId)
-            $('#' + tree + ' thead tr').append('<th id=th' + nodoId +'>Col</th>');
-            $('#' + tree + ' tbody tr').append('<td id=td' + nodoId +'><input type="text" placeholder="Ingrese algo"></td>');
-        }
+        //function addColumn(tree, nodoId) {
+        //    console.log(tree,nodoId)
+        //    $('#' + tree + ' thead tr').append('<th id=th' + nodoId +'>Col</th>');
+        //    $('#' + tree + ' tbody tr').append('<td id=td' + nodoId +'><input type="text" placeholder="Ingrese algo"></td>');
+        //}
 
     </script>
 </head>

@@ -114,13 +114,14 @@ namespace ModeladorApp.Controllers
         public int funCreateProject(string nombre, string descripcion)
         {
             var result = "0";
-            var user = userManager.GetUserAsync(User);           
+            var user = userManager.GetUserAsync(User);
 
             var da = new ProyectoDA();
             var pda = new PermisosDA();
             var nda = new NivelDA();
 
-            try {
+            try
+            {
 
                 //Proyecto
                 TB_PROYECTO py = new TB_PROYECTO();
@@ -131,7 +132,7 @@ namespace ModeladorApp.Controllers
                 py.PropietarioID = user.Result.Id;
                 py.PropietarioName = user.Result.UsuarioNombreCompleto;
 
-                var pyCount = da.InsertPy(py);                
+                var pyCount = da.InsertPy(py);
 
                 //Permisos.
                 TB_PERMISOS permiso = new TB_PERMISOS();
@@ -161,7 +162,64 @@ namespace ModeladorApp.Controllers
 
                 return totalInserts;
             }
-            catch(Exception e)
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+        public int funDeleteProject(int proyectoId)
+        {
+            var result = "0";
+            var tda = new NivelDA();
+            var pda = new PermisosDA();
+            var pyda = new ProyectoDA();
+
+            try
+            {
+                //---------------------------------Eliminamos niveles del arbol del proyecto.
+                var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
+
+                for (int i = 0; i < nivelesToDelete.Count; i++) {
+                    try
+                    {
+                        tda.DeleteLevel(nivelesToDelete[i].id);
+                    }
+                    catch (Exception dn)
+                    {
+                        result = dn.Message;
+                        return 0;
+                    }
+                }
+
+                //---------------------------------Eliminamos permisos del proyecto.
+                var permisos = pda.getPermisosByIdProyecto(proyectoId).ToList();
+
+                for (int i = 0; i < permisos.Count; i++)
+                {
+                    try
+                    {
+                        pda.DeletePermiso(permisos[i].PermisoID);
+                    }
+                    catch (Exception dp)
+                    {
+                        result = dp.Message;
+                        return 0;
+                    }
+                }
+                //---------------------------------Finalmente el proyecto mismo.
+                try
+                {
+                    pyda.deleteProyecto(proyectoId);
+                }
+                catch (Exception py) {
+                    result = py.Message;
+                    return 0;
+                }
+                return 1;
+            }
+            catch (Exception e)
             {
                 result = e.Message;
                 return 0;
@@ -187,8 +245,8 @@ namespace ModeladorApp.Controllers
                 {
                     return "PERMISO EXISTENTE";
                 }
-                else {
-
+                else
+                {
                     var usuConcedido = daUser.GetUserById(userConcedido);
                     var usuConcName = usuConcedido.UsuarioNombreCompleto;
 
@@ -205,7 +263,7 @@ namespace ModeladorApp.Controllers
                     var modelcount = da.InsertPermiso(permiso);
 
                     return "AGREGADO";
-                }                
+                }
             }
             catch (Exception e)
             {

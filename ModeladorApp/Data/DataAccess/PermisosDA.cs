@@ -45,8 +45,6 @@ namespace ModeladorApp.Data.DataAccess
             }
         }
 
-
-
         public int InsertPermiso(TB_PERMISOS permiso)
         {
             var result = 0;
@@ -57,6 +55,20 @@ namespace ModeladorApp.Data.DataAccess
             }
             return result;
         }
+
+
+        public int DeletePermiso(int idPermiso)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var permiso = db.TB_PERMISOS.Where(item => item.PermisoID == idPermiso).SingleOrDefault();
+                db.TB_PERMISOS.Remove(permiso);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
 
     }
 }

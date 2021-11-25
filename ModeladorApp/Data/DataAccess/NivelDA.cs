@@ -24,6 +24,23 @@ namespace ModeladorApp.Data.DataAccess
             }
         }
 
+
+        public IEnumerable<TB_TREE> getLevelsToDeleteFromProject(int projectId)
+        {
+            var ana = new List<TB_TREE>();
+
+            using (var db = new ApplicationDbContext())
+            {
+                IQueryable<TB_TREE> query = db.TB_TREE;
+
+                query = query.Where(item => item.proyectoId == projectId);
+
+                query = query.OrderBy(p => p.id);
+
+                return query.ToList();
+            }
+        }
+
         public IEnumerable<TB_TREE> GetLvlFromPyUsuario(int projectId)
         {
             var ana = new List<TB_TREE>();
@@ -38,7 +55,8 @@ namespace ModeladorApp.Data.DataAccess
 
                 return query.ToList();
             }
-        }
+        }        
+
 
         public IEnumerable<TB_TREE> GetSubLvl(int pId)
         {

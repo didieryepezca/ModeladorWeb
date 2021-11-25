@@ -170,5 +170,18 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+        public int deleteProyecto(int idProyecto)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var py = db.TB_PROYECTO.Where(item => item.ProyectoID == idProyecto).SingleOrDefault();
+                db.TB_PROYECTO.Remove(py);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
     }
 }
