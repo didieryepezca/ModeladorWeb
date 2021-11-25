@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Data;
 using ModeladorApp.Models.Entities;
+using System;
 
 namespace ModeladorApp.Data.DataAccess
 {
@@ -17,6 +18,25 @@ namespace ModeladorApp.Data.DataAccess
             }
             return result;
         }
+
+
+        public int UpdateNivelInfo(int vInfoID, string usuario, string nvaInformacion)
+        {
+            var result = 0;
+
+            using (var db = new ApplicationDbContext())
+            {
+                var info = db.TB_NIVEL_INFO.Where(item => item.InfoID == vInfoID).FirstOrDefault();
+                info.Informacion = nvaInformacion;
+                info.Usuario = usuario;
+                info.FechaIngreso = DateTime.Now;
+
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
 
         public IEnumerable<TB_NIVEL_INFO> GetNivelInfo(int lvlID)
         {

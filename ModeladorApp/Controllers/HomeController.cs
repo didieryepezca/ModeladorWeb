@@ -80,6 +80,27 @@ namespace ModeladorApp.Controllers
             return info;
         }
 
+        public int funUpdateInfo(int id, string informacion)
+        {
+            var user = userManager.GetUserAsync(User);
+            var userName = user.Result.UsuarioNombreCompleto;
+
+            var result = "0";
+            var da = new NivelInfoDA();
+            try
+            {
+                var modelcount = da.UpdateNivelInfo(id, userName, informacion);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
+
         public int funInsertLvl(string titulo, int parent, int projectId)
         {
             var result = "0";

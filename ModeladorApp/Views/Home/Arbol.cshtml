@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-bootstrap-n/ui.fancytree.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-bootstrap/ui.fancytree.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-xp/ui.fancytree.min.css">
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
     <!-- This demo uses an 3rd-party, jQuery UI based context menu -->
     <link href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" />
@@ -22,6 +22,7 @@
             width: 180px;
             font-size: 63%;
         }
+
             .ui-menu kbd {
                 /* Keyboard shortcuts for ui-contextmenu titles */
                 float: right;
@@ -40,12 +41,10 @@
         }
 
         /*scroll horizontal para ver las columnas que van añadiendo a derecha*/
-        div.tab-pane {           
+        div.tab-pane {
             overflow: auto;
             white-space: nowrap;
-        }         
-
-
+        }
     </style>
 
     <script type="text/javascript">
@@ -55,40 +54,45 @@
         var CLIPBOARD = null;
         var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
-        async function loadTree(vIdProject, vPermiso) {            
+        var pySelected; //servira para identificar los valores de las cajitas por el id del tree elegido.
+
+        async function loadTree(vIdProject, vPermiso) {
 
             var treeReach; //la que rendizará los datos en la tabla.
-            var data; // la que contendra la data de la función asyncrona.        
-                    
-            console.log(vPermiso);
+            var data; // la que contendra la data de la función asyncrona.
+
+            //console.log(vPermiso);
 
             if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
 
                 data = await funGetMasterData()
                 treeReach = "tree_0";
-               
+
+                pySelected = 0;
             } else {
                 data = await funGetPyFromUsuario(vIdProject)
-                treeReach = "tree_" + vIdProject;               
+                treeReach = "tree_" + vIdProject;
                 tempPyId = vIdProject;
+
+                pySelected = vIdProject;
             }
-         
+
             if (data.length >= 1) {
 
                 $("#loader").hide();
 
-                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {                    
-                 
+                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
+
                     $("#proyecto_" + tempPyId).removeClass('active');
                     $('#proyecto_0').attr('class', "tab-pane active");
-                                        
-                } else {                    
+
+                } else {
 
                     $("#proyecto_0").removeClass('active');
-                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");                   
+                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");
                 }
 
-                $(function () {                   
+                $(function () {
 
                     $("#" + treeReach).fancytree({
 
@@ -107,7 +111,7 @@
                                 data: { parent: node.data.id },
                                 cache: false
                             };
-                        },                      
+                        },
 
                         extensions: ["edit", "dnd5", "table", "gridnav"],
 
@@ -132,7 +136,7 @@
                         },
                         edit: {
                             triggerStart: ["f2", "shift+click", "mac+enter"],
-                            close: function (event, data) {                               
+                            close: function (event, data) {
 
                                 if (data.save && data.isNew) {
                                     // Quick-enter: add new nodes until we hit [enter] on an empty title
@@ -206,55 +210,76 @@
                             var node = data.node,
                                 $tdList = $(node.tr).find(">td");
 
-
                             //console.log(data);
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
                             $tdList.eq(0).text(node.getIndexHier());
                             // (Index #2 is rendered by fancytree)
 
-                            //---------------------------------------------------------->>>   
+                            //---------------------------------------------------------->>>
+
                             // 50 cajas para nombres de  columnas.
                             var colName = "";
 
                             for (i = 1; i <= 50; i++) {
 
                                 $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
-                                colName = colName + '<th id="' + treeReach +'_th'+i+'" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
+                                colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
                             }
-                            $('#head_' + treeReach).append(colName).fadeIn(300000);
-                            
-                            // cajas para ingresar los valores, creadas estáticamente en el código HTML
+                            $('#head_' + treeReach).append(colName).fadeIn(300000);                           
+
+
+
+                            // 50 cajas para el contenido de las columnas.
+                            //console.log(pySelected)
+
                             for (i = 2; i <= 51; i++) {
-                                
-                                $tdList.eq(i).html('<input id="' + treeReach +'_colvalue' + i + '" type="text" placeholder="Ingrese algo">');
+
+                                $tdList.eq(i).html('<input id="' + treeReach + '_colvalue' + i + '" onchange="ingresarInfoGrilla(`tree_'+pySelected+'`,`' + i +'`)" type="text" placeholder="Ingrese algo">');
                             }
-                            
-                        
+                             //console.log(node.data.id);
+                            //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
+                            var info = funGetInfo(node.data.id)
+                            info.then(function (result) {
+                                console.log(result);
+                                //var j = 0;
+                                // cajas para ingresar los valores, creadas estáticamente en el código HTML                                                                                                     
+
+                                    var m = 2;
+                                    for (n = 0; n <= result.length - 1; n++) {
+                                        
+                                        $('#' + treeReach + '_colvalue' + m).val(result[n].informacion);
+                                        $('#' + treeReach + '_colvalue' + m).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)');
+
+                                        m = m + 1;
+                                }
+                            });
+
+
                             // Podemos setear la información en la columna 2 (la que continua al titulo.)
-                            //$tdList.eq(2).find("input").val("hola");                            
+                            //$tdList.eq(2).find("input").val("hola");
                             //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
 
                             //$('#'+treeReach+'_colname1').val("valor");
-                            
+
                             // Static markup (more efficiently defined as html row template):
                             // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
                             // ...
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
-                            
+
                             //console.log(data.childNode.data.id);
-                            //console.log(data.childNode.title); //nombre a actualizar                           
-                            //console.log("------------>>")                         
-                            
-                            if (data.node.parent != null) {                               
-                                //console.log("Tiene parent")                               
+                            //console.log(data.childNode.title); //nombre a actualizar
+                            //console.log("------------>>")
+
+                            if (data.node.parent != null) {
+                                //console.log("Tiene parent")
                                 //Buscar que solo actualice nodos cuando tienen un id
                                 try {
                                     if (data.childNode.data.id != null && vPermiso == "EDITOR") {
-                                       //console.log("entro al update")                                    
-                                       //------------------------>>AJAX Actualizar Nombre de Nodos hijos
+                                        //console.log("entro al update")
+                                        //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                         $.ajax({
                                             type: "POST",
                                             dataType: "json",
@@ -271,13 +296,13 @@
                                     }
                                 } catch (error) {
                                     //console.log("entro al error")
-                                    //console.error(error);                                   
-                                }                                                          
+                                    //console.error(error);
+                                }
 
                             } else if (data.childNode.data.id != null && vPermiso == "EDITOR") {
                                 //console.log("No se puede realizar nada sin nodo padre.");
                                 //console.log(data.childNode.data.id) //id para actualizar nombre del nodo padre
-                                //console.log(data.childNode.title) //nuevo titulo de nodo padre. 
+                                //console.log(data.childNode.title) //nuevo titulo de nodo padre.
 
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
                                 $.ajax({
@@ -293,9 +318,9 @@
                                     },
                                 });
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
-                                
+
                             }
-                            
+
                         },
                     })
                         .on("nodeCommand", function (event, data) {
@@ -305,7 +330,7 @@
                                 moveMode,
                                 tree = $.ui.fancytree.getTree(this),
                                 node = tree.getActiveNode();
-                            
+
                             //console.log("--------------------->>Add")
                             //console.log(node.data.id) //enviar como parent id
                             //console.log(node.childNode) //enviar como parent id
@@ -314,8 +339,8 @@
                             switch (data.cmd) {
                                 case "addChild":
                                 case "addSibling":
-                                    //console.log("------------>>")
-                                    //console.log(data.cmd)
+                                //console.log("------------>>")
+                                //console.log(data.cmd)
                                 case "indent":
                                 case "moveDown":
                                 case "moveUp":
@@ -340,12 +365,12 @@
                                             },
                                         });
                                         //------------------------>>AJAX Eliminar Nivel Padre e Hijos
-                                    };                                  
+                                    };
 
                                     break;
 
                                 case "rename":
-                                    tree.applyCommand(data.cmd, node);                                 
+                                    tree.applyCommand(data.cmd, node);
 
                                     break;
                                 case "cut":
@@ -377,21 +402,21 @@
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Mostrar columnas");
                                     console.log(node)
-                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "hidegrid":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("ocultar columnas");
                                     console.log(node)
-                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "newcolumn":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Nueva columna");
                                     console.log(node)
-                                    //console.log(node.data.id); // id del nodo.                                    
+                                    //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 default:
@@ -426,7 +451,7 @@
                                     break;
                                 case "del":
                                 case "meta+backspace": // mac
-                                    cmd = "remove";                                   
+                                    cmd = "remove";
                                     break;
                                 // case "f2":  // already triggered by ext-edit pluging
                                 //   cmd = "rename";
@@ -517,8 +542,8 @@
                             //    cmd: "paste",
                             //    uiIcon: "ui-icon-clipboard",
                             //    disabled: true,
-                            //},                            
-                            
+                            //},
+
                         ],
                         beforeOpen: function (event, ui) {
                             var node = $.ui.fancytree.getNode(ui.target);
@@ -543,7 +568,7 @@
 
             } else {
 
-                //console.log("proyecto de usuario");                
+                //console.log("proyecto de usuario");
 
             } //--------> End If
         }
@@ -563,6 +588,53 @@
                 //console.log(data);
             });
         };
+
+        //-------------------------------- para obtener la info de cada nivel...
+        async function funGetInfo(lvlID) {
+            return info = await funGetInfoFromDB(lvlID);
+            //var info = await funGetInfoFromDB(lvlID);
+            //console.log(info)
+        };
+
+        function funGetInfoFromDB(lvlID) {
+            var url = "/Home/funGetInfoFromDB";
+            return $.get(url, { lvlId: lvlID }, function (data) {
+                //console.log(data);
+            });
+        }
+
+        function ingresarInfoGrilla(tree, i) {
+            //console.log(tree, i);
+            var valorCaja = $('#' + tree + '_colvalue' + i).val();
+            //console.log(valorCaja);
+
+        }
+
+        function actualizarInfoGrilla(tree, i, id) {
+            //console.log(tree, i, id);
+            
+            var valorCaja = $('#' + tree + '_colvalue' + i).val();
+            console.log(id);
+            console.log(valorCaja);
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Home/funUpdateInfo",
+                data: {
+                    "id": id,
+                    "informacion": valorCaja,
+                },
+                success: function (response) {
+                    //console.log(response);
+                },
+            });
+
+
+        }
+
+
+        //-------------------------------- para obtener la info de cada nivel...
 
         function expandOrContract(vIdProyecto) {
 
@@ -648,15 +720,15 @@
 
                 <table id="tree_0">
                     <colgroup>
-                        <col width="2%"/>
-                        <col width="58%"/>
-                        <col width="1%"/>
+                        <col width="2%" />
+                        <col width="58%" />
+                        <col width="1%" />
                     </colgroup>
                     <thead>
                         <tr id="head_tree_0">
                             <th>#</th>
-                            <th>Identificador - Nombre</th>                            
-                            
+                            <th>Identificador - Nombre</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -714,7 +786,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            
+
 
                         </tr>
                     </tbody>
@@ -751,12 +823,12 @@
                         <colgroup>
                             <col width="2%" />
                             <col width="58%" />
-                            <col width="1%" />                            
+                            <col width="1%" />
                         </colgroup>
                         <thead>
                             <tr id="head_tree_@item.ProyectoID">
                                 <th>#</th>
-                                <th>Identificador - Nombre</th>                                
+                                <th>Identificador - Nombre</th>
                             </tr>
                         </thead>
                         <tbody>
