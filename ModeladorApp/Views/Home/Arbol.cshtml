@@ -247,9 +247,12 @@
 
                                     var m = 2;
                                     for (n = 0; n <= result.length - 1; n++) {
-                                        
-                                        $('#' + treeReach + '_colvalue' + m).val(result[n].informacion);
-                                        $('#' + treeReach + '_colvalue' + m).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)');
+
+                                        //correcto para rellenar las cajas que se despliegan
+                                        $tdList.eq(m).html('<input type="text" value="' + result[n].informacion + '">');
+                                        //incorrecto para rellenar las cajas que se despliegan
+                                        //$('#' + treeReach + '_colvalue' + m).val(result[n].informacion);
+                                        //$('#' + treeReach + '_colvalue' + m).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)');
 
                                         m = m + 1;
                                 }
