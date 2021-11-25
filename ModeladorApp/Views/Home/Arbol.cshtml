@@ -218,14 +218,16 @@
                             var colName = "";
 
                             for (i = 1; i <= 50; i++) {
-                                colName = colName + '<th><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
+
+                                $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
+                                colName = colName + '<th id="' + treeReach +'_th'+i+'" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
                             }
                             $('#' + treeReach + '_head').append(colName).fadeIn(300000);
                             
                             // cajas para ingresar los valores, creadas estáticamente en el código HTML
                             for (i = 2; i <= 51; i++) {
                                 
-                                $tdList.eq(i).html('<input type="text" placeholder="Ingrese algo">');
+                                $tdList.eq(i).html('<input id="' + treeReach +'_colvalue' + i + '" type="text" placeholder="Ingrese algo">');
                             }
                             
                         
