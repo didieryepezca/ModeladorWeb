@@ -666,27 +666,30 @@
             //i: el contador de la caja empezando en 2 de izquierda a derecha hasta el 51
             //nodeId: el valor del nivel del nodo en el que estamos.
 
-
             var urlToGo = "";
             var dataToGo;
 
             if (id > 0) {
-
                 console.log("ACTUALIZAR ! ")
-            } else {
+                var valorCajaUpdate = $('#' + tree + '_colvalue' + id).val();
 
+                urlToGo = "/Home/funUpdateInfo";
+                dataToGo = { "id": id, "informacion": valorCajaUpdate }
+
+            } else {
                 console.log("INSERTAR ! ")
+
+                var valorCajaInsert = $('#' + tree + '_colvalue_' + i).val();
+
+                urlToGo = "/Home/funInsertInfo";
+                dataToGo = { "idLvl": nodeId, "info": valorCajaInsert }
+
             }
 
-            //var valorCajaUpdate = $('#' + tree + '_colvalue' + id).val();
-            //console.log(tree);
-            //console.log(id);
+            console.log(urlToGo)
+            console.log(dataToGo)         
+                              
 
-            var valorCajaInsert = $('#' + tree + '_colvalue_' + i).val();           
-
-            console.log(valorCajaInsert)
-            console.log(nodeId)
-           
 
             //$.ajax({
             //    type: "POST",
