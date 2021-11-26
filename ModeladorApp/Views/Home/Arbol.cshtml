@@ -224,7 +224,7 @@
                             for (i = 1; i <= 50; i++) {
 
                                 $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
-                                colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
+                                colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '" disabled></th>';
                             }
                             $('#head_' + treeReach).append(colName).fadeIn(300000);
 
@@ -763,6 +763,21 @@
 
         }
 
+        var tableToExcel = (function () {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
+
+
+
+
         //function addColumn(tree, nodoId) {
         //    console.log(tree,nodoId)
         //    $('#' + tree + ' thead tr').append('<th id=th' + nodoId +'>Col</th>');
@@ -811,6 +826,13 @@
                 <div class="row align-items-center">
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
+
+                            <span class="d-none d-sm-inline">
+                                <a onclick="tableToExcel('tree_0', 'Modelador_Master')" style="cursor:pointer" href="#" class="btn btn-secondary">
+                                    EXCEL
+                                </a>
+                            </span>
+
                             <span class="d-none d-sm-inline">
                                 <a onclick="expandOrContract(0)" class="btn btn-secondary">
                                     Expandir/Contraer
@@ -843,58 +865,58 @@
                     <tbody>
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
-                            <td><input type="text" id="tree_0_colvalue_2" onchange="insertOrUpdateInfoGrilla('tree_0',0,2)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_3" onchange="insertOrUpdateInfoGrilla('tree_0',0,3)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_4" onchange="insertOrUpdateInfoGrilla('tree_0',0,4)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_5" onchange="insertOrUpdateInfoGrilla('tree_0',0,5)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_6" onchange="insertOrUpdateInfoGrilla('tree_0',0,6)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_7" onchange="insertOrUpdateInfoGrilla('tree_0',0,7)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_8" onchange="insertOrUpdateInfoGrilla('tree_0',0,8)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_9" onchange="insertOrUpdateInfoGrilla('tree_0',0,9)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_10" onchange="insertOrUpdateInfoGrilla('tree_0',0,10)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_11" onchange="insertOrUpdateInfoGrilla('tree_0',0,11)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_12" onchange="insertOrUpdateInfoGrilla('tree_0',0,12)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_13" onchange="insertOrUpdateInfoGrilla('tree_0',0,13)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_14" onchange="insertOrUpdateInfoGrilla('tree_0',0,14)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_15" onchange="insertOrUpdateInfoGrilla('tree_0',0,15)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_16" onchange="insertOrUpdateInfoGrilla('tree_0',0,16)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_17" onchange="insertOrUpdateInfoGrilla('tree_0',0,17)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_18" onchange="insertOrUpdateInfoGrilla('tree_0',0,18)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_19" onchange="insertOrUpdateInfoGrilla('tree_0',0,19)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_20" onchange="insertOrUpdateInfoGrilla('tree_0',0,20)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_21" onchange="insertOrUpdateInfoGrilla('tree_0',0,21)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_22" onchange="insertOrUpdateInfoGrilla('tree_0',0,22)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_23" onchange="insertOrUpdateInfoGrilla('tree_0',0,23)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_24" onchange="insertOrUpdateInfoGrilla('tree_0',0,24)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_25" onchange="insertOrUpdateInfoGrilla('tree_0',0,25)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_26" onchange="insertOrUpdateInfoGrilla('tree_0',0,26)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_27" onchange="insertOrUpdateInfoGrilla('tree_0',0,27)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_28" onchange="insertOrUpdateInfoGrilla('tree_0',0,28)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_29" onchange="insertOrUpdateInfoGrilla('tree_0',0,29)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_30" onchange="insertOrUpdateInfoGrilla('tree_0',0,30)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_31" onchange="insertOrUpdateInfoGrilla('tree_0',0,31)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_32" onchange="insertOrUpdateInfoGrilla('tree_0',0,32)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_33" onchange="insertOrUpdateInfoGrilla('tree_0',0,33)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_34" onchange="insertOrUpdateInfoGrilla('tree_0',0,34)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_35" onchange="insertOrUpdateInfoGrilla('tree_0',0,35)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_36" onchange="insertOrUpdateInfoGrilla('tree_0',0,36)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_37" onchange="insertOrUpdateInfoGrilla('tree_0',0,37)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_38" onchange="insertOrUpdateInfoGrilla('tree_0',0,38)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_39" onchange="insertOrUpdateInfoGrilla('tree_0',0,39)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_40" onchange="insertOrUpdateInfoGrilla('tree_0',0,40)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_41" onchange="insertOrUpdateInfoGrilla('tree_0',0,41)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_42" onchange="insertOrUpdateInfoGrilla('tree_0',0,42)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_43" onchange="insertOrUpdateInfoGrilla('tree_0',0,43)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_44" onchange="insertOrUpdateInfoGrilla('tree_0',0,44)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_45" onchange="insertOrUpdateInfoGrilla('tree_0',0,45)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_46" onchange="insertOrUpdateInfoGrilla('tree_0',0,46)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_47" onchange="insertOrUpdateInfoGrilla('tree_0',0,47)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_48" onchange="insertOrUpdateInfoGrilla('tree_0',0,48)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_49" onchange="insertOrUpdateInfoGrilla('tree_0',0,49)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_50" onchange="insertOrUpdateInfoGrilla('tree_0',0,50)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_51" onchange="insertOrUpdateInfoGrilla('tree_0',0,51)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_52" onchange="insertOrUpdateInfoGrilla('tree_0',0,52)" /></td>
-                            <td><input type="text" id="tree_0_colvalue_53" onchange="insertOrUpdateInfoGrilla('tree_0',0,53)" /></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
 
 
                         </tr>
