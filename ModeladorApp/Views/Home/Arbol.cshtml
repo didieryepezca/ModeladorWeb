@@ -242,14 +242,16 @@
                                 for (n = 0; n <= result.length - 1; n++) {
 
                                     for (i = 2; i <= 51; i++) {
-
-                                        //console.log(m);
-                                        //correcto para rellenar las cajas que se despliegan
-                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`)">');
-
-                                       
+                                                                    
+                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`)">');                                                                                                                  
+                                        
                                     }                                  
                                     m = m + 1;
+
+                                    for (j = m; j <= 51 ; j++) {
+                                        $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`)" type="text"/>');
+                                        
+                                    }
                                 }
 
                             });                        
@@ -657,15 +659,34 @@
 
         }
 
-        function actualizarInfoGrilla(tree, id) {
+        function actualizarInfoGrilla(tree, id, i, nodeId) {
 
-            //var valorCaja = $('#' + tree + '_colvalue' + id).val();
-            console.log(tree);
-            console.log(id);
+            //tree: referencia al arbol
+            //id: el id para actualizar en caso haya un registro guardado.
+            //i: el contador de la caja empezando en 2 de izquierda a derecha hasta el 51
+            //nodeId: el valor del nivel del nodo en el que estamos.
 
-            
-            //console.log(valorCaja);
-            //console.log($('#' + tree + '_colvalue' + id))
+
+            var urlToGo = "";
+            var dataToGo;
+
+            if (id > 0) {
+
+                console.log("ACTUALIZAR ! ")
+            } else {
+
+                console.log("INSERTAR ! ")
+            }
+
+            //var valorCajaUpdate = $('#' + tree + '_colvalue' + id).val();
+            //console.log(tree);
+            //console.log(id);
+
+            var valorCajaInsert = $('#' + tree + '_colvalue_' + i).val();           
+
+            console.log(valorCajaInsert)
+            console.log(nodeId)
+           
 
             //$.ajax({
             //    type: "POST",
@@ -673,7 +694,7 @@
             //    url: "/Home/funUpdateInfo",
             //    data: {
             //        "id": id,
-            //        "informacion": valorCaja,
+            //        "informacion": valorCajaUpdate,
             //    },
             //    success: function (response) {
 
@@ -821,58 +842,58 @@
                     <tbody>
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
-                            <td><input type="text" id="tree_0_colvalue2" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue3" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue4" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue5" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue6" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue7" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue8" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue9" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue10" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue11" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue12" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue13" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue14" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue15" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue16" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue17" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue18" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue19" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue20" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue21" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue22" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue23" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue24" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue25" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue26" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue27" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue28" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue29" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue30" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue31" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue32" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue33" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue34" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue35" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue36" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue37" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue38" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue39" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue40" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue41" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue42" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue43" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue44" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue45" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue46" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue47" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue48" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue49" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue50" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue51" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue52" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
-                            <td><input type="text" id="tree_0_colvalue53" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_2" onchange="actualizarInfoGrilla('tree_0',0,2)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_3" onchange="actualizarInfoGrilla('tree_0',0,3)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_4" onchange="actualizarInfoGrilla('tree_0',0,4)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_5" onchange="actualizarInfoGrilla('tree_0',0,5)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_6" onchange="actualizarInfoGrilla('tree_0',0,6)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_7" onchange="actualizarInfoGrilla('tree_0',0,7)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_8" onchange="actualizarInfoGrilla('tree_0',0,8)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_9" onchange="actualizarInfoGrilla('tree_0',0,9)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_10" onchange="actualizarInfoGrilla('tree_0',0,10)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_11" onchange="actualizarInfoGrilla('tree_0',0,11)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_12" onchange="actualizarInfoGrilla('tree_0',0,12)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_13" onchange="actualizarInfoGrilla('tree_0',0,13)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_14" onchange="actualizarInfoGrilla('tree_0',0,14)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_15" onchange="actualizarInfoGrilla('tree_0',0,15)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_16" onchange="actualizarInfoGrilla('tree_0',0,16)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_17" onchange="actualizarInfoGrilla('tree_0',0,17)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_18" onchange="actualizarInfoGrilla('tree_0',0,18)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_19" onchange="actualizarInfoGrilla('tree_0',0,19)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_20" onchange="actualizarInfoGrilla('tree_0',0,20)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_21" onchange="actualizarInfoGrilla('tree_0',0,21)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_22" onchange="actualizarInfoGrilla('tree_0',0,22)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_23" onchange="actualizarInfoGrilla('tree_0',0,23)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_24" onchange="actualizarInfoGrilla('tree_0',0,24)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_25" onchange="actualizarInfoGrilla('tree_0',0,25)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_26" onchange="actualizarInfoGrilla('tree_0',0,26)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_27" onchange="actualizarInfoGrilla('tree_0',0,27)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_28" onchange="actualizarInfoGrilla('tree_0',0,28)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_29" onchange="actualizarInfoGrilla('tree_0',0,29)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_30" onchange="actualizarInfoGrilla('tree_0',0,30)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_31" onchange="actualizarInfoGrilla('tree_0',0,31)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_32" onchange="actualizarInfoGrilla('tree_0',0,32)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_33" onchange="actualizarInfoGrilla('tree_0',0,33)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_34" onchange="actualizarInfoGrilla('tree_0',0,34)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_35" onchange="actualizarInfoGrilla('tree_0',0,35)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_36" onchange="actualizarInfoGrilla('tree_0',0,36)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_37" onchange="actualizarInfoGrilla('tree_0',0,37)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_38" onchange="actualizarInfoGrilla('tree_0',0,38)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_39" onchange="actualizarInfoGrilla('tree_0',0,39)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_40" onchange="actualizarInfoGrilla('tree_0',0,40)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_41" onchange="actualizarInfoGrilla('tree_0',0,41)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_42" onchange="actualizarInfoGrilla('tree_0',0,42)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_43" onchange="actualizarInfoGrilla('tree_0',0,43)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_44" onchange="actualizarInfoGrilla('tree_0',0,44)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_45" onchange="actualizarInfoGrilla('tree_0',0,45)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_46" onchange="actualizarInfoGrilla('tree_0',0,46)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_47" onchange="actualizarInfoGrilla('tree_0',0,47)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_48" onchange="actualizarInfoGrilla('tree_0',0,48)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_49" onchange="actualizarInfoGrilla('tree_0',0,49)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_50" onchange="actualizarInfoGrilla('tree_0',0,50)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_51" onchange="actualizarInfoGrilla('tree_0',0,51)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_52" onchange="actualizarInfoGrilla('tree_0',0,52)" /></td>
+                            <td><input type="text" id="tree_0_colvalue_53" onchange="actualizarInfoGrilla('tree_0',0,53)" /></td>
 
 
                         </tr>
