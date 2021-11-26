@@ -596,19 +596,7 @@
             return $.get(url, { lvlId: lvlID }, function (data) {
                 //console.log(data);
             });
-        }
-
-
-
-        function ingresarInfoGrilla(lvlId, tree, i) {
-
-            var valorCaja = $('#' + tree + '_colvalue' + i).val();
-            console.log(valorCaja);
-            console.log(lvlId, i);
-
-            
-
-        }
+        }        
 
         function insertOrUpdateInfoGrilla(tree, id, i, nodeId) {
 
@@ -689,11 +677,13 @@
                     url: urlToGo,
                     data: dataToGo,
                     success: function (response) {
-
+                       
                         if (response > 0) {
+                            
+                            $('#' + tree + '_colvalue_' + i + "_" + nodeId).removeAttr("onchange");
+                            $('#' + tree + '_colvalue_' + i + "_" + nodeId).attr('onchange', "insertOrUpdateInfoGrilla('" + tree + "','" + response + "')");
 
-                            $('#' + tree + '_colvalue' + i).removeAttr("onchange");
-                            $('#' + tree + '_colvalue' + i).attr('onchange', "insertOrUpdateInfoGrilla("' + tree + "`,`' + response + '`)');
+                            $('#' + tree + '_colvalue_' + i + "_" + nodeId).attr('id', tree + '_colvalue'+response);
 
                             Swal.fire({
                                 toast: true,
