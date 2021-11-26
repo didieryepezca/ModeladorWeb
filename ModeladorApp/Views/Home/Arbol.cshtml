@@ -241,7 +241,7 @@
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
                             info.then(function (result) {
-                                console.log(result);
+                                //console.log(result);
                                 //var j = 0;
                                 // cajas para ingresar los valores, creadas estáticamente en el código HTML                                                                                                     
 
@@ -249,25 +249,14 @@
                                     for (n = 0; n <= result.length - 1; n++) {
 
                                         //correcto para rellenar las cajas que se despliegan
-                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + m + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)">');
-                                        //incorrecto para rellenar las cajas que se despliegan
-                                        //$('#' + treeReach + '_colvalue' + m).val(result[n].informacion);
-                                        //$('#' + treeReach + '_colvalue' + m).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)');
-
+                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID +'`)">');
+                                        
                                         m = m + 1;
                                 }
                             });
-
-
                             // Podemos setear la información en la columna 2 (la que continua al titulo.)
                             //$tdList.eq(2).find("input").val("hola");
-                            //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
-
-                            //$('#'+treeReach+'_colname1').val("valor");
-
-                            // Static markup (more efficiently defined as html row template):
-                            // $tdList.eq(3).html("<input type='input' value='"  "" + "'>");
-                            // ...
+                            //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');                          
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
@@ -606,10 +595,13 @@
             });
         }
 
+        
+
         function ingresarInfoGrilla(lvlId,tree, i) {
-            //console.log(tree, i);
+          
             var valorCaja = $('#' + tree + '_colvalue' + i).val();
-            //console.log(valorCaja);
+            //console.log(valorCaja);           
+            //console.log(lvlId, i);
 
             $.ajax({
                 type: "POST",
@@ -620,16 +612,53 @@
                     "info": valorCaja,
                 },
                 success: function (response) {
-                    //console.log(response);
+
+                    if (response > 0) {
+
+                        $('#' + tree + '_colvalue' + i).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + i + '`,`' + response +'`)');
+
+                        Swal.fire({
+                            toast: true,
+                            background: 'orange',
+                            icon: 'success',
+                            title: 'Información guardada',
+                            animation: false,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                    } else {
+                        Swal.fire({
+                            toast: true,
+                            background: 'orange',
+                            icon: 'error',
+                            title: 'Hubo un problema',
+                            animation: false,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+                    }
                 },
             });
 
         }
 
-        function actualizarInfoGrilla(tree, i, id) {
-            //console.log(tree, i, id);
-            
-            var valorCaja = $('#' + tree + '_colvalue' + i).val();
+        function actualizarInfoGrilla(tree, id) {
+                        
+            var valorCaja = $('#' + tree + '_colvalue' + id).val();
+            console.log(tree);
             console.log(id);
             console.log(valorCaja);
 
@@ -641,8 +670,47 @@
                     "id": id,
                     "informacion": valorCaja,
                 },
-                success: function (response) {
-                    //console.log(response);
+                success: function (response) {                  
+
+                    if (response > 0) {
+
+                        Swal.fire({
+                            toast: true,
+                            background: 'orange',
+                            icon: 'success',
+                            title: 'Información actualizada',
+                            animation: false,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                    } else {
+
+                        Swal.fire({
+                            toast: true,
+                            background: 'orange',
+                            icon: 'error',
+                            title: 'Hubo un problema',
+                            animation: false,
+                            position: 'bottom',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+
+                    }
+
                 },
             });
 

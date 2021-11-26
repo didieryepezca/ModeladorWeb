@@ -170,9 +170,11 @@ namespace ModeladorApp.Controllers
                 t.Usuario = userName;
                 t.FechaIngreso = DateTime.Now;               
 
-                var modelcount = nda.InsertNivelInfo(t);
+                nda.InsertNivelInfo(t);
 
-                return modelcount;
+                var infoId = t.InfoID;
+
+                return infoId;
             }
             catch (Exception e)
             {
