@@ -249,7 +249,7 @@
                                     for (n = 0; n <= result.length - 1; n++) {
 
                                         //correcto para rellenar las cajas que se despliegan
-                                        $tdList.eq(m).html('<input type="text" value="' + result[n].informacion + '">');
+                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + m + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)">');
                                         //incorrecto para rellenar las cajas que se despliegan
                                         //$('#' + treeReach + '_colvalue' + m).val(result[n].informacion);
                                         //$('#' + treeReach + '_colvalue' + m).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + m + '`,`' + result[n].infoID +'`)');
