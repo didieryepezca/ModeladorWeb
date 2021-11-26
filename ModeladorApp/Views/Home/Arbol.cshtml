@@ -231,11 +231,11 @@
 
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
-
                             var info = funGetInfo(node.data.id)
                             info.then(function (result) {
+
                                 //console.log(result);
-                                //var j = 0;
+                             
                                 // cajas para ingresar los valores, creadas estáticamente en el código HTML
                                 var m = 2;                                
 
@@ -243,20 +243,20 @@
 
                                     for (i = 2; i <= 51; i++) {
                                                                     
-                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`)">');                                                                                                                  
+                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`)">');
                                         
-                                    }                                  
+                                    }
+                                    
                                     m = m + 1;
 
-                                    for (j = m; j <= 51 ; j++) {
-                                        $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`)" type="text"/>');
+                                    for (j = m; j <= 51; j++) {
+
+                                        $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id +'" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`)" type="text"/>');
                                         
                                     }
                                 }
 
-                            });                        
-
-
+                            });
                             // Podemos setear la información en la columna 2 (la que continua al titulo.)
                             //$tdList.eq(2).find("input").val("hola");
                             //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
@@ -606,60 +606,11 @@
             console.log(valorCaja);
             console.log(lvlId, i);
 
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/Home/funInsertInfo",
-                data: {
-                    "idLvl": lvlId,
-                    "info": valorCaja,
-                },
-                success: function (response) {
-
-                    if (response > 0) {
-
-                        $('#' + tree + '_colvalue' + i).removeAttr("onchange");
-                        $('#' + tree + '_colvalue' + i).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + response + '`)');
-
-                        Swal.fire({
-                            toast: true,
-                            background: 'orange',
-                            icon: 'success',
-                            title: 'Información guardada',
-                            animation: false,
-                            position: 'bottom',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer)
-                                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
-
-                    } else {
-                        Swal.fire({
-                            toast: true,
-                            background: 'orange',
-                            icon: 'error',
-                            title: 'Hubo un problema',
-                            animation: false,
-                            position: 'bottom',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer)
-                                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
-                    }
-                },
-            });
+            
 
         }
 
-        function actualizarInfoGrilla(tree, id, i, nodeId) {
+        function insertOrUpdateInfoGrilla(tree, id, i, nodeId) {
 
             //tree: referencia al arbol
             //id: el id para actualizar en caso haya un registro guardado.
@@ -676,72 +627,110 @@
                 urlToGo = "/Home/funUpdateInfo";
                 dataToGo = { "id": id, "informacion": valorCajaUpdate }
 
+                    $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: urlToGo,
+                    data: dataToGo,
+                    success: function (response) {
+
+                        if (response > 0) {
+
+                            Swal.fire({
+                                toast: true,
+                                background: 'orange',
+                                icon: 'success',
+                                title: 'Información actualizada',
+                                animation: false,
+                                position: 'bottom',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+
+                        } else {
+
+                            Swal.fire({
+                                toast: true,
+                                background: 'orange',
+                                icon: 'error',
+                                title: 'Hubo un problema',
+                                animation: false,
+                                position: 'bottom',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                        }
+
+                    },
+                });
+
+
             } else {
                 console.log("INSERTAR ! ")
 
-                var valorCajaInsert = $('#' + tree + '_colvalue_' + i).val();
+                var valorCajaInsert = $('#' + tree + '_colvalue_' + i + "_" + nodeId).val();
 
                 urlToGo = "/Home/funInsertInfo";
                 dataToGo = { "idLvl": nodeId, "info": valorCajaInsert }
 
-            }
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: urlToGo,
+                    data: dataToGo,
+                    success: function (response) {
 
-            console.log(urlToGo)
-            console.log(dataToGo)         
-                              
+                        if (response > 0) {
 
+                            $('#' + tree + '_colvalue' + i).removeAttr("onchange");
+                            $('#' + tree + '_colvalue' + i).attr('onchange', "insertOrUpdateInfoGrilla("' + tree + "`,`' + response + '`)');
 
-            //$.ajax({
-            //    type: "POST",
-            //    dataType: "json",
-            //    url: "/Home/funUpdateInfo",
-            //    data: {
-            //        "id": id,
-            //        "informacion": valorCajaUpdate,
-            //    },
-            //    success: function (response) {
+                            Swal.fire({
+                                toast: true,
+                                background: 'orange',
+                                icon: 'success',
+                                title: 'Información guardada',
+                                animation: false,
+                                position: 'bottom',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
 
-            //        if (response > 0) {
-
-            //            Swal.fire({
-            //                toast: true,
-            //                background: 'orange',
-            //                icon: 'success',
-            //                title: 'Información actualizada',
-            //                animation: false,
-            //                position: 'bottom',
-            //                showConfirmButton: false,
-            //                timer: 3000,
-            //                timerProgressBar: true,
-            //                didOpen: (toast) => {
-            //                    toast.addEventListener('mouseenter', Swal.stopTimer)
-            //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-            //                }
-            //            })
-
-            //        } else {
-
-            //            Swal.fire({
-            //                toast: true,
-            //                background: 'orange',
-            //                icon: 'error',
-            //                title: 'Hubo un problema',
-            //                animation: false,
-            //                position: 'bottom',
-            //                showConfirmButton: false,
-            //                timer: 3000,
-            //                timerProgressBar: true,
-            //                didOpen: (toast) => {
-            //                    toast.addEventListener('mouseenter', Swal.stopTimer)
-            //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-            //                }
-            //            })
-            //        }
-
-            //    },
-            //});
-
-
+                        } else {
+                            Swal.fire({
+                                toast: true,
+                                background: 'orange',
+                                icon: 'error',
+                                title: 'Hubo un problema',
+                                animation: false,
+                                position: 'bottom',
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                }
+                            })
+                        }
+                    },
+                });
+            }            
         }
 
 
