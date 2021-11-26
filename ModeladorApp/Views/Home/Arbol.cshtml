@@ -226,37 +226,38 @@
                                 $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
                                 colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '"></th>';
                             }
-                            $('#head_' + treeReach).append(colName).fadeIn(300000);                           
+                            $('#head_' + treeReach).append(colName).fadeIn(300000);
 
 
-
-                            // 50 cajas para el contenido de las columnas.
-                            //console.log(pySelected)
-
-                            for (i = 2; i <= 51; i++) {
-
-                                $tdList.eq(i).html('<input id="' + treeReach + '_colvalue' + i + '" onchange="ingresarInfoGrilla( `' + node.data.id +'`,`tree_' + pySelected + '`,`' + i + '`)" type="text" placeholder="Ingrese algo">');
-                            }
-                             //console.log(node.data.id);
+                            //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
+
                             var info = funGetInfo(node.data.id)
                             info.then(function (result) {
                                 //console.log(result);
                                 //var j = 0;
-                                // cajas para ingresar los valores, creadas estáticamente en el código HTML                                                                                                     
+                                // cajas para ingresar los valores, creadas estáticamente en el código HTML
+                                var m = 2;                                
 
-                                    var m = 2;
-                                    for (n = 0; n <= result.length - 1; n++) {
+                                for (n = 0; n <= result.length - 1; n++) {
 
+                                    for (i = 2; i <= 51; i++) {
+
+                                        //console.log(m);
                                         //correcto para rellenar las cajas que se despliegan
-                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID +'`)">');
-                                        
-                                        m = m + 1;
+                                        $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="actualizarInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`)">');
+
+                                       
+                                    }                                  
+                                    m = m + 1;
                                 }
-                            });
+
+                            });                        
+
+
                             // Podemos setear la información en la columna 2 (la que continua al titulo.)
                             //$tdList.eq(2).find("input").val("hola");
-                            //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');                          
+                            //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
@@ -595,13 +596,13 @@
             });
         }
 
-        
 
-        function ingresarInfoGrilla(lvlId,tree, i) {
-          
+
+        function ingresarInfoGrilla(lvlId, tree, i) {
+
             var valorCaja = $('#' + tree + '_colvalue' + i).val();
-            //console.log(valorCaja);           
-            //console.log(lvlId, i);
+            console.log(valorCaja);
+            console.log(lvlId, i);
 
             $.ajax({
                 type: "POST",
@@ -615,7 +616,8 @@
 
                     if (response > 0) {
 
-                        $('#' + tree + '_colvalue' + i).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + i + '`,`' + response +'`)');
+                        $('#' + tree + '_colvalue' + i).removeAttr("onchange");
+                        $('#' + tree + '_colvalue' + i).attr('onchange', "actualizarInfoGrilla(`tree_" + pySelected + '`,`' + response + '`)');
 
                         Swal.fire({
                             toast: true,
@@ -656,63 +658,64 @@
         }
 
         function actualizarInfoGrilla(tree, id) {
-                        
-            var valorCaja = $('#' + tree + '_colvalue' + id).val();
+
+            //var valorCaja = $('#' + tree + '_colvalue' + id).val();
             console.log(tree);
             console.log(id);
-            console.log(valorCaja);
 
-            $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/Home/funUpdateInfo",
-                data: {
-                    "id": id,
-                    "informacion": valorCaja,
-                },
-                success: function (response) {                  
+            
+            //console.log(valorCaja);
+            //console.log($('#' + tree + '_colvalue' + id))
 
-                    if (response > 0) {
+            //$.ajax({
+            //    type: "POST",
+            //    dataType: "json",
+            //    url: "/Home/funUpdateInfo",
+            //    data: {
+            //        "id": id,
+            //        "informacion": valorCaja,
+            //    },
+            //    success: function (response) {
 
-                        Swal.fire({
-                            toast: true,
-                            background: 'orange',
-                            icon: 'success',
-                            title: 'Información actualizada',
-                            animation: false,
-                            position: 'bottom',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer)
-                                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
+            //        if (response > 0) {
 
-                    } else {
+            //            Swal.fire({
+            //                toast: true,
+            //                background: 'orange',
+            //                icon: 'success',
+            //                title: 'Información actualizada',
+            //                animation: false,
+            //                position: 'bottom',
+            //                showConfirmButton: false,
+            //                timer: 3000,
+            //                timerProgressBar: true,
+            //                didOpen: (toast) => {
+            //                    toast.addEventListener('mouseenter', Swal.stopTimer)
+            //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+            //                }
+            //            })
 
-                        Swal.fire({
-                            toast: true,
-                            background: 'orange',
-                            icon: 'error',
-                            title: 'Hubo un problema',
-                            animation: false,
-                            position: 'bottom',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener('mouseenter', Swal.stopTimer)
-                                toast.addEventListener('mouseleave', Swal.resumeTimer)
-                            }
-                        })
+            //        } else {
 
+            //            Swal.fire({
+            //                toast: true,
+            //                background: 'orange',
+            //                icon: 'error',
+            //                title: 'Hubo un problema',
+            //                animation: false,
+            //                position: 'bottom',
+            //                showConfirmButton: false,
+            //                timer: 3000,
+            //                timerProgressBar: true,
+            //                didOpen: (toast) => {
+            //                    toast.addEventListener('mouseenter', Swal.stopTimer)
+            //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+            //                }
+            //            })
+            //        }
 
-                    }
-
-                },
-            });
+            //    },
+            //});
 
 
         }
@@ -818,58 +821,58 @@
                     <tbody>
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td><input type="text" id="tree_0_colvalue2" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue3" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue4" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue5" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue6" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue7" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue8" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue9" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue10" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue11" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue12" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue13" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue14" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue15" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue16" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue17" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue18" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue19" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue20" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue21" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue22" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue23" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue24" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue25" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue26" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue27" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue28" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue29" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue30" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue31" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue32" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue33" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue34" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue35" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue36" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue37" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue38" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue39" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue40" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue41" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue42" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue43" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue44" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue45" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue46" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue47" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue48" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue49" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue50" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue51" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue52" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
+                            <td><input type="text" id="tree_0_colvalue53" onchange="actualizarInfoGrilla('tree_0',0)" /></td>
 
 
                         </tr>
