@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<ModeladorApp.Models.Entities.TB_PERMISOS>
 
 
-<script src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
 
 <script type="text/javascript">
 
@@ -97,33 +97,16 @@
 
                 if (data >= 1) {
 
-                    swal({
-                        title: "OK",
-                        text: "Se Actualizó",
-                        type: "success"
-                    }
-                        , function () {
-
-                            //window.location = "https://localhost:5001/Periodo/VerPeriodosGeneral";
-                        }
-                    );
+                    Swal.fire('Actualizado !', '', 'success')
                 }
                 else {
-                    swal({
-                        title: "ERROR",
-                        text: "Hubo un problema",
-                        type: "warning"
-                    });
+                    Swal.fire('ADVERTENCIA', 'Hubo un Problema', 'info')
                 }
             });
 
         } else {
 
-            swal({
-                title: "ERROR",
-                text: "Te falta completar Campos",
-                type: "warning"
-            });
+            Swal.fire('ERROR', 'Hubo un error no controlado', 'error')
 
         }
     }

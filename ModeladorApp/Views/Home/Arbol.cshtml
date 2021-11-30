@@ -217,18 +217,48 @@
                             // (Index #2 is rendered by fancytree)
 
                             //---------------------------------------------------------->>>
+                            //console.log(pySelected)
+                            var titles = funGetTitulos(pySelected)
+                            titles.then(function (result) {
 
-                            // 50 cajas para nombres de  columnas.
-                            var colName = "";
+                                //console.log(result);
 
-                            for (i = 1; i <= 50; i++) {
+                                var colName = "";
 
-                                $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
-                                colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" type="text" placeholder="col nombre ' + i + '" disabled></th>';
-                            }
-                            $('#head_' + treeReach).append(colName).fadeIn(300000);
+                                if (result.length != 0) {
+                                    // 50 cajas para nombres de  columnas.
 
+                                    var g = 1;
 
+                                    for (h = 0; h <= result.length - 1; h++) {
+
+                                        $('#' + treeReach + '_th' + h).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_th' + h + '" ><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',' + vPermiso + ' )" type="text" value="' + result[h].titulo + '"></th>';
+                                    }
+
+                                    g = g + 1;
+
+                                    for (f = g; f <= 49; f++) {
+
+                                        $('#' + treeReach + '_th' + f).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_th' + f + '" ><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',' + vPermiso + '  )" type="text" placeholder="col nombre"></th>';
+                                    }
+
+                                    $('#head_' + treeReach).append(colName).fadeIn(300000);
+
+                                } else {                                    
+
+                                    for (i = 1; i <= 50; i++) {
+
+                                        $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',' + vPermiso + '  )" type="text" placeholder="col nombre ' + i + '"></th>';
+                                    }
+                                    $('#head_' + treeReach).append(colName).fadeIn(300000);
+
+                                }
+                            });                           
+
+                            
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
@@ -244,7 +274,6 @@
                                         for (i = 2; i <= 51; i++) {
 
                                             $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)">');
-
                                         }
 
                                         m = m + 1;
@@ -592,6 +621,153 @@
                 //console.log(data);
             });
         };
+        //-------------------------------- para obtener los titulos de las columnas...
+        async function funGetTitulos(pyId) {
+            return titles = await funGetTitlesFromDB(pyId);
+            //var info = await funGetInfoFromDB(lvlID);
+            //console.log(info)
+        };
+
+        function funGetTitlesFromDB(pyId) {
+            var url = "/Home/funGetColumnTitles";
+            return $.get(url, { idProyecto: pyId }, function (data) {
+                //console.log(data);
+            });
+        }
+
+        function InsertUpdateTitulo(tree, i, id, idpy, permiso) {
+
+            //console.log(permiso);
+            if (typeof (permiso) === 'undefined' || permiso == "VIEWER") {
+
+                Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
+
+            } else {
+
+                var urlToGo = "";
+                var dataToGo;
+                //console.log(tree, i)            
+                if (id > 0) {
+
+                    var tituloUpdate = $('#' + tree + "_" + id).val();
+
+                    //console.log(tree);
+                    console.log(tituloUpdate);
+
+                    urlToGo = "/Home/funUpdateTitulo";
+                    dataToGo = { "id": id, "title": tituloUpdate }
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: urlToGo,
+                        data: dataToGo,
+                        success: function (response) {
+
+                            if (response > 0) {
+
+                                Swal.fire({
+                                    toast: true,
+                                    background: 'orange',
+                                    icon: 'success',
+                                    title: 'Titulo actualizado',
+                                    animation: false,
+                                    position: 'bottom',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                            } else {
+
+                                Swal.fire({
+                                    toast: true,
+                                    background: 'orange',
+                                    icon: 'error',
+                                    title: 'Hubo un problema',
+                                    animation: false,
+                                    position: 'bottom',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+                            }
+                        },
+                    });
+
+
+                } else {
+
+                    var tituloInsert = $('#' + tree + i).val();
+                    //console.log(titulo)
+                    urlToGo = "/Home/funInsertTitulo";
+                    dataToGo = { "proyectoId": idpy, "title": tituloInsert }
+
+                    $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: urlToGo,
+                        data: dataToGo,
+                        success: function (response) {
+
+                            if (response > 0) {
+
+                                //removemos la funcion onchange y la volvemos a agregar solo con los parametros necesarios para la actualizacion.
+                                $('#' + tree + i).removeAttr("onchange");
+                                $('#' + tree + i).attr('onchange', "InsertUpdateTitulo('" + tree + "','" + i + "','" + response + "','" + idpy + "','" + permiso + "')");
+                                //cambiamos el id tambien por el nuevo con solo los parametros requeridos para la actualizacion.
+                                $('#' + tree + i).attr('id', tree + '_' + response);
+
+                                Swal.fire({
+                                    toast: true,
+                                    background: 'orange',
+                                    icon: 'success',
+                                    title: 'Titulo guardado',
+                                    animation: false,
+                                    position: 'bottom',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+
+                            } else {
+                                Swal.fire({
+                                    toast: true,
+                                    background: 'orange',
+                                    icon: 'error',
+                                    title: 'Hubo un problema',
+                                    animation: false,
+                                    position: 'bottom',
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                                    }
+                                })
+                            }
+                        },
+                    });
+
+                }
+            }
+
+
+        }
+
 
         //-------------------------------- para obtener la info de cada nivel...
         async function funGetInfo(lvlID) {

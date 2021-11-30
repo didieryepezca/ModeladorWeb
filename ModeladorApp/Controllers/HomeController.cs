@@ -203,6 +203,64 @@ namespace ModeladorApp.Controllers
             }
         }
 
+        public List<TB_NIVEL_COLUMN_TITLES> funGetColumnTitles(int idProyecto)
+        {
+            var da = new NivelTituloDA();
+
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(2500);
+            var titles = da.GetNivelTitulosByIdProyecto(idProyecto).ToList();
+
+            return titles;
+        }
+
+
+        public int funInsertTitulo(int proyectoId, string title)
+        {
+            var result = "0";
+            var nda = new NivelTituloDA();
+            var user = userManager.GetUserAsync(User);
+            var userName = user.Result.UsuarioNombreCompleto;
+            try
+            {
+                TB_NIVEL_COLUMN_TITLES ct = new TB_NIVEL_COLUMN_TITLES();
+
+                ct.proyectoID = proyectoId;
+                ct.titulo = title;               
+
+                nda.InsertColumnTitle(ct);
+                var titleID = ct.TituloID;
+
+                return titleID;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
+        public int funUpdateTitulo(int id, string title)
+        {
+            var user = userManager.GetUserAsync(User);
+            var userName = user.Result.UsuarioNombreCompleto;
+
+            var result = "0";
+            var da = new NivelTituloDA();
+            try
+            {
+                var modelcount = da.UpdateColumnTitle(id, title);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
         //---------------------------------TREE VIEW REAL
 
 
