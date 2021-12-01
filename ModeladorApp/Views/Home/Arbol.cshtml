@@ -246,9 +246,9 @@
 
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
-                                } else {                                    
+                                } else {
 
-                                    for (i = 1; i <= 50; i++) {
+                                    for (i = 1; i <= 49; i++) {
 
                                         $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
                                         colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',' + vPermiso + '  )" type="text" placeholder="col nombre ' + i + '"></th>';
@@ -256,13 +256,13 @@
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
                                 }
-                            });                           
+                            });
 
-                            
+
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
-                            info.then(function (result) {                                
+                            info.then(function (result) {
 
                                 // Si la longitud del resultado es distinta de 0 hay datos.
                                 if (result.length != 0) {
@@ -271,14 +271,14 @@
 
                                     for (n = 0; n <= result.length - 1; n++) {
 
-                                        for (i = 2; i <= 51; i++) {
+                                        for (i = 2; i <= 52; i++) {
 
                                             $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)">');
                                         }
 
                                         m = m + 1;
 
-                                        for (j = m; j <= 51; j++) {
+                                        for (j = m; j <= 52; j++) {
 
                                             $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text"/>');
 
@@ -287,7 +287,7 @@
                                 } else { // Sino no hay ningun dato en las cajas de un arbol. crear las cajas desde 0
 
                                     console.log("Construir desde 0");
-                                    for (k = 2; k <= 51; k++) {
+                                    for (k = 2; k <= 52; k++) {
 
                                         $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text"/>');
 
@@ -646,7 +646,7 @@
 
                 var urlToGo = "";
                 var dataToGo;
-                //console.log(tree, i)            
+                //console.log(tree, i)
                 if (id > 0) {
 
                     var tituloUpdate = $('#' + tree + "_" + id).val();
@@ -783,7 +783,7 @@
             });
         }
 
-        function insertOrUpdateInfoGrilla(tree, id, i, nodeId, permiso) {            
+        function insertOrUpdateInfoGrilla(tree, id, i, nodeId, permiso) {
 
 
             console.log(permiso);
@@ -951,7 +951,58 @@
             }
         })()
 
+        function fnShowHideColumns(loadedTree) {
 
+
+            var accionM = $("#selectColumnas").val();
+            var accionU = $("#selectColumnasUser").val();
+
+            //console.log(accionM)
+            console.log(accionU)
+
+            var tree = $("#" + loadedTree).fancytree("getTree");
+            var nodo = tree.getActiveNode();
+
+            if (nodo === null) {
+
+                Swal.fire('ATENCION', 'Debe seleccionar un Nivel', 'warning')
+
+            } else {
+
+                $tdList = $(nodo.tr).find(">td");
+               
+                if (accionM == "HIDEALL" || accionU == "HIDEALL") {
+
+                    //titulos
+                    for (c = 0; c <= 49; c++) {
+                        $('#' + loadedTree + '_th' + c).attr('style', "display:none");
+                    }
+                    $('#tree_0_th2').attr('style', "display:none");
+
+                    //cuerpos
+                    for (i = 2; i <= $tdList.length - 1; i++) {
+
+                        $tdList[i].hidden = true;                        
+                    }
+
+                } else if (accionM == "SHOWALL" || accionU == "SHOWALL"){
+
+                    //titulos
+                    for (c = 0; c <= 49; c++) {
+
+                        $('#' + loadedTree + '_th' + c).removeAttr("style");
+                        
+                    }                    
+                    //cuerpos
+                    for (i = 2; i <= $tdList.length - 1; i++) {
+
+                        $tdList[i].hidden = false;
+                    }
+                }     
+                
+            }
+
+        }
 
 
         //function addColumn(tree, nodoId) {
@@ -1004,6 +1055,15 @@
                         <div class="btn-list">
 
                             <span class="d-none d-sm-inline">
+                                <select class="form-select" id="selectColumnas" onchange="fnShowHideColumns('tree_0');">
+                                    <option selected="">Columnas</option>
+                                    <option value="SHOWALL">Mostrar todas</option>
+                                    <option value="HIDEALL">Ocultar todas</option>
+                                </select>
+                            </span>
+
+
+                            <span class="d-none d-sm-inline">
                                 <a onclick="tableToExcel('tree_0', 'Modelador_Master')" style="cursor:pointer" href="#" class="btn btn-secondary">
                                     EXCEL
                                 </a>
@@ -1015,11 +1075,11 @@
                                 </a>
                             </span>
 
-                            <span class="d-none d-sm-inline">
-                                <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
-                                    Clonar
-                                </a>
-                            </span>
+                            @*<span class="d-none d-sm-inline">
+                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
+                                        Clonar
+                                    </a>
+                                </span>*@
 
                         </div>
                     </div>
@@ -1093,7 +1153,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-
+                            <td></td>
 
                         </tr>
                     </tbody>
@@ -1108,6 +1168,16 @@
                     <div class="row align-items-center">
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
+
+                                <span class="d-none d-sm-inline">
+                                    <select class="form-select" id="selectColumnasUser" onchange="fnShowHideColumns('tree_@item.ProyectoID');">
+                                        <option selected="">Columnas</option>
+                                        <option value="SHOWALL">Mostrar todas</option>
+                                        <option value="HIDEALL">Ocultar todas</option>
+                                    </select>
+                                </span>
+
+
                                 <span class="d-none d-sm-inline">
                                     <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
                                         Expandir/Contraer
