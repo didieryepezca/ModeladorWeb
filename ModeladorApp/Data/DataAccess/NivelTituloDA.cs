@@ -15,11 +15,8 @@ namespace ModeladorApp.Data.DataAccess
             using (var db = new ApplicationDbContext())
             {
                 IQueryable<TB_NIVEL_COLUMN_TITLES> query = db.TB_NIVEL_COLUMN_TITLES;
-
-                if (idProyecto > 0)
-                {
-                    query = query.Where(item => item.proyectoID == idProyecto);
-                }
+               
+                query = query.Where(item => item.proyectoID == idProyecto);               
 
                 return query.ToList();
             }

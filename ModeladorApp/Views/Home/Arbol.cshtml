@@ -217,7 +217,7 @@
                             // (Index #2 is rendered by fancytree)
 
                             //---------------------------------------------------------->>>
-                            //console.log(pySelected)
+                            console.log(pySelected)
                             var titles = funGetTitulos(pySelected)
                             titles.then(function (result) {
 
@@ -233,7 +233,7 @@
                                     for (h = 0; h <= result.length - 1; h++) {
 
                                         $('#' + treeReach + '_th' + h).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + h + '" ><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',' + vPermiso + ' )" type="text" value="' + result[h].titulo + '"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_th' + h + '" ><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '"></th>';
                                     }
 
                                     g = g + 1;
@@ -241,7 +241,7 @@
                                     for (f = g; f <= 49; f++) {
 
                                         $('#' + treeReach + '_th' + f).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + f + '" ><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',' + vPermiso + '  )" type="text" placeholder="col nombre"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_th' + f + '" ><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre"></th>';
                                     }
 
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
@@ -251,7 +251,7 @@
                                     for (i = 1; i <= 49; i++) {
 
                                         $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',' + vPermiso + '  )" type="text" placeholder="col nombre ' + i + '"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '"></th>';
                                     }
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
@@ -637,7 +637,8 @@
 
         function InsertUpdateTitulo(tree, i, id, idpy, permiso) {
 
-            //console.log(permiso);
+            console.log(permiso);
+
             if (typeof (permiso) === 'undefined' || permiso == "VIEWER") {
 
                 Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
@@ -707,7 +708,7 @@
                 } else {
 
                     var tituloInsert = $('#' + tree + i).val();
-                    //console.log(titulo)
+                    console.log(tituloInsert)
                     urlToGo = "/Home/funInsertTitulo";
                     dataToGo = { "proyectoId": idpy, "title": tituloInsert }
 
