@@ -637,7 +637,7 @@
 
         function InsertUpdateTitulo(tree, i, id, idpy, permiso) {
 
-            console.log(permiso);
+            //console.log(permiso);
 
             if (typeof (permiso) === 'undefined' || permiso == "VIEWER") {
 
@@ -762,13 +762,9 @@
                             }
                         },
                     });
-
                 }
             }
-
-
         }
-
 
         //-------------------------------- para obtener la info de cada nivel...
         async function funGetInfo(lvlID) {
@@ -786,8 +782,7 @@
 
         function insertOrUpdateInfoGrilla(tree, id, i, nodeId, permiso) {
 
-
-            console.log(permiso);
+            //console.log(permiso);
             if (typeof (permiso) === 'undefined' || permiso == "VIEWER") {
 
                 Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
@@ -852,7 +847,6 @@
                                     }
                                 })
                             }
-
                         },
                     });
 
@@ -919,9 +913,7 @@
             }
         }
 
-
         //-------------------------------- para obtener la info de cada nivel...
-
         function expandOrContract(vIdProyecto) {
 
             $("#tree_" + vIdProyecto).fancytree("getRootNode").visit(function (node) {
@@ -935,9 +927,7 @@
 
         //Mensajito para la informacion que se puede editar proyecto
         function EdicionInfo() {
-
             Swal.fire('EDITOR', 'Puedes editar éste proyecto en su respectiva pestaña EDITOR, ya sea porque es tuyo o porque te concedieron dicho permiso.', 'info')
-
         }
 
         var tableToExcel = (function () {
@@ -954,12 +944,11 @@
 
         function fnShowHideColumns(loadedTree) {
 
-
             var accionM = $("#selectColumnas").val();
             var accionU = $("#selectColumnasUser").val();
 
             //console.log(accionM)
-            console.log(accionU)
+            //console.log(accionU)
 
             var tree = $("#" + loadedTree).fancytree("getTree");
             var nodo = tree.getActiveNode();
@@ -999,10 +988,8 @@
 
                         $tdList[i].hidden = false;
                     }
-                }     
-                
+                }       
             }
-
         }
 
 
@@ -1064,6 +1051,7 @@
             });
         }
 
+        //----------------------------------------------------------> Manejo de los checkboxes de la función anterior.
         function fnCheckColumnChanges() {
 
             if ($('input.checkbox_check').is(':checked') == true) {
@@ -1072,8 +1060,7 @@
                 if (m > 0) {
                     jQuery('input:checkbox[class=checkbox_check]:checked').each(function () {                       
                                              
-                        checkedColumns.push(new columnId($(this).val()));
-                     
+                        checkedColumns.push(new columnId($(this).val()));                     
                     });
                 } 
                 //console.log(checkedColumns);
@@ -1099,10 +1086,21 @@
                     //console.log();
                     $('#' + loadedTree + '_colname_' + $(this).val()).show();
                 });
-            }
-            
+            }  
 
         }
+
+        $("td").click(function () {
+            // cache $(this);
+            var $this = $(this);
+
+            // First, get the index of the td.
+            var cellIndex = $this.index();
+
+            // next, get the cell in the next row that has
+            // the same index.
+            $this.closest('tr').next().children().eq(cellIndex).doSomething();
+        });
 
 
         //function addColumn(tree, nodoId) {
