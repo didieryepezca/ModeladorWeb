@@ -1006,19 +1006,21 @@
         }
 
 
-
+        //----------------------------------------------------------> CARGA DE COLUMNAS PARA CONFIGURACION
         var checkedColumns = [];
 
         function columnId(idElement) {
             this.idElement = idElement;          
         };
 
-
         function loadColumnas(loadedTree, vIdProyecto) {
 
+            $('#footer_columns_options').remove();
+            var option_btns = "";
+            
+            //---------------------------------------------------------->
             //console.log(loadedTree, vIdProyecto)
             $('#tbodyAdminColumnas').remove();
-
             var cuerpo_columnas = "";
 
             var titulos = funGetTitulos(vIdProyecto)
@@ -1036,11 +1038,11 @@
                     
                      if (typeof (idPushed) === 'undefined') {                       
                         //console.log("NO ESTA PUSHEADO:" + idPushed)
-                        cuerpo_columnas = cuerpo_columnas + '<td><input value=' + element.tituloID + ' class="checkbox_check" type="checkbox"></td>';
+                         cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID + ' type="checkbox" class="checkbox_check" name="checkbox_check[]"></td>';
 
                     } else {
                         //console.log("YA ESTA PUSHEADO:" + idPushed)
-                        cuerpo_columnas = cuerpo_columnas + '<td><input value=' + element.tituloID + ' class="checkbox_check" type="checkbox" checked></td>';
+                         cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID +  ' type="checkbox" class="checkbox_check" name="checkbox_check[]" checked></td>';
                     }                    
                     cuerpo_columnas = cuerpo_columnas + '<td><span class="text-muted">' + element.titulo + '</span></td>';
 
@@ -1050,39 +1052,56 @@
                 cuerpo_columnas = cuerpo_columnas + '</tbody>';
 
                 $('#tblAdminColumnas').append(cuerpo_columnas).fadeIn(300000);
+
+                //------------------------------------------> Modal Cancel - Apply Options                
+
+                option_btns = option_btns + '<div class="modal-footer" id="footer_columns_options">';
+                option_btns = option_btns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
+                option_btns = option_btns + '<button onclick="fnApplyColumnChanges(`' + loadedTree + '`);" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ocultar</button>';
+                option_btns = option_btns + '</div>';
+
+                $('#modalContent').append(option_btns).fadeIn(300000);
             });
         }
 
+        function fnCheckColumnChanges() {
 
-        function fnApplyColumnChanges() {           
-
-            if ($('input.checkbox_check').is(':checked')) {
-                
-                var m = jQuery("input[type=checkbox]:checked").length;
+            if ($('input.checkbox_check').is(':checked') == true) {
+                checkedColumns = [];
+                var m = jQuery('input:checkbox[class=checkbox_check]:checked').length;
                 if (m > 0) {
-                    jQuery("input[type=checkbox]:checked").each(function () {
-                        //checkedColumns.push($(this).val());
-                        const idPusheado = checkedColumns.find(x => x.idElement === $(this).val());           
-
-                        if (idPusheado != null) {
-                            console.log("YA ESTA PUSHEADO:" + idPusheado.idElement)
-                        } else {
-                            checkedColumns.push(new columnId($(this).val()));
-                        }
-                        
+                    jQuery('input:checkbox[class=checkbox_check]:checked').each(function () {                       
+                                             
+                        checkedColumns.push(new columnId($(this).val()));
+                     
                     });
-                }
-                console.log(checkedColumns);
-
-                checkedColumns.forEach(function (checked_element) {
-                    //console.log(checked_element);
-                    //$("#tree_0_colname_" + checked_element).hide();
-                });               
-
-            } else {
+                } 
+                //console.log(checkedColumns);
+            }   else {
                 checkedColumns = [];
                 Swal.fire('ADVERTENCIA', 'No seleccionaste ninguna columna', 'warning')
             }
+        }
+
+        function fnApplyColumnChanges(loadedTree) {
+
+            //console.log(loadedTree);
+            checkedColumns.forEach(function (checked_element) {
+                //console.log(checked_element.idElement);            
+
+                $('#' + loadedTree + '_colname_' + checked_element.idElement).hide();
+            });
+
+            var unCheckedColumns = $("input:checkbox:not(:checked)").length;
+            if (unCheckedColumns > 0) {
+                jQuery("input:checkbox:not(:checked)").each(function () {
+
+                    //console.log();
+                    $('#' + loadedTree + '_colname_' + $(this).val()).show();
+                });
+            }
+            
+
         }
 
 
@@ -1258,6 +1277,13 @@
                             <div class="btn-list">
 
                                 <span class="d-none d-sm-inline">
+                                    <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_@item.ProyectoID','@item.ProyectoID');" data-bs-toggle="modal" data-bs-target="#modal-simple">
+                                        Columnas
+                                    </a>
+                                </span>
+
+
+                                <span class="d-none d-sm-inline">
                                     <select class="form-select" id="selectColumnasUser" onchange="fnShowHideColumns('tree_@item.ProyectoID');">
                                         <option selected="">Columnas</option>
                                         <option value="SHOWALL">Mostrar todas</option>
@@ -1364,35 +1390,33 @@
 
     <div class="modal modal-blur fade" id="modal-simple" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
+            
+            <div class="modal-content" id="modalContent">
                 <div class="modal-header">
                     <h5 class="modal-title">Administración de Columnas</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
 
-                    Desde aquí podrá elegir las columnas que desee mostrar u ocultar. Haga check para mostrarla o uncheck para ocultarla.
+                    Desde aquí podrá elegir las columnas que desee mostrar u ocultar. Haga <br />
+                    Check para Ocultarla o <br />
+                    Uncheck para Mostrarla.
 
                     <div class="table-responsive">
                         <table id="tblAdminColumnas" class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
                                 <tr>
-                                    @*<th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>*@
-                                    <th>Check/Uncheck</th>
+                                    @*<th class="w-1"><input type="checkbox" aria-label="Select all invoices"></th>*@
+                                    <th>Opción</th>
                                     <th>Nombre de Columna</th>
                                 </tr>
                             </thead>
-                            
+
                         </table>
                     </div>
 
-                </div>
+                </div>              
 
-
-                <div class="modal-footer">
-                    <button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>
-                    <button onclick="fnApplyColumnChanges();" type="button" class="btn btn-primary" data-bs-dismiss="modal">Aplicar</button>
-                </div>
             </div>
         </div>
     </div>
