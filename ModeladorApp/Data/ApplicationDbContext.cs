@@ -18,11 +18,23 @@ namespace ModeladorApp.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionBuilder)
         {
-            optionBuilder.UseSqlServer("Server=localhost;" +
-                    "Database=ModeladorWeb;" +
-                    "Trusted_Connection=True;" +
-                    "MultipleActiveResultSets=True;" +
-                    "Connection Timeout=36000");
+            //optionBuilder.UseSqlServer("Server=localhost;" +
+            //        "Database=ModeladorWeb;" +
+            //        "Trusted_Connection=True;" +
+            //        "MultipleActiveResultSets=True;" +
+            //        "Connection Timeout=36000");
+
+
+            optionBuilder.UseSqlServer("Server = tcp:server-modeladorbd.database.windows.net,1433;" +
+                   "Initial Catalog = ModeladorBD;" +
+                   "Persist Security Info = False;" +
+                   "User ID = " +
+                   "Password = " +
+                   "MultipleActiveResultSets = False;" +
+                   "Encrypt = True;" +
+                   "Trusted_Connection=False;" +
+                   "TrustServerCertificate = False;" +
+                   "Connection Timeout = 30;");
         }
 
         //Tabla de Usuarios
