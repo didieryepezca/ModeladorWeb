@@ -972,8 +972,8 @@
                 if (accionM == "HIDEALL" || accionU == "HIDEALL") {
 
                     //titulos
-                    for (c = 0; c <= 49; c++) {
-                        $('#' + loadedTree + '_th' + c).attr('style', "display:none");
+                    for (c = 0; c <= 48; c++) {
+                        $('#' + loadedTree + '_colth_' + c).attr('style', "display:none");
                     }
                     $('#tree_0_th2').attr('style', "display:none");
 
@@ -986,9 +986,9 @@
                 } else if (accionM == "SHOWALL" || accionU == "SHOWALL"){
 
                     //titulos
-                    for (c = 0; c <= 49; c++) {
+                    for (c = 0; c <= 48; c++) {
 
-                        $('#' + loadedTree + '_th' + c).removeAttr("style");
+                        $('#' + loadedTree + '_colth_' + c).removeAttr("style");
                         
                     }                    
                     //cuerpos
