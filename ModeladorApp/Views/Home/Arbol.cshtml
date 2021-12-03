@@ -266,7 +266,7 @@
                                 }
                             });
 
-                            console.log($tdList);
+                            //console.log($tdList);
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
@@ -716,7 +716,7 @@
                 } else {
 
                     var tituloInsert = $('#' + tree + i).val();
-                    console.log(tituloInsert)
+                    //console.log(tituloInsert)
                     urlToGo = "/Home/funInsertTitulo";
                     dataToGo = { "proyectoId": idpy, "title": tituloInsert }
 
@@ -806,7 +806,7 @@
                 var dataToGo;
 
                 if (id > 0) {
-                    console.log("ACTUALIZAR ! ")
+                    //console.log("ACTUALIZAR ! ")
                     var valorCajaUpdate = $('#' + tree + '_colvalue' + id).val();
 
                     urlToGo = "/Home/funUpdateInfo";
@@ -860,7 +860,7 @@
 
 
                 } else {
-                    console.log("INSERTAR ! ")
+                    //console.log("INSERTAR ! ")
 
                     var valorCajaInsert = $('#' + tree + '_colvalue_' + i + "_" + nodeId).val();
 
@@ -975,7 +975,7 @@
                     for (c = 0; c <= 48; c++) {
                         $('#' + loadedTree + '_colth_' + c).attr('style', "display:none");
                     }
-                    $('#tree_0_th2').attr('style', "display:none");
+                    $('#tree_0_colth_2').attr('style', "display:none");
 
                     //cuerpos
                     for (i = 2; i <= $tdList.length - 1; i++) {
@@ -1086,6 +1086,8 @@
 
                 $('#' + loadedTree + '_colth_' + checked_element.idElement).hide();
                 $('#' + loadedTree + '_coltd_' + checked_element.idElement).hide();
+
+                console.log($('#' + loadedTree + '_coltd_' + checked_element.idElement));
 
             });
 
