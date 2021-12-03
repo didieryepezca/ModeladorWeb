@@ -214,7 +214,7 @@
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
                             $tdList.eq(0).text(node.getIndexHier());
-                            // (Index #2 is rendered by fancytree)
+                            // (Index #2 is rendered by fancytree)                          
 
                             //---------------------------------------------------------->>>
                             //console.log(pySelected)
@@ -230,35 +230,43 @@
 
                                     var g = 1;
 
+                                    var columnHide = 2; // empieza en 2 la grilla del cuerpo de las columnas
                                     for (h = 0; h <= result.length - 1; h++) {
 
-                                        $('#' + treeReach + '_th' + h).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + h + '" ><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '"></th>';
+                                        $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '"></th>';
+
+
+                                        //seteamos el mismo id de los datos de los titulos para ocultar el cuerpo de las columnas;
+                                        $tdList[columnHide].id = treeReach + '_coltd_' + result[h].tituloID;
+                                        columnHide = columnHide + 1;
+                                        //seteamos el mismo id de los datos de los titulos para ocultar el cuerpo de las columnas;
                                     }
 
                                     g = g + 1;
 
-                                    for (f = g; f <= 49; f++) {
+                                    for (f = g; f <= 48; f++) {
 
-                                        $('#' + treeReach + '_th' + f).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + f + '" ><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre"></th>';
-                                    }
+                                        $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre"></th>';
+                                    }                         
+
 
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
                                 } else {
 
-                                    for (i = 1; i <= 49; i++) {
+                                    for (i = 1; i <= 48; i++) {
 
-                                        $('#' + treeReach + '_th' + i).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_th' + i + '" ><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '"></th>';
+                                        $('#' + treeReach + '_colth_' + i).remove(); //removemos para que no se vuelvan a crear.
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '"></th>';
                                     }
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
                                 }
                             });
 
-
+                            console.log($tdList);
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
@@ -1070,38 +1078,27 @@
             }
         }
 
-        function fnApplyColumnChanges(loadedTree) {
+        function fnApplyColumnChanges(loadedTree) {            
 
-            //console.log(loadedTree);
+            //ocultar columnas de los checkboxes checkeados.
             checkedColumns.forEach(function (checked_element) {
                 //console.log(checked_element.idElement);            
 
-                $('#' + loadedTree + '_colname_' + checked_element.idElement).hide();
+                $('#' + loadedTree + '_colth_' + checked_element.idElement).hide();
+                $('#' + loadedTree + '_coltd_' + checked_element.idElement).hide();
+
             });
 
+            //mostrar columnas de los checkboxes no checkeados.
             var unCheckedColumns = $("input:checkbox:not(:checked)").length;
             if (unCheckedColumns > 0) {
                 jQuery("input:checkbox:not(:checked)").each(function () {
-
                     //console.log();
-                    $('#' + loadedTree + '_colname_' + $(this).val()).show();
+                    $('#' + loadedTree + '_colth_' + $(this).val()).show();
+                    $('#' + loadedTree + '_coltd_' + $(this).val()).show();
                 });
-            }  
-
+            }
         }
-
-        $("td").click(function () {
-            // cache $(this);
-            var $this = $(this);
-
-            // First, get the index of the td.
-            var cellIndex = $this.index();
-
-            // next, get the cell in the next row that has
-            // the same index.
-            $this.closest('tr').next().children().eq(cellIndex).doSomething();
-        });
-
 
         //function addColumn(tree, nodoId) {
         //    console.log(tree,nodoId)
