@@ -229,25 +229,19 @@
                                     // 50 cajas para nombres de  columnas.
 
                                     var g = 1;
-
-                                    var columnHide = 2; // empieza en 2 la grilla del cuerpo de las columnas
+                                   
                                     for (h = 0; h <= result.length - 1; h++) {
 
-                                        $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear.
+                                        $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
-
-
-                                        //seteamos el mismo id de los datos de los titulos para ocultar el cuerpo de las columnas;
-                                        $tdList[columnHide].id = treeReach + '_coltd_' + result[h].tituloID;
-                                        columnHide = columnHide + 1;
-                                        //seteamos el mismo id de los datos de los titulos para ocultar el cuerpo de las columnas;
+                                        
                                     }
 
                                     g = g + 1;
 
-                                    for (f = g; f <= 47; f++) {
+                                    for (f = g; f <= 48; f++) {
 
-                                        $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear.
+                                        $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre" style="width: 60px;"></th>';
                                     }                         
 
@@ -256,7 +250,7 @@
 
                                 } else {
 
-                                    for (i = 1; i <= 47; i++) {
+                                    for (i = 1; i <= 48; i++) {
 
                                         $('#' + treeReach + '_colth_' + i).remove(); //removemos para que no se vuelvan a crear.
                                         colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '" style="width: 60px;"></th>';
@@ -294,7 +288,7 @@
                                     }
                                 } else { // Sino no hay ningun dato en las cajas de un arbol. crear las cajas desde 0
 
-                                    console.log("Construir desde 0");
+                                    //console.log("Construir desde 0");
                                     for (k = 2; k <= 52; k++) {
 
                                         $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
@@ -951,55 +945,31 @@
         })()
 
         function fnShowHideColumns(loadedTree) {
-
             var accionM = $("#selectColumnas").val();
             var accionU = $("#selectColumnasUser").val();
-
             //console.log(accionM)
             //console.log(accionU)
+            //var tree = $("#" + loadedTree).fancytree("getTree"); // para obtener el arbol renderizado.
+            //var nodo = tree.getActiveNode(); // para obtener el nodo activo.          
 
-            var tree = $("#" + loadedTree).fancytree("getTree");
-            var nodo = tree.getActiveNode();
+            //$tdList = $(nodo.tr).find(">td");               
+            if (accionM == "HIDEALL" || accionU == "HIDEALL") {
+            
+                //for para obtener las columnas por indice.
+                for (c = 3; c <= 53; c++) {
+                   
+                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').hide();
+                }                
+              
+            } else if (accionM == "SHOWALL" || accionU == "SHOWALL"){
+            
+                //for para obtener las columnas por indice.
+                for (c = 3; c <= 53; c++) {
 
-            if (nodo === null) {
-
-                Swal.fire('ATENCION', 'Debe seleccionar un Nivel', 'warning')
-
-            } else {
-
-                $tdList = $(nodo.tr).find(">td");
-               
-                if (accionM == "HIDEALL" || accionU == "HIDEALL") {
-
-                    //titulos
-                    for (c = 0; c <= 48; c++) {
-                        $('#' + loadedTree + '_colth_' + c).attr('style', "display:none");
-                    }
-                    $('#tree_0_colth_2').attr('style', "display:none");
-
-                    //cuerpos
-                    for (i = 2; i <= $tdList.length - 1; i++) {
-
-                        $tdList[i].hidden = true;                        
-                    }
-
-                } else if (accionM == "SHOWALL" || accionU == "SHOWALL"){
-
-                    //titulos
-                    for (c = 0; c <= 48; c++) {
-
-                        $('#' + loadedTree + '_colth_' + c).removeAttr("style");
-                        
-                    }                    
-                    //cuerpos
-                    for (i = 2; i <= $tdList.length - 1; i++) {
-
-                        $tdList[i].hidden = false;
-                    }
-                }       
-            }
+                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').show();                                    
+                }            
+            }          
         }
-
 
         //----------------------------------------------------------> CARGA DE COLUMNAS PARA CONFIGURACION
         var checkedColumns = [];
