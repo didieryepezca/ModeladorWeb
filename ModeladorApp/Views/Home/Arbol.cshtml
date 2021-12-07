@@ -209,11 +209,19 @@
                         renderColumns: function (event, data) {
                             var node = data.node,
                                 $tdList = $(node.tr).find(">td");
+                           
+
+                            console.log(node.tr.rowIndex);
+                            if (node.tr.rowIndex >= 2) { //obtenemos el indice de la fila creada y apartir de ahi creamos el indexador
+                                $tdList.eq(0).text(node.getIndexHier());
+                            }
+
+                            console.log(node)
 
                             //console.log(data);
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
-                            $tdList.eq(0).text(node.getIndexHier());
+                            //$tdList.eq(0).text(node.getIndexHier());
                             // (Index #2 is rendered by fancytree)                          
 
                             //---------------------------------------------------------->>>
@@ -260,7 +268,7 @@
                                 }
                             });
 
-                            console.log($tdList);
+                            //console.log($tdList);
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
@@ -1278,7 +1286,7 @@
                     <table id="tree_@item.ProyectoID">
                         <colgroup>
                             <col width="2%" />
-                            <col width="58%" />
+                            <col width="88%" />
                             <col width="1%" />
                         </colgroup>
                         <thead>
