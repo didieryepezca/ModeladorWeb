@@ -261,6 +261,44 @@ namespace ModeladorApp.Controllers
         }
 
 
+        //----------- Obtener estilos
+        public List<TB_TREE_STYLE> funGetLevelStyles(int nivelID)
+        {
+            var da = new TreeStylesDA();
+            //Un momento por favor xD
+            System.Threading.Thread.Sleep(1000);
+            var estilos = da.GetStylesFromLevel(nivelID).ToList();
+            return estilos;
+        }
+
+
+        public int funInsertLvlStyle(int nivelID, string style)
+        {
+            var result = "0";
+            var nda = new TreeStylesDA();
+
+            try
+            {
+                TB_TREE_STYLE t = new TB_TREE_STYLE();
+
+                t.NivelID = nivelID;
+                t.style = style;              
+
+                var modelcount = nda.InsertNivelStyle(t);
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
+
+
         //---------------------------------TREE VIEW REAL
 
 

@@ -45,6 +45,7 @@ namespace ModeladorApp.Data
         public virtual DbSet<TB_NIVEL_INFO> TB_NIVEL_INFO { get; set; }
         public virtual DbSet<TB_NIVEL_COLUMN_TITLES> TB_NIVEL_COLUMN_TITLES { get; set; }        
         public virtual DbSet<TB_TREE> TB_TREE { get; set; }
+        public virtual DbSet<TB_TREE_STYLE> TB_TREE_STYLE { get; set; }
 
     }
 }

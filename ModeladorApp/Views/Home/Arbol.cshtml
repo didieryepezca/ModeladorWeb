@@ -113,6 +113,13 @@
                             };
                         },
 
+                        ////Evento Expand para capturar algo cuando se expande el arbol
+                        //expand: function (data) {
+                        //    console.log("expandiendo");
+                        //    console.log(data);
+                        //    $(".OrgDataTreeNotChecked").children(".fancytree-title").css({ 'color': 'red' });
+                        //},
+
                         extensions: ["edit", "dnd5", "table", "gridnav"],
 
                         dnd5: {
@@ -208,15 +215,38 @@
                         },
                         renderColumns: function (event, data) {
                             var node = data.node,
-                                $tdList = $(node.tr).find(">td");
-                           
+                                $tdList = $(node.tr).find(">td");                           
 
-                            console.log(node.tr.rowIndex);
+                            //console.log(node.tr.rowIndex);
                             if (node.tr.rowIndex >= 2) { //obtenemos el indice de la fila creada y apartir de ahi creamos el indexador
                                 $tdList.eq(0).text(node.getIndexHier());
                             }
 
-                            console.log(node)
+                            //console.log(node.data.id); // id único de cada elemento del arbol.
+                            var estilos = getStyles(node.data.id);
+                            estilos.then(function (estilosresponse) {
+
+                                if (estilosresponse.length != 0) {
+
+                                    for (s = 0; s <= estilosresponse.length - 1; s++) {
+                                        
+                                        if (estilosresponse[s].style == 'bold') {
+                                            node.span.style.fontWeight = estilosresponse[s].style; //LETRA NEGRITA
+                                        } else if (estilosresponse[s].style == 'italic') {
+                                            node.span.style.fontStyle = estilosresponse[s].style;  //LETRA CURSIVA.
+                                        }
+                                    }                                  
+
+                                }
+                            });
+                           
+                            //node.span.style.backgroundColor = "Lime" //Subrayado verde neon
+                            //node.span.style.backgroundColor = "Aqua" //Subrayado azul cielo
+                            //node.span.style.backgroundColor = "Yellow" //Subrayado azul cielo
+                            //node.span.style.backgroundColor = "Fuchsia" //Subrayado azul cielo
+                            //node.span.style.backgroundColor = "Red" //Subrayado azul cielo
+                            //node.folder = true;
+                            //console.log(node);
 
                             //console.log(data);
                             // (Index #0 is rendered by fancytree by adding the checkbox)
@@ -441,27 +471,126 @@
                                         ).setActive();
                                     }
                                     break;
-                                case "showgrid":
+                                case "applybold":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Mostrar columnas");
+                                    console.log("Aplicar Negrita");                                    
+                                    //console.log(node.data.id); // id del nodo.                
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold")
+                                    console.log(rpt.statusText);
+                                    //if(statusText)
+
+                                    node.span.style.fontWeight = "bold"; //LETRA NEGRITA
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "removebold":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Quitar negrita");                                   
+                                    //console.log(node.data.id); // id del nodo.
+                                    node.span.style.fontWeight = null; //LETRA NEGRITA
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "applyitalic":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Aplicar Cursiva");
+                                    var rpt = applyStyle(node.data.id, "italic")
+                                    rpt.then(function (styleresponse) {
+
+                                        console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.fontStyle = "italic"
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema agregando el estilo', 'warning')
+                                        }
+                                    })                                  
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;                                
+                                case "removeitalic":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Quitar negrita");
                                     console.log(node)
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
-                                case "hidegrid":
+                                case "greensubrayado":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("ocultar columnas");
+                                    console.log("Subrayar verde");
                                     console.log(node)
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
-                                case "newcolumn":
+                                case "bluesubrayado":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Nueva columna");
+                                    console.log("Subrayar azúl");
                                     console.log(node)
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
+                                case "yellowsubrayado":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Subrayar amarillo");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "fuchsiasubrayado":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Subrayar fuchsia");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "redsubrayado":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Subrayar rojo");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "removesubrayado":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Quitar subrayado");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+
+                                case "setfoldericon":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Añadir icono de folder");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+
+                                case "removefoldericon":
+                                    //tree.applyCommand(data.cmd, node);
+                                    console.log("Quitar icono de folder");
+                                    console.log(node)
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                //case "showgrid":
+                                //    //tree.applyCommand(data.cmd, node);
+                                //    console.log("Mostrar columnas");
+                                //    console.log(node)
+                                //    //console.log(node.data.id); // id del nodo.
+                                //    //addColumn(treeReach, node.data.id);
+                                //    break;
+                                //case "hidegrid":
+                                //    //tree.applyCommand(data.cmd, node);
+                                //    console.log("ocultar columnas");
+                                //    console.log(node)
+                                //    //console.log(node.data.id); // id del nodo.
+                                //    //addColumn(treeReach, node.data.id);
+                                //    break;
+                                //case "newcolumn":
+                                //    //tree.applyCommand(data.cmd, node);
+                                //    console.log("Nueva columna");
+                                //    console.log(node)
+                                //    //console.log(node.data.id); // id del nodo.
+                                //    //addColumn(treeReach, node.data.id);
+                                //    break;
                                 default:
                                     alert("Unhandled command: " + data.cmd);
                                     return;
@@ -556,19 +685,61 @@
                                 title: "Nuevo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
                                 cmd: "addChild",
                                 uiIcon: "ui-icon-arrowreturn-1-e",
+                            }, { title: "----" },
+                            {
+                                title: "Aplicar letra Negrita",
+                                cmd: "applybold",
                             }, {
-                                title: "Mostrar Grilla",
-                                cmd: "showgrid",
+                                title: "Quitar letra Negrita",
+                                cmd: "removebold",
+                            }
+                            , {
+                                title: "Aplicar letra Cursiva",
+                                cmd: "applyitalic",
+                            }, {
+                                title: "Quitar letra Cursiva",
+                                cmd: "removeitalic",
+                            }, { title: "----" },
+                            {
+                                title: "Subrayar verde",
+                                cmd: "greensubrayado",
+                            }, {
+                                title: "Subrayar azul",
+                                cmd: "bluesubrayado",
+                            }, {
+                                title: "Subrayar amarillo",
+                                cmd: "yellowsubrayado",
+                            }, {
+                                title: "Subrayar fuchsia",
+                                cmd: "fuchsiasubrayado",
+                            }, {
+                                title: "Subrayar rojo",
+                                cmd: "redsubrayado",
+                            }, {
+                                title: "Quitar Subrayado",
+                                cmd: "removesubrayado",
+                            }, { title: "----" },
+                            {
+                                title: "Setear icono de folder",
+                                cmd: "setfoldericon",
                             },
                             {
-                                title: "Ocultar Grilla",
-                                cmd: "hidegrid",
-                            },
-                            {
-                                title: "Nueva Columna",
-                                cmd: "newcolumn",
-                                uiIcon: "ui-icon-plus",
-                            },
+                                title: "Quitar icono de folder",
+                                cmd: "removefoldericon",
+                            }
+                            //, {
+                            //    title: "Mostrar Grilla",
+                            //    cmd: "showgrid",
+                            //},
+                            //{
+                            //    title: "Ocultar Grilla",
+                            //    cmd: "hidegrid",
+                            //},
+                            //{
+                            //    title: "Nueva Columna",
+                            //    cmd: "newcolumn",
+                            //    uiIcon: "ui-icon-plus",
+                            //},
                             //{ title: "----" },
                             //{
                             //    title: "Cortar <kbd>Ctrl+X</kbd>",
@@ -1077,6 +1248,58 @@
                 });
             }
         }
+        //----------------------------------------------------->> Obteniendo estilos
+        async function getStyles(lvlID) {
+            return styles = await getStylesFromDB(lvlID);
+        };
+
+        function getStylesFromDB(lvlID) {
+
+            var urlToGo = "";
+            var dataToGo;
+            //------------------------>>AJAX Obtener estilos
+            return $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/Home/funGetLevelStyles",
+                data: {
+                    "nivelID": lvlID                  
+                },
+                success: function (response) {
+                    //console.log(response);
+                },
+            });
+            //------------------------>>AJAX Obtener estilos
+        }
+        //----------------------------------------------------->> Obteniendo estilos
+
+
+        //----------------------------------------------------->> Aplicando estilos
+        async function applyStyle(lvlID, style) {
+            return styleReponse = await applyStyleToDB(lvlID, style);
+        };
+
+        function applyStyleToDB(lvlID, style) {
+
+            var urlToGo = "";
+            var dataToGo;
+            //------------------------>>AJAX Aplicar estilo
+            return $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Home/funInsertLvlStyle",
+                data: {
+                    "nivelID": lvlID,
+                    "style": style
+                },
+                success: function (response) {
+                    //console.log(response);
+                },
+            });
+            //------------------------>>AJAX Aplicar estilo
+        }
+        //----------------------------------------------------->> Aplicando estilos
+
 
         //function addColumn(tree, nodoId) {
         //    console.log(tree,nodoId)
