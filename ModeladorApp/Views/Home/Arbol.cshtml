@@ -234,7 +234,7 @@
                                     for (h = 0; h <= result.length - 1; h++) {
 
                                         $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
 
 
                                         //seteamos el mismo id de los datos de los titulos para ocultar el cuerpo de las columnas;
@@ -245,10 +245,10 @@
 
                                     g = g + 1;
 
-                                    for (f = g; f <= 48; f++) {
+                                    for (f = g; f <= 47; f++) {
 
                                         $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre" style="width: 60px;"></th>';
                                     }                         
 
 
@@ -256,17 +256,17 @@
 
                                 } else {
 
-                                    for (i = 1; i <= 48; i++) {
+                                    for (i = 1; i <= 47; i++) {
 
                                         $('#' + treeReach + '_colth_' + i).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '"></th>';
+                                        colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '" style="width: 60px;"></th>';
                                     }
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
 
                                 }
                             });
 
-                            //console.log($tdList);
+                            console.log($tdList);
                             //console.log(node.data.id);
                             //---------> obtener los datos de la tabla TB_NIVEL_INFO segun el id.
                             var info = funGetInfo(node.data.id)
@@ -281,14 +281,14 @@
 
                                         for (i = 2; i <= 52; i++) {
 
-                                            $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)">');
+                                            $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 60px;">');
                                         }
 
                                         m = m + 1;
 
                                         for (j = m; j <= 52; j++) {
 
-                                            $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text"/>');
+                                            $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
 
                                         }
                                     }
@@ -297,7 +297,7 @@
                                     console.log("Construir desde 0");
                                     for (k = 2; k <= 52; k++) {
 
-                                        $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text"/>');
+                                        $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
 
                                     }
                                 }
@@ -1078,26 +1078,24 @@
             }
         }
 
-        function fnApplyColumnChanges(loadedTree) {            
-
+        function fnApplyColumnChanges(loadedTree) {           
+                      
             //ocultar columnas de los checkboxes checkeados.
-            checkedColumns.forEach(function (checked_element) {
-                //console.log(checked_element.idElement);            
+            checkedColumns.forEach(function (checked_element) { 
+             
+                var columnIndex = $('#' + loadedTree + '_colname_' + checked_element.idElement).parent().index() + 1;
+                $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').hide();
 
-                $('#' + loadedTree + '_colth_' + checked_element.idElement).hide();
-                $('#' + loadedTree + '_coltd_' + checked_element.idElement).hide();
-
-                console.log($('#' + loadedTree + '_coltd_' + checked_element.idElement));
-
-            });
-
+            });           
+           
             //mostrar columnas de los checkboxes no checkeados.
             var unCheckedColumns = $("input:checkbox:not(:checked)").length;
             if (unCheckedColumns > 0) {
-                jQuery("input:checkbox:not(:checked)").each(function () {
-                    //console.log();
-                    $('#' + loadedTree + '_colth_' + $(this).val()).show();
-                    $('#' + loadedTree + '_coltd_' + $(this).val()).show();
+                jQuery("input:checkbox:not(:checked)").each(function () {                 
+
+                    var columnIndex = $('#' + loadedTree + '_colname_' + $(this).val()).parent().index() + 1;
+                    $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').show();
+
                 });
             }
         }
@@ -1151,11 +1149,11 @@
                     <div class="col-auto ms-auto d-print-none">
                         <div class="btn-list">
 
-                            @*<span class="d-none d-sm-inline">
+                            <span class="d-none d-sm-inline">
                                 <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_0',0);" data-bs-toggle="modal" data-bs-target="#modal-simple">
                                     Columnas
                                 </a>
-                            </span>*@
+                            </span>
 
 
                             <span class="d-none d-sm-inline">
@@ -1192,7 +1190,7 @@
                 <table id="tree_0">
                     <colgroup>
                         <col width="2%" />
-                        <col width="58%" />
+                        <col width="88%" />
                         <col width="1%" />
                     </colgroup>
                     <thead>
@@ -1273,11 +1271,11 @@
                         <div class="col-auto ms-auto d-print-none">
                             <div class="btn-list">
 
-                                @*<span class="d-none d-sm-inline">
+                                <span class="d-none d-sm-inline">
                                     <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_@item.ProyectoID','@item.ProyectoID');" data-bs-toggle="modal" data-bs-target="#modal-simple">
                                         Columnas
                                     </a>
-                                </span>*@
+                                </span>
 
 
                                 <span class="d-none d-sm-inline">
