@@ -215,7 +215,7 @@
                         },
                         renderColumns: function (event, data) {
                             var node = data.node,
-                                $tdList = $(node.tr).find(">td");                           
+                                $tdList = $(node.tr).find(">td");
 
                             //console.log(node.tr.rowIndex);
                             if (node.tr.rowIndex >= 2) { //obtenemos el indice de la fila creada y apartir de ahi creamos el indexador
@@ -223,36 +223,39 @@
                             }
 
                             //console.log(node.data.id); // id único de cada elemento del arbol.
-                            var estilos = getStyles(node.data.id);
+                            var estilos = getStyles(node.data.id);//-------> estilos del árbol
                             estilos.then(function (estilosresponse) {
 
                                 if (estilosresponse.length != 0) {
 
                                     for (s = 0; s <= estilosresponse.length - 1; s++) {
-                                        
+
                                         if (estilosresponse[s].style == 'bold') {
                                             node.span.style.fontWeight = estilosresponse[s].style; //LETRA NEGRITA
                                         } else if (estilosresponse[s].style == 'italic') {
                                             node.span.style.fontStyle = estilosresponse[s].style;  //LETRA CURSIVA.
+                                        } else if (estilosresponse[s].style == 'Lime') {
+                                            node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO VERDE.
+                                        } else if (estilosresponse[s].style == 'Aqua') {
+                                            node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO AZUL.
+                                        } else if (estilosresponse[s].style == 'Yellow') {
+                                            node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO AMARILLO.
+                                        } else if (estilosresponse[s].style == 'Fuchsia') {
+                                            node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO FUSCIA.
+                                        } else if (estilosresponse[s].style == 'Red') {
+                                            node.span.style.backgroundColor = estilosresponse[s].style;  //ELEMENTO CARPETA.
+                                        } else if (estilosresponse[s].style == 'true') {
+                                            console.log("FOLDER")
+                                            node.folder = true;  //LETRA CURSIVA.
                                         }
-                                    }                                  
-
+                                    }
                                 }
-                            });
+                            });                         
                            
-                            //node.span.style.backgroundColor = "Lime" //Subrayado verde neon
-                            //node.span.style.backgroundColor = "Aqua" //Subrayado azul cielo
-                            //node.span.style.backgroundColor = "Yellow" //Subrayado azul cielo
-                            //node.span.style.backgroundColor = "Fuchsia" //Subrayado azul cielo
-                            //node.span.style.backgroundColor = "Red" //Subrayado azul cielo
-                            //node.folder = true;
-                            //console.log(node);
-
-                            //console.log(data);
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
                             //$tdList.eq(0).text(node.getIndexHier());
-                            // (Index #2 is rendered by fancytree)                          
+                            // (Index #2 is rendered by fancytree)
 
                             //---------------------------------------------------------->>>
                             //console.log(pySelected)
@@ -267,12 +270,12 @@
                                     // 50 cajas para nombres de  columnas.
 
                                     var g = 1;
-                                   
+
                                     for (h = 0; h <= result.length - 1; h++) {
 
                                         $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
-                                        
+
                                     }
 
                                     g = g + 1;
@@ -281,7 +284,7 @@
 
                                         $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre" style="width: 60px;"></th>';
-                                    }                         
+                                    }
 
 
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
@@ -473,84 +476,151 @@
                                     break;
                                 case "applybold":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Aplicar Negrita");                                    
-                                    //console.log(node.data.id); // id del nodo.                
-                                    var rpt = applyOrRemoveStyle(node.data.id, "bold")
-                                    console.log(rpt.statusText);
-                                    //if(statusText)
+                                    //console.log("Aplicar Negrita");
+                                    //console.log(node.data.id); // id del nodo.
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
 
-                                    node.span.style.fontWeight = "bold"; //LETRA NEGRITA
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.fontWeight = "bold"
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                        }
+                                    });
+                                    //if(statusText)
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "removebold":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Quitar negrita");                                   
-                                    //console.log(node.data.id); // id del nodo.
-                                    node.span.style.fontWeight = null; //LETRA NEGRITA
+                                    //console.log("Quitar negrita");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_REMOVE")
+                                    rpt.then(function (styleresponse) {
+
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.fontWeight = "";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
+                                        }
+                                    });                                    
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "applyitalic":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Aplicar Cursiva");
-                                    var rpt = applyStyle(node.data.id, "italic")
+                                    //console.log("Aplicar Cursiva");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_APPLY")
                                     rpt.then(function (styleresponse) {
 
-                                        console.log(styleresponse);
+                                        //console.log(styleresponse);
                                         if (styleresponse > 0) {
                                             node.span.style.fontStyle = "italic"
                                         } else {
-                                            Swal.fire('ERROR', 'Hubo un problema agregando el estilo', 'warning')
+                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
                                         }
-                                    })                                  
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
-                                    break;                                
+                                    break;
                                 case "removeitalic":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Quitar negrita");
-                                    console.log(node)
+                                    //console.log("Quitar negrita");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_REMOVE")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.fontStyle = "";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "greensubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar verde");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.backgroundColor = "Lime";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "bluesubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar azúl");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.backgroundColor = "Aqua";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "yellowsubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar amarillo");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.backgroundColor = "Yellow";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "fuchsiasubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar fuchsia");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.backgroundColor = "Fuchsia";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "redsubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar rojo");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.style.backgroundColor = "Red";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "removesubrayado":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Quitar subrayado");
-                                    console.log(node)
+                                    //console.log("Quitar subrayado");
+                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE")                                    
+                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE")                                    
+                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE")                                    
+                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE")                                    
+                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE")                                  
+                                    node.span.style.backgroundColor = "";
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
@@ -558,7 +628,15 @@
                                 case "setfoldericon":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Añadir icono de folder");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_APPLY")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.folder = true;
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, Puede que el nivel ya cuente con ícono de carpeta', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
@@ -566,7 +644,15 @@
                                 case "removefoldericon":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Quitar icono de folder");
-                                    console.log(node)
+                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_REMOVE")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.folder = "";
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
+                                        }
+                                    });
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
@@ -1129,39 +1215,39 @@
             //console.log(accionM)
             //console.log(accionU)
             //var tree = $("#" + loadedTree).fancytree("getTree"); // para obtener el arbol renderizado.
-            //var nodo = tree.getActiveNode(); // para obtener el nodo activo.          
+            //var nodo = tree.getActiveNode(); // para obtener el nodo activo.
 
-            //$tdList = $(nodo.tr).find(">td");               
+            //$tdList = $(nodo.tr).find(">td");
             if (accionM == "HIDEALL" || accionU == "HIDEALL") {
-            
-                //for para obtener las columnas por indice.
-                for (c = 3; c <= 53; c++) {
-                   
-                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').hide();
-                }                
-              
-            } else if (accionM == "SHOWALL" || accionU == "SHOWALL"){
-            
+
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
 
-                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').show();                                    
-                }            
-            }          
+                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').hide();
+                }
+
+            } else if (accionM == "SHOWALL" || accionU == "SHOWALL") {
+
+                //for para obtener las columnas por indice.
+                for (c = 3; c <= 53; c++) {
+
+                    $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').show();
+                }
+            }
         }
 
         //----------------------------------------------------------> CARGA DE COLUMNAS PARA CONFIGURACION
         var checkedColumns = [];
 
         function columnId(idElement) {
-            this.idElement = idElement;          
+            this.idElement = idElement;
         };
 
         function loadColumnas(loadedTree, vIdProyecto) {
 
             $('#footer_columns_options').remove();
             var option_btns = "";
-            
+
             //---------------------------------------------------------->
             //console.log(loadedTree, vIdProyecto)
             $('#tbodyAdminColumnas').remove();
@@ -1175,19 +1261,19 @@
                 cuerpo_columnas = cuerpo_columnas + '<tbody id="tbodyAdminColumnas">';
 
                 result.forEach(function (element) {
-                    
-                    cuerpo_columnas = cuerpo_columnas + '<tr>';        
-                  
+
+                    cuerpo_columnas = cuerpo_columnas + '<tr>';
+
                     const idPushed = checkedColumns.find(x => x.idElement == element.tituloID);
-                    
-                     if (typeof (idPushed) === 'undefined') {                       
+
+                    if (typeof (idPushed) === 'undefined') {
                         //console.log("NO ESTA PUSHEADO:" + idPushed)
-                         cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID + ' type="checkbox" class="checkbox_check" name="checkbox_check[]"></td>';
+                        cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID + ' type="checkbox" class="checkbox_check" name="checkbox_check[]"></td>';
 
                     } else {
                         //console.log("YA ESTA PUSHEADO:" + idPushed)
-                         cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID +  ' type="checkbox" class="checkbox_check" name="checkbox_check[]" checked></td>';
-                    }                    
+                        cuerpo_columnas = cuerpo_columnas + '<td><input onclick="fnCheckColumnChanges(' + element.tituloID + ')" value=' + element.tituloID + ' type="checkbox" class="checkbox_check" name="checkbox_check[]" checked></td>';
+                    }
                     cuerpo_columnas = cuerpo_columnas + '<td><span class="text-muted">' + element.titulo + '</span></td>';
 
                     cuerpo_columnas = cuerpo_columnas + '</tr>';
@@ -1197,7 +1283,7 @@
 
                 $('#tblAdminColumnas').append(cuerpo_columnas).fadeIn(300000);
 
-                //------------------------------------------> Modal Cancel - Apply Options                
+                //------------------------------------------> Modal Cancel - Apply Options
 
                 option_btns = option_btns + '<div class="modal-footer" id="footer_columns_options">';
                 option_btns = option_btns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
@@ -1215,32 +1301,32 @@
                 checkedColumns = [];
                 var m = jQuery('input:checkbox[class=checkbox_check]:checked').length;
                 if (m > 0) {
-                    jQuery('input:checkbox[class=checkbox_check]:checked').each(function () {                       
-                                             
-                        checkedColumns.push(new columnId($(this).val()));                     
+                    jQuery('input:checkbox[class=checkbox_check]:checked').each(function () {
+
+                        checkedColumns.push(new columnId($(this).val()));
                     });
-                } 
+                }
                 //console.log(checkedColumns);
-            }   else {
+            } else {
                 checkedColumns = [];
                 Swal.fire('ADVERTENCIA', 'No seleccionaste ninguna columna', 'warning')
             }
         }
 
-        function fnApplyColumnChanges(loadedTree) {           
-                      
+        function fnApplyColumnChanges(loadedTree) {
+
             //ocultar columnas de los checkboxes checkeados.
-            checkedColumns.forEach(function (checked_element) { 
-             
+            checkedColumns.forEach(function (checked_element) {
+
                 var columnIndex = $('#' + loadedTree + '_colname_' + checked_element.idElement).parent().index() + 1;
                 $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').hide();
 
-            });           
-           
+            });
+
             //mostrar columnas de los checkboxes no checkeados.
             var unCheckedColumns = $("input:checkbox:not(:checked)").length;
             if (unCheckedColumns > 0) {
-                jQuery("input:checkbox:not(:checked)").each(function () {                 
+                jQuery("input:checkbox:not(:checked)").each(function () {
 
                     var columnIndex = $('#' + loadedTree + '_colname_' + $(this).val()).parent().index() + 1;
                     $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').show();
@@ -1263,7 +1349,7 @@
                 dataType: "json",
                 url: "/Home/funGetLevelStyles",
                 data: {
-                    "nivelID": lvlID                  
+                    "nivelID": lvlID
                 },
                 success: function (response) {
                     //console.log(response);
@@ -1275,28 +1361,49 @@
 
 
         //----------------------------------------------------->> Aplicando estilos
-        async function applyStyle(lvlID, style) {
-            return styleReponse = await applyStyleToDB(lvlID, style);
+        async function applyOrRemoveStyle(lvlID, style, action) {
+            return styleReponse = await applyOrRemoveStyleToDB(lvlID, style, action);
         };
 
-        function applyStyleToDB(lvlID, style) {
+        function applyOrRemoveStyleToDB(lvlID, style, action) {
 
             var urlToGo = "";
             var dataToGo;
-            //------------------------>>AJAX Aplicar estilo
-            return $.ajax({
-                type: "POST",
-                dataType: "json",
-                url: "/Home/funInsertLvlStyle",
-                data: {
-                    "nivelID": lvlID,
-                    "style": style
-                },
-                success: function (response) {
-                    //console.log(response);
-                },
-            });
-            //------------------------>>AJAX Aplicar estilo
+
+            if (action == "STYLE_APPLY") {
+
+                urlToGo = "/Home/funInsertLvlStyle";
+                dataToGo = { "nivelID": lvlID, "style": style }
+
+                //------------------------>>AJAX Aplicar estilo
+                return $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: urlToGo,
+                    data: dataToGo,
+                    success: function (response) {
+                        //console.log(response);
+                    },
+                });
+                //------------------------>>AJAX Aplicar estilo
+            } else if (action == "STYLE_REMOVE") {
+
+                urlToGo = "/Home/funDeleteStyle";
+                dataToGo = { "nivelID": lvlID, "style": style }
+
+                //------------------------>>AJAX Aplicar estilo
+                return $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: urlToGo,
+                    data: dataToGo,
+                    success: function (response) {
+                        //console.log(response);
+                    },
+                });
+
+            }
+
         }
         //----------------------------------------------------->> Aplicando estilos
 
@@ -1586,7 +1693,7 @@
 
     <div class="modal modal-blur fade" id="modal-simple" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            
+
             <div class="modal-content" id="modalContent">
                 <div class="modal-header">
                     <h5 class="modal-title">Administración de Columnas</h5>
@@ -1611,7 +1718,7 @@
                         </table>
                     </div>
 
-                </div>              
+                </div>
 
             </div>
         </div>

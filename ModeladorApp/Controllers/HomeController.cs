@@ -275,30 +275,57 @@ namespace ModeladorApp.Controllers
         public int funInsertLvlStyle(int nivelID, string style)
         {
             var result = "0";
-            var nda = new TreeStylesDA();
+            var da = new TreeStylesDA();
 
             try
             {
-                TB_TREE_STYLE t = new TB_TREE_STYLE();
+                TB_TREE_STYLE stylesfound = new TB_TREE_STYLE();
+                stylesfound = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();
 
-                t.NivelID = nivelID;
-                t.style = style;              
+                if (stylesfound?.StyleID == null)
+                {
+                    TB_TREE_STYLE t = new TB_TREE_STYLE();
 
-                var modelcount = nda.InsertNivelStyle(t);
+                    t.NivelID = nivelID;
+                    t.style = style;
 
-                return modelcount;
+                    var modelcount = da.InsertNivelStyle(t);
+
+                    return modelcount;                                    
+                }
+                else {
+                    return 0;
+                }
             }
             catch (Exception e)
             {
-
                 result = e.Message;
                 return 0;
             }
         }
 
+        public int funDeleteStyle(int nivelID, string style)
+        {
+            var result = "0";
+            var da = new TreeStylesDA();
 
+            var modelcount = 0;
 
+            try
+            {                
+                TB_TREE_STYLE styleToDelete = new TB_TREE_STYLE();
+                styleToDelete = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();               
+               
+                modelcount = da.deleteNivelStyle(styleToDelete.StyleID);              
 
+                return modelcount;
+            }
+            catch (Exception se)
+            {
+                result = se.Message;
+                return 0;
+            }
+        }
         //---------------------------------TREE VIEW REAL
 
 
