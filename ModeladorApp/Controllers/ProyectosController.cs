@@ -264,61 +264,59 @@ namespace ModeladorApp.Controllers
 
                 //------- Clonar Arbol
                 List<TB_TREE> levelsFromProject = new List<TB_TREE>();
-                levelsFromProject = nda.getLevelsToDeleteFromProject(proyectoId).ToList();                
+                levelsFromProject = nda.getLevelsToDeleteFromProject(proyectoId).ToList();               
+
+                var previousTempID = 0;
+                var nextTempID = 0;               
 
                 for (int i = 0; i <= levelsFromProject.Count; i++) {
 
-                    var subniveles = levelsFromProject.Where(l => l.parentId == levelsFromProject[i].id).ToList();
-
-                    //Nivel Root del arbol clonado
-                    TB_TREE rootLevel = new TB_TREE();
-                    rootLevel = levelsFromProject.Where(l => l.proyectoId == proyectoId && l.parentId == 0).FirstOrDefault();
-
-                    var idRoot = 0;
-
-                    if (rootLevel != null)
-                    {
+                    if (levelsFromProject[i].parentId == 0) {
+                        //Nivel Root del arbol clonado                      
                         TB_TREE rootTree = new TB_TREE();
 
-                        rootTree.title = rootLevel.title;
-                        rootTree.lazy = rootLevel.lazy;
-                        rootTree.parentId = rootLevel.parentId;
+                        rootTree.title = levelsFromProject[i].title;
+                        rootTree.lazy = levelsFromProject[i].lazy;
+                        rootTree.parentId = 0;
                         //rootTree.proyectoId = py.ProyectoID;
                         rootTree.fechaCreacion = DateTime.Now;
 
                         //nda.InserNewLevel(rootTree);
-                        idRoot = rootTree.id;
+
+                        previousTempID = rootTree.id;
                     }
 
-                    TB_TREE cloneTree_step1 = new TB_TREE();
-
-                    cloneTree_step1.title = subniveles[i].title;
-                    cloneTree_step1.lazy = subniveles[i].lazy;
-                    cloneTree_step1.parentId = idRoot;
-                    //cloneTree_step1.proyectoId = py.ProyectoID;
-                    cloneTree_step1.fechaCreacion = DateTime.Now;
-
-                    //nda.InserNewLevel(cloneTree_sub1);
+                    var subniveles = levelsFromProject.Where(l => l.parentId == levelsFromProject[i].id).ToList();
                     if (subniveles.Count > 0)
                     {
-                        TB_TREE cloneTree_sub2 = new TB_TREE();
+                        for (int j = 0; j <= subniveles.Count; j++)
+                        {
+                            TB_TREE cloneTree_step1 = new TB_TREE();
 
-                        cloneTree_sub2.title = subniveles[i].title;
-                        cloneTree_sub2.lazy = subniveles[i].lazy;
-                        cloneTree_sub2.parentId = subniveles[i].id;
-                        //cloneTree_sub2.proyectoId = py.ProyectoID;
-                        cloneTree_sub2.fechaCreacion = DateTime.Now;
+                            cloneTree_step1.title = subniveles[i].title;
+                            cloneTree_step1.lazy = subniveles[i].lazy;
+                            cloneTree_step1.parentId = previousTempID;
+                            //cloneTree_step1.proyectoId = py.ProyectoID;
+                            cloneTree_step1.fechaCreacion = DateTime.Now;
+                            //nda.InserNewLevel(cloneTree_step1);
 
-                        //nda.InserNewLevel(cloneTree_sub2);
+                            nextTempID = cloneTree_step1.id;                            
+                        }
                     }
-                    else {
+                    else
+                    {
+                        TB_TREE cloneTree_step2 = new TB_TREE();
 
-                       
+                        cloneTree_step2.title = levelsFromProject[i].title;
+                        cloneTree_step2.lazy = levelsFromProject[i].lazy;
+                        cloneTree_step2.parentId = nextTempID;
+                        //cloneTree_step2.proyectoId = py.ProyectoID;
+                        cloneTree_step2.fechaCreacion = DateTime.Now;
 
+                        //nda.InserNewLevel(cloneTree_step1);
+                        previousTempID = cloneTree_step2.id;
                     }
-
-                }                
-
+                }
                 return 0;
             }
             catch (Exception e)
