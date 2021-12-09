@@ -178,6 +178,7 @@ namespace ModeladorApp.Controllers
 
             try
             {
+                System.Threading.Thread.Sleep(2500);
                 //---------------------------------Eliminamos niveles del arbol del proyecto.
                 var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
 
@@ -225,8 +226,84 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
+        public int funCloneProject(int proyectoId, string nombre, string descripcion)
+        {
+            var result = "0";
+            var user = userManager.GetUserAsync(User);
 
-        public string FunAgregarPermiso(int proyectoId, string userConcedido, string per)
+            var da = new ProyectoDA();
+            var pda = new PermisosDA();
+            var nda = new NivelDA();
+
+            try
+            {
+                System.Threading.Thread.Sleep(2500);
+
+                //TB_PROYECTO py = new TB_PROYECTO();
+                //py.NombreProyecto = nombre + "_Clonado";
+                //py.DescripcionProyecto = descripcion;
+                //py.FechaCreado = DateTime.Now;
+                //py.FechaUltimaEdicion = DateTime.Now;
+                //py.PropietarioID = user.Result.Id;
+                //py.PropietarioName = user.Result.UsuarioNombreCompleto;
+
+                //var pyCount = da.InsertPy(py);
+
+                ////Permisos.
+                //TB_PERMISOS permiso = new TB_PERMISOS();
+
+                //permiso.ProyectoID = py.ProyectoID;
+                //permiso.UsuarioCreacionId = user.Result.Id;
+                //permiso.UsuarioCreacionName = user.Result.UsuarioNombreCompleto;
+                //permiso.Permiso = "EDITOR";
+                //permiso.UsuarioConcedidoId = user.Result.Id;
+                //permiso.UsuarioConcedidoName = user.Result.UsuarioNombreCompleto;
+                //permiso.FechaPermisoCreado = DateTime.Now;
+
+                //var perCount = pda.InsertPermiso(permiso);
+
+                //------- Clonar Arbol
+                List<TB_TREE> levelsFromProject = new List<TB_TREE>();
+                levelsFromProject = nda.getLevelsToDeleteFromProject(proyectoId).ToList();
+
+                //Nivel Root del arbol clonado
+                TB_TREE rootLevel = new TB_TREE();
+                rootLevel = levelsFromProject.Where(l => l.proyectoId == proyectoId && l.parentId == 0).FirstOrDefault();
+                
+                TB_TREE cloneTree = new TB_TREE();
+
+                cloneTree.title = rootLevel.title;
+                cloneTree.lazy = rootLevel.lazy;
+                cloneTree.parentId = rootLevel.parentId;
+                //cloneTree.proyectoId = py.ProyectoID;
+                cloneTree.fechaCreacion = DateTime.Now;
+
+                Console.WriteLine(cloneTree);
+                Console.WriteLine("---------->> SUBNIVELES...");
+                //nda.InserNewLevel(cloneTree);
+
+                for (int i = 0; i <= levelsFromProject.Count; i++) {
+
+                    var subniveles = levelsFromProject.Where(l => l.parentId == levelsFromProject[i].id).ToList();
+
+                    if (subniveles.Count > 0) {
+
+                        Console.WriteLine(subniveles);
+                    
+                    }
+                }                
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+
+        }
+
+            public string FunAgregarPermiso(int proyectoId, string userConcedido, string per)
         {
             var result = "0";
 

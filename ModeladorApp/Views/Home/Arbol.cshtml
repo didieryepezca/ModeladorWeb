@@ -111,6 +111,8 @@
                                 data: { parent: node.data.id },
                                 cache: false
                             };
+
+                            //console.log(data);
                         },
 
                         ////Evento Expand para capturar algo cuando se expande el arbol
@@ -221,7 +223,8 @@
                             if (node.tr.rowIndex >= 2) { //obtenemos el indice de la fila creada y apartir de ahi creamos el indexador
                                 $tdList.eq(0).text(node.getIndexHier());
                             }
-
+                            //$tdList.eq(2).text(node.data.fechaCreacion);
+                            //console.log(node.data.fechaCreacion);
                             //console.log(node.data.id); // id único de cada elemento del arbol.
                             var estilos = getStyles(node.data.id);//-------> estilos del árbol
                             estilos.then(function (estilosresponse) {
@@ -684,7 +687,7 @@
                         })
                         .on("keydown", function (e) {
                             var cmd = null;
-
+                            //------------------------------- EVENTOS DESENCADENADOS POR TECLAS.
                             // console.log(e.type, $.ui.fancytree.eventToString(e));
                             switch ($.ui.fancytree.eventToString(e)) {
                                 case "ctrl+shift+n":
@@ -707,7 +710,7 @@
                                 case "meta+n": // mac
                                     cmd = "addSibling";
                                     break;
-                                case "del":
+                                /*case "del":*/ //Tecla DEL para eliminar un nodo
                                 case "meta+backspace": // mac
                                     cmd = "remove";
                                     break;
@@ -1505,7 +1508,7 @@
                         <tr id="head_tree_0">
                             <th>#</th>
                             <th>Identificador - Nombre</th>
-
+                            @*<th>Nombre</th>*@
                         </tr>
                     </thead>
                     <tbody>

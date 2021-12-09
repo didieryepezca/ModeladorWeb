@@ -67,9 +67,22 @@
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
 
-                    Swal.fire('Eliminando...', '', 'info')
+                    Swal.fire({ title: 'Eliminando ' + namePy + '...', allowOutsideClick: false, showConfirmButton: false })
 
-                    confirmDeleteProject(id)
+                    var rpt = confirmDeleteProject(id)
+                    rpt.then(function (response) {
+
+                        console.log(response);
+                        if (response >= 1) {
+
+                            Swal.fire('Proyecto Eliminado !', '', 'success').then((result) => {
+                                location.reload(); //refrescar pantalla para ver los cambios.                  
+                            })
+
+                        } else {
+                            Swal.fire('ERROR', 'Hubo un problema', 'error')
+                        }
+                    })
 
                 } else if (result.isDenied) {
                     Swal.fire('No', '', 'info')
@@ -77,36 +90,75 @@
             })
         }
 
+        async function confirmDeleteProject(vId) {
+            return deleted = await DeleteProjectInDB(vId);
+        };
 
-        function confirmDeleteProject(vId) {
-
+        function DeleteProjectInDB(vId) {
             //console.log(vId);
-            $.ajax({
+            return $.ajax({
                 type: "POST",
                 url: "/Proyectos/funDeleteProject",
                 data: {
                     "proyectoId": vId,
                 },
-                success: function (response) {
-
-                    console.log(response);
-                    if (response >= 1) {
-
-                        Swal.fire('Proyecto Eliminado !', '', 'success').then((result) => {
-                            location.reload(); //refrescar pantalla para ver los cambios.                  
-                        })
-
-                    } else {
-                        Swal.fire('ERROR', 'Hubo un problema', 'error')
-                    }
+                success: function (response) {                   
                 },
             });
+        }
 
+        function cloneProject(idPy, namePy, desc) {
+
+            Swal.fire({
+                title: '¿Estás seguro que deseas Clonar:  ' + namePy + ' ?',
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: `Si`,
+                denyButtonText: `Don't save`,
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+
+                    Swal.fire({ title: 'Clonando ' + namePy + '...', allowOutsideClick: false, showConfirmButton: false})                   
+
+                    var rpt = confirmCloneProject(idPy, namePy, desc)
+                    rpt.then(function (response) {
+
+                        console.log(response);
+                        if (response >= 1) {
+
+                            Swal.fire('Proyecto Clonado !', '', 'success').then((result) => {
+                                location.reload(); //refrescar pantalla para ver los cambios.                  
+                            })
+
+                        } else {
+                            Swal.fire('ERROR', 'Hubo un problema', 'error')
+                        }
+                    })
+
+                } else if (result.isDenied) {
+                    Swal.fire('No', '', 'info')
+                }
+            })
+        }
+
+        async function confirmCloneProject(idPy, namePy, desc) {
+            return clone = await CloneProjectInDB(idPy, namePy, desc);
+        };
+        function CloneProjectInDB(idproyecto,nombre,descripcion) {
+            return $.ajax({
+                type: "POST",
+                url: "/Proyectos/funCloneProject",
+                data: {
+                    "proyectoId": idproyecto,
+                    "nombre": nombre,
+                    "descripcion": descripcion,
+                },
+                success: function (response) { },
+            });
         }
 
     </script>
-
-
 
     <form asp-action="VerProyectos" method="get">
 
@@ -224,6 +276,9 @@
                                                     <div class="d-flex">
                                                         <a class="btn btn-link" style="color:red"
                                                            onclick="deteleProject(@item.ProyectoID, '@item.NombreProyecto')">Eliminar</a>
+
+                                                        <a class="btn btn-link" style="color:green"
+                                                           onclick="cloneProject(@item.ProyectoID, '@item.NombreProyecto', '@item.DescripcionProyecto')">Clonar</a>
                                                     </div>
                                                 </div>
                                             }
