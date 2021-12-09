@@ -182,7 +182,8 @@ namespace ModeladorApp.Controllers
                 //---------------------------------Eliminamos niveles del arbol del proyecto.
                 var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
 
-                for (int i = 0; i < nivelesToDelete.Count; i++) {
+                for (int i = 0; i < nivelesToDelete.Count; i++)
+                {
                     try
                     {
                         tda.DeleteLevel(nivelesToDelete[i].id);
@@ -214,7 +215,8 @@ namespace ModeladorApp.Controllers
                 {
                     pyda.deleteProyecto(proyectoId);
                 }
-                catch (Exception py) {
+                catch (Exception py)
+                {
                     result = py.Message;
                     return 0;
                 }
@@ -238,6 +240,8 @@ namespace ModeladorApp.Controllers
             try
             {
                 System.Threading.Thread.Sleep(2500);
+
+                var count = 0;
 
                 //TB_PROYECTO py = new TB_PROYECTO();
                 //py.NombreProyecto = nombre + "_Clonado";
@@ -264,70 +268,89 @@ namespace ModeladorApp.Controllers
 
                 //------- Clonar Arbol
                 List<TB_TREE> levelsFromProject = new List<TB_TREE>();
-                levelsFromProject = nda.getLevelsToDeleteFromProject(proyectoId).ToList();               
+                levelsFromProject = nda.getLevelsToDeleteFromProject(proyectoId).ToList();
 
                 var previousTempID = 0;
-                var nextTempID = 0;               
+                var nextTempID = 0;
 
-                for (int i = 0; i <= levelsFromProject.Count; i++) {
+                for (int i = 0; i <= levelsFromProject.Count - 1; i++)
+                {
+                    List<TB_TREE> levelsAdded = new List<TB_TREE>();
 
-                    if (levelsFromProject[i].parentId == 0) {
+                    if (levelsFromProject[i].parentId == 0)
+                    {
                         //Nivel Root del arbol clonado                      
                         TB_TREE rootTree = new TB_TREE();
 
                         rootTree.title = levelsFromProject[i].title;
                         rootTree.lazy = levelsFromProject[i].lazy;
                         rootTree.parentId = 0;
-                        //rootTree.proyectoId = py.ProyectoID;
+                        rootTree.proyectoId = 3;
                         rootTree.fechaCreacion = DateTime.Now;
 
-                        //nda.InserNewLevel(rootTree);
-
+                        var countlvl = nda.InserNewLevel(rootTree);
                         previousTempID = rootTree.id;
+
+                        count = count + countlvl;
                     }
 
+                    var forcounter = 0;
                     var subniveles = levelsFromProject.Where(l => l.parentId == levelsFromProject[i].id).ToList();
                     if (subniveles.Count > 0)
                     {
-                        for (int j = 0; j <= subniveles.Count; j++)
+                        for (int j = 0; j <= subniveles.Count - 1; j++)
                         {
                             TB_TREE cloneTree_step1 = new TB_TREE();
 
-                            cloneTree_step1.title = subniveles[i].title;
-                            cloneTree_step1.lazy = subniveles[i].lazy;
-                            cloneTree_step1.parentId = previousTempID;
-                            //cloneTree_step1.proyectoId = py.ProyectoID;
+                            cloneTree_step1.title = subniveles[j].title;
+                            cloneTree_step1.lazy = subniveles[j].lazy;
+                            if (i == 0)                            {
+                                cloneTree_step1.parentId = previousTempID;
+                            } else {
+                                cloneTree_step1.parentId = nextTempID;
+                            }
+                            cloneTree_step1.proyectoId = 3;
                             cloneTree_step1.fechaCreacion = DateTime.Now;
-                            //nda.InserNewLevel(cloneTree_step1);
+                            var countlvl2 = nda.InserNewLevel(cloneTree_step1);
 
-                            nextTempID = cloneTree_step1.id;                            
+                            nextTempID = cloneTree_step1.id;
+
+                            count = count + countlvl2;
+                            forcounter++;
                         }
+                    }
+                    levelsAdded = nda.getLevelsToDeleteFromProject(3).ToList();
+                    var levelsNotAdded = levelsFromProject.Where(p => levelsAdded.All(p2 => p2.title != p.title)).ToList();
+
+                    if (levelsNotAdded.Count > 0) {
+
+                        continue;
                     }
                     else
                     {
-                        TB_TREE cloneTree_step2 = new TB_TREE();
+                        //TB_TREE cloneTree_step2 = new TB_TREE();
 
-                        cloneTree_step2.title = levelsFromProject[i].title;
-                        cloneTree_step2.lazy = levelsFromProject[i].lazy;
-                        cloneTree_step2.parentId = nextTempID;
-                        //cloneTree_step2.proyectoId = py.ProyectoID;
-                        cloneTree_step2.fechaCreacion = DateTime.Now;
+                        //cloneTree_step2.title = levelsFromProject[i].title;
+                        //cloneTree_step2.lazy = levelsFromProject[i].lazy;
+                        //cloneTree_step2.parentId = nextTempID;
+                        //cloneTree_step2.proyectoId = 3;
+                        //cloneTree_step2.fechaCreacion = DateTime.Now;
 
-                        //nda.InserNewLevel(cloneTree_step1);
-                        previousTempID = cloneTree_step2.id;
+                        //var countlvl3 = nda.InserNewLevel(cloneTree_step2);
+
                     }
+                    forcounter = 0;
                 }
-                return 0;
+                return count;
             }
             catch (Exception e)
             {
                 result = e.Message;
                 return 0;
             }
-
         }
 
-            public string FunAgregarPermiso(int proyectoId, string userConcedido, string per)
+        public string FunAgregarPermiso(int proyectoId, string userConcedido, string per)
         {
             var result = "0";
 
