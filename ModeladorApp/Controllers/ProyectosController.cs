@@ -243,28 +243,28 @@ namespace ModeladorApp.Controllers
 
                 var count = 0;
 
-                //TB_PROYECTO py = new TB_PROYECTO();
-                //py.NombreProyecto = nombre + "_Clonado";
-                //py.DescripcionProyecto = descripcion;
-                //py.FechaCreado = DateTime.Now;
-                //py.FechaUltimaEdicion = DateTime.Now;
-                //py.PropietarioID = user.Result.Id;
-                //py.PropietarioName = user.Result.UsuarioNombreCompleto;
+                TB_PROYECTO py = new TB_PROYECTO();
+                py.NombreProyecto = nombre + "_Clonado";
+                py.DescripcionProyecto = descripcion;
+                py.FechaCreado = DateTime.Now;
+                py.FechaUltimaEdicion = DateTime.Now;
+                py.PropietarioID = user.Result.Id;
+                py.PropietarioName = user.Result.UsuarioNombreCompleto;
 
-                //var pyCount = da.InsertPy(py);
+                var pyCount = da.InsertPy(py);
 
                 ////Permisos.
-                //TB_PERMISOS permiso = new TB_PERMISOS();
+                TB_PERMISOS permiso = new TB_PERMISOS();
 
-                //permiso.ProyectoID = py.ProyectoID;
-                //permiso.UsuarioCreacionId = user.Result.Id;
-                //permiso.UsuarioCreacionName = user.Result.UsuarioNombreCompleto;
-                //permiso.Permiso = "EDITOR";
-                //permiso.UsuarioConcedidoId = user.Result.Id;
-                //permiso.UsuarioConcedidoName = user.Result.UsuarioNombreCompleto;
-                //permiso.FechaPermisoCreado = DateTime.Now;
+                permiso.ProyectoID = py.ProyectoID;
+                permiso.UsuarioCreacionId = user.Result.Id;
+                permiso.UsuarioCreacionName = user.Result.UsuarioNombreCompleto;
+                permiso.Permiso = "EDITOR";
+                permiso.UsuarioConcedidoId = user.Result.Id;
+                permiso.UsuarioConcedidoName = user.Result.UsuarioNombreCompleto;
+                permiso.FechaPermisoCreado = DateTime.Now;
 
-                //var perCount = pda.InsertPermiso(permiso);
+                var perCount = pda.InsertPermiso(permiso);
 
                 //------- Clonar Arbol
                 List<TB_TREE> levelsFromProject = new List<TB_TREE>();
@@ -285,7 +285,7 @@ namespace ModeladorApp.Controllers
                         rootTree.title = levelsFromProject[i].title;
                         rootTree.lazy = levelsFromProject[i].lazy;
                         rootTree.parentId = 0;
-                        rootTree.proyectoId = 3;
+                        rootTree.proyectoId = py.ProyectoID;
                         rootTree.fechaCreacion = DateTime.Now;
 
                         var countlvl = nda.InserNewLevel(rootTree);
@@ -294,7 +294,12 @@ namespace ModeladorApp.Controllers
                         count = count + countlvl;
                     }
 
-                    var forcounter = 0;
+                    levelsAdded = nda.getLevelsToDeleteFromProject(py.ProyectoID).ToList();
+                    
+                    var lastElementAdded = levelsAdded.Last();
+                    var lastID = lastElementAdded.id;
+
+                    //Sub niveles del arbol clonado    
                     var subniveles = levelsFromProject.Where(l => l.parentId == levelsFromProject[i].id).ToList();
                     if (subniveles.Count > 0)
                     {
@@ -304,42 +309,43 @@ namespace ModeladorApp.Controllers
 
                             cloneTree_step1.title = subniveles[j].title;
                             cloneTree_step1.lazy = subniveles[j].lazy;
-                            if (i == 0)                            {
+                            if (i == 0){
                                 cloneTree_step1.parentId = previousTempID;
-                            } else {
-                                cloneTree_step1.parentId = nextTempID;
+                            }else {                                
+                                cloneTree_step1.parentId = lastID;
                             }
-                            cloneTree_step1.proyectoId = 3;
+                            cloneTree_step1.proyectoId = py.ProyectoID;
                             cloneTree_step1.fechaCreacion = DateTime.Now;
                             var countlvl2 = nda.InserNewLevel(cloneTree_step1);
 
                             nextTempID = cloneTree_step1.id;
 
-                            count = count + countlvl2;
-                            forcounter++;
+                            count = count + countlvl2;                            
                         }
-                    }
-                    levelsAdded = nda.getLevelsToDeleteFromProject(3).ToList();
-                    var levelsNotAdded = levelsFromProject.Where(p => levelsAdded.All(p2 => p2.title != p.title)).ToList();
-
-                    if (levelsNotAdded.Count > 0) {
-
-                        continue;
-                    }
+                    }                    
                     else
                     {
-                        //TB_TREE cloneTree_step2 = new TB_TREE();
+                        var levelFound = levelsAdded.Where(l => l.title == levelsFromProject[i].title).FirstOrDefault();
+                        if (levelFound != null)
+                        {
+                            continue;
+                        }
+                        else {
+                            TB_TREE cloneTree_step2 = new TB_TREE();
 
-                        //cloneTree_step2.title = levelsFromProject[i].title;
-                        //cloneTree_step2.lazy = levelsFromProject[i].lazy;
-                        //cloneTree_step2.parentId = nextTempID;
-                        //cloneTree_step2.proyectoId = 3;
-                        //cloneTree_step2.fechaCreacion = DateTime.Now;
+                            cloneTree_step2.title = levelsFromProject[i].title;
+                            cloneTree_step2.lazy = levelsFromProject[i].lazy;
+                            cloneTree_step2.parentId = nextTempID;
+                            cloneTree_step2.proyectoId = py.ProyectoID;
+                            cloneTree_step2.fechaCreacion = DateTime.Now;
 
-                        //var countlvl3 = nda.InserNewLevel(cloneTree_step2);
+                            var countlvl3 = nda.InserNewLevel(cloneTree_step2);
 
-                    }
-                    forcounter = 0;
+                            previousTempID = cloneTree_step2.id;
+
+                            count = count + countlvl3;
+                        }
+                    }                    
                 }
                 return count;
             }
