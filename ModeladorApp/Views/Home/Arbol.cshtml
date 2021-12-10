@@ -264,44 +264,18 @@
                             //console.log(pySelected)
                             var titles = funGetTitulos(pySelected)
                             titles.then(function (result) {
-
                                 //console.log(result);
-
                                 var colName = "";
 
                                 if (result.length != 0) {
-                                    // 50 cajas para nombres de  columnas.
-
-                                    var g = 1;
+                                    // 50 cajas para nombres de  columnas.                                  
 
                                     for (h = 0; h <= result.length - 1; h++) {
-
                                         $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
-
-                                    }
-
-                                    g = g + 1;
-
-                                    for (f = g; f <= 48; f++) {
-
-                                        $('#' + treeReach + '_colth_' + f).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
-                                        colName = colName + '<th id="' + treeReach + '_colth_' + f + '"><input id="' + treeReach + '_colname' + f + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + f + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre" style="width: 60px;"></th>';
-                                    }
-
-
-                                    $('#head_' + treeReach).append(colName).fadeIn(300000);
-
-                                } else {
-
-                                    for (i = 1; i <= 48; i++) {
-
-                                        $('#' + treeReach + '_colth_' + i).remove(); //removemos para que no se vuelvan a crear.
-                                        colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '`  )" type="text" placeholder="col nombre ' + i + '" style="width: 60px;"></th>';
                                     }
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
-
-                                }
+                                }                               
                             });
 
                             //console.log($tdList);
@@ -321,9 +295,7 @@
 
                                             $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 60px;">');
                                         }
-
                                         m = m + 1;
-
                                         for (j = m; j <= 52; j++) {
 
                                             $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
@@ -1290,13 +1262,24 @@
 
                 option_btns = option_btns + '<div class="modal-footer" id="footer_columns_options">';
                 option_btns = option_btns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
-                option_btns = option_btns + '<button onclick="fnApplyColumnChanges(`' + loadedTree + '`);" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ocultar</button>';
+                option_btns = option_btns + '<button onclick="fnApplyColumnChanges(`' + loadedTree + '`);" type="button" class="btn btn-primary" data-bs-dismiss="modal">Mostrar</button>';
                 option_btns = option_btns + '</div>';
 
                 $('#modalContent').append(option_btns).fadeIn(300000);
             });
         }
 
+
+        $(document).on('change', 'input[id="checkAll"]', function () {
+            checkedColumns = [];
+            $('.checkbox_check').prop("checked", this.checked);
+
+            $("input[name='checkbox_check[]']:checked").each(function () {
+                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
+                checkedColumns.push(new columnId($(this).val()));
+            });
+            //console.log(checkedColumns);
+        });
         //----------------------------------------------------------> Manejo de los checkboxes de la función anterior.
         function fnCheckColumnChanges() {
 
@@ -1318,21 +1301,21 @@
 
         function fnApplyColumnChanges(loadedTree) {
 
-            //ocultar columnas de los checkboxes checkeados.
+            //mostrar columnas de los checkboxes checkeados.
             checkedColumns.forEach(function (checked_element) {
 
                 var columnIndex = $('#' + loadedTree + '_colname_' + checked_element.idElement).parent().index() + 1;
-                $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').hide();
+                $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').show();
 
             });
 
-            //mostrar columnas de los checkboxes no checkeados.
+            //ocultar columnas de los checkboxes no checkeados.
             var unCheckedColumns = $("input:checkbox:not(:checked)").length;
             if (unCheckedColumns > 0) {
                 jQuery("input:checkbox:not(:checked)").each(function () {
 
                     var columnIndex = $('#' + loadedTree + '_colname_' + $(this).val()).parent().index() + 1;
-                    $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').show();
+                    $('#' + loadedTree + ' td:nth-child(' + columnIndex + '),th:nth-child(' + columnIndex + ')').hide();
 
                 });
             }
@@ -1712,8 +1695,7 @@
                         <table id="tblAdminColumnas" class="table card-table table-vcenter text-nowrap datatable">
                             <thead>
                                 <tr>
-                                    @*<th class="w-1"><input type="checkbox" aria-label="Select all invoices"></th>*@
-                                    <th>Opción</th>
+                                    <th><input id="checkAll" type="checkbox" data-parsley-multiple="checkbox"></th>                                    
                                     <th>Nombre de Columna</th>
                                 </tr>
                             </thead>

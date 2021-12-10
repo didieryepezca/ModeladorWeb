@@ -47,6 +47,17 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
+        public int deleteTitulo(int id)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var title = db.TB_NIVEL_COLUMN_TITLES.Where(item => item.TituloID == id).SingleOrDefault();
+                db.TB_NIVEL_COLUMN_TITLES.Remove(title);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
 
     }
 }

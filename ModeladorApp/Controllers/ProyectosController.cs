@@ -119,10 +119,11 @@ namespace ModeladorApp.Controllers
             var da = new ProyectoDA();
             var pda = new PermisosDA();
             var nda = new NivelDA();
+            var nti = new NivelTituloDA();
 
             try
             {
-
+                System.Threading.Thread.Sleep(3500);
                 //Proyecto
                 TB_PROYECTO py = new TB_PROYECTO();
                 py.NombreProyecto = nombre;
@@ -158,7 +159,19 @@ namespace ModeladorApp.Controllers
 
                 var nCount = nda.InserNewLevel(newTree);
 
-                int totalInserts = pyCount + perCount + nCount;
+                int countTitulos = 0;
+
+                for (int t = 1; t <= 50; t++) {
+
+                    TB_NIVEL_COLUMN_TITLES ct = new TB_NIVEL_COLUMN_TITLES();
+
+                    ct.proyectoID = py.ProyectoID;
+                    ct.titulo = "Titulo " + t;
+
+                    countTitulos = nti.InsertColumnTitle(ct);
+                    countTitulos = countTitulos + t;
+                }
+                int totalInserts = pyCount + perCount + nCount + countTitulos;
 
                 return totalInserts;
             }
@@ -175,10 +188,11 @@ namespace ModeladorApp.Controllers
             var tda = new NivelDA();
             var pda = new PermisosDA();
             var pyda = new ProyectoDA();
+            var tida = new NivelTituloDA();
 
             try
             {
-                System.Threading.Thread.Sleep(2500);
+                System.Threading.Thread.Sleep(3000);
                 //---------------------------------Eliminamos niveles del arbol del proyecto.
                 var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
 
@@ -194,7 +208,20 @@ namespace ModeladorApp.Controllers
                         return 0;
                     }
                 }
+                //---------------------------------Eliminamos los titulos del arbol del proyecto.
+                var titulosFromGrilla = tida.GetNivelTitulosByIdProyecto(proyectoId).ToList();
 
+                for (int i = 0; i < titulosFromGrilla.Count; i++) {
+                    try
+                    {
+                        tida.deleteTitulo(titulosFromGrilla[i].TituloID);
+                    }
+                    catch (Exception dn)
+                    {
+                        result = dn.Message;
+                        return 0;
+                    }
+                }
                 //---------------------------------Eliminamos permisos del proyecto.
                 var permisos = pda.getPermisosByIdProyecto(proyectoId).ToList();
 
@@ -210,7 +237,7 @@ namespace ModeladorApp.Controllers
                         return 0;
                     }
                 }
-                //---------------------------------Finalmente el proyecto mismo.
+                //---------------------------------Eliminamos el proyecto mismo.
                 try
                 {
                     pyda.deleteProyecto(proyectoId);
