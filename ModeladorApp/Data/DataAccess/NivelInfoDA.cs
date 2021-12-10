@@ -56,7 +56,20 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
-        
+        public int deleteInfo(int id)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var info = db.TB_NIVEL_INFO.Where(item => item.InfoID == id).SingleOrDefault();
+                db.TB_NIVEL_INFO.Remove(info);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
+
 
     }
 }

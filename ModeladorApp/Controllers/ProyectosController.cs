@@ -189,23 +189,36 @@ namespace ModeladorApp.Controllers
             var pda = new PermisosDA();
             var pyda = new ProyectoDA();
             var tida = new NivelTituloDA();
+            var infoda = new NivelInfoDA();
 
             try
             {
                 System.Threading.Thread.Sleep(3000);
                 //---------------------------------Eliminamos niveles del arbol del proyecto.
                 var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
-
-                for (int i = 0; i < nivelesToDelete.Count; i++)
+                for (int n = 0; n < nivelesToDelete.Count; n++)
                 {
                     try
                     {
-                        tda.DeleteLevel(nivelesToDelete[i].id);
+                        tda.DeleteLevel(nivelesToDelete[n].id);
                     }
                     catch (Exception dn)
                     {
                         result = dn.Message;
                         return 0;
+                    }
+                    //---------------------------- Eliminamos la información de la grilla.
+                    var infoToDelete = infoda.GetNivelInfo(nivelesToDelete[n].id).ToList();
+                    for (int i = 0; i < infoToDelete.Count; n++) {
+                        try
+                        {
+                            infoda.deleteInfo(infoToDelete[i].InfoID);
+                        }
+                        catch (Exception dn)
+                        {
+                            result = dn.Message;
+                            return 0;
+                        }
                     }
                 }
                 //---------------------------------Eliminamos los titulos del arbol del proyecto.
@@ -263,6 +276,7 @@ namespace ModeladorApp.Controllers
             var da = new ProyectoDA();
             var pda = new PermisosDA();
             var nda = new NivelDA();
+            var tida = new NivelTituloDA();
 
             try
             {
@@ -373,6 +387,26 @@ namespace ModeladorApp.Controllers
                             count = count + countlvl3;
                         }
                     }                    
+                }
+
+                //------------------------- titulos
+                var titulosFromGrilla = tida.GetNivelTitulosByIdProyecto(proyectoId).ToList();
+                for (int i = 0; i < titulosFromGrilla.Count; i++)
+                {
+                    try
+                    {
+                        TB_NIVEL_COLUMN_TITLES ct = new TB_NIVEL_COLUMN_TITLES();
+
+                        ct.proyectoID = py.ProyectoID;
+                        ct.titulo = titulosFromGrilla[i].titulo;
+
+                        tida.InsertColumnTitle(ct);
+                    }
+                    catch (Exception dn)
+                    {
+                        result = dn.Message;
+                        return 0;
+                    }
                 }
                 return count;
             }
