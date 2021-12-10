@@ -639,9 +639,7 @@
 
                                     $('#txtIdParent').val(node.data.id);
                                     $('#txtPyID').val(pySelected);
-                                    $('#txtTree').val(treeReach);
-
-                                    
+                                    $('#txtTree').val(treeReach);                                    
                                     //console.log(nodo.parent);
                                    
                                     break;
@@ -1202,26 +1200,20 @@
             }
         })()
 
-        function fnShowHideColumns(loadedTree) {
-            var accionM = $("#selectColumnas").val();
-            var accionU = $("#selectColumnasUser").val();
-            //console.log(accionM)
-            //console.log(accionU)           
-
-            //$tdList = $(nodo.tr).find(">td");
-            if (accionM == "HIDEALL" || accionU == "HIDEALL") {
-
+        function fnShowHideColumns(loadedTree) {         
+            var select = document.getElementById('selecterColumns');
+            var value = select.options[select.selectedIndex].value;
+            console.log(value); // en    
+            
+            //console.log(loadedTree);           
+            if (accionU == "HIDEALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
-
                     $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').hide();
                 }
-
-            } else if (accionM == "SHOWALL" || accionU == "SHOWALL") {
-
+            } else if (accionU == "SHOWALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
-
                     $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').show();
                 }
             }
@@ -1535,16 +1527,7 @@
                                 <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_0',0);" data-bs-toggle="modal" data-bs-target="#modal-simple">
                                     Columnas
                                 </a>
-                            </span>
-
-
-                            <span class="d-none d-sm-inline">
-                                <select class="form-select" id="selectColumnas" onchange="fnShowHideColumns('tree_0');">
-                                    <option selected="">Columnas</option>
-                                    <option value="SHOWALL">Mostrar todas</option>
-                                    <option value="HIDEALL">Ocultar todas</option>
-                                </select>
-                            </span>
+                            </span>                      
 
 
                             <span class="d-none d-sm-inline">
@@ -1659,15 +1642,12 @@
                                     </a>
                                 </span>
 
-
                                 <span class="d-none d-sm-inline">
-                                    <select class="form-select" id="selectColumnasUser" onchange="fnShowHideColumns('tree_@item.ProyectoID');">
-                                        <option selected="">Columnas</option>
+                                    <select class="form-select" id="selecterColumns" onchange="fnShowHideColumns('tree_@item.ProyectoID');">                                     
                                         <option value="SHOWALL">Mostrar todas</option>
                                         <option value="HIDEALL">Ocultar todas</option>
                                     </select>
                                 </span>
-
 
                                 <span class="d-none d-sm-inline">
                                     <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">

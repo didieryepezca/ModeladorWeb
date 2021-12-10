@@ -237,15 +237,11 @@ namespace ModeladorApp.Controllers
 
         public List<TB_NIVEL_COLUMN_TITLES> funGetColumnTitles(int idProyecto)
         {
-            var da = new NivelTituloDA();
-
-            //Un momento por favor xD
-            System.Threading.Thread.Sleep(2500);
+            var da = new NivelTituloDA();           
             var titles = da.GetNivelTitulosByIdProyecto(idProyecto).ToList();
 
             return titles;
         }
-
 
         public int funInsertTitulo(int proyectoId, string title)
         {
