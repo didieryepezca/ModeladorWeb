@@ -631,6 +631,20 @@
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
+                                case "addnchilds":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Añadir n hijos");
+                                    //console.log(node.data.id);
+                                    $('#modal-utilities').modal('show');
+
+                                    $('#txtIdParent').val(node.data.id);
+                                    $('#txtPyID').val(pySelected);
+                                    $('#txtTree').val(treeReach);
+
+                                    
+                                    //console.log(nodo.parent);
+                                   
+                                    break;
                                 //case "showgrid":
                                 //    //tree.applyCommand(data.cmd, node);
                                 //    console.log("Mostrar columnas");
@@ -787,6 +801,10 @@
                             {
                                 title: "Quitar icono de folder",
                                 cmd: "removefoldericon",
+                            }, { title: "----" },
+                            {
+                                title: "Añadir n hijos",
+                                cmd: "addnchilds",
                             }
                             //, {
                             //    title: "Mostrar Grilla",
@@ -1188,9 +1206,7 @@
             var accionM = $("#selectColumnas").val();
             var accionU = $("#selectColumnasUser").val();
             //console.log(accionM)
-            //console.log(accionU)
-            //var tree = $("#" + loadedTree).fancytree("getTree"); // para obtener el arbol renderizado.
-            //var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+            //console.log(accionU)           
 
             //$tdList = $(nodo.tr).find(">td");
             if (accionM == "HIDEALL" || accionU == "HIDEALL") {
@@ -1392,6 +1408,78 @@
 
         }
         //----------------------------------------------------->> Aplicando estilos
+        var arrayHijos = [];
+
+        function addNHijos() {
+
+            arrayHijos = [];
+            
+            var vCant = $('#txtCantidad').val();
+            var vNombre = $('#txtNombreBase').val();
+            var vIDparent = $('#txtIdParent').val();
+            var vIDproject = $('#txtPyID').val();
+            var treeSelected = $('#txtTree').val();
+
+            if (vCant != "" && vCant != null) {
+                arrayHijos.push(vCant);
+            } if (vNombre != "" && vNombre != null) {
+                arrayHijos.push(vNombre);
+            }
+            var nroCamposLlenos = arrayHijos.length;
+            if (nroCamposLlenos == 2) {
+
+                var rpt = addNHijosAsync(vCant, vNombre, vIDparent, vIDproject)
+                rpt.then(function (response) {
+
+                    console.log(response);
+                    if (response >= 1) {
+
+                        $('#txtIdParent').val("");
+                        $('#txtCantidad').val("");
+                        $('#txtNombreBase').val("");
+                        $('#txtPyID').val("");                        
+
+                        $('#modal-utilities').modal('toggle');
+
+                        Swal.fire('Niveles añadidos !', '', 'success').then((result) => {
+
+                            var tree = $("#" + treeSelected).fancytree("getTree"); // para obtener el arbol renderizado.
+                            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+
+                            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+                        });
+
+                        $('#txtTree').val("");
+
+                    } else {
+                        Swal.fire('ERROR', 'Hubo un problema', 'error')
+                    }
+                })
+                
+            } else {
+                Swal.fire('ADVERTENCIA', 'Complete ambos campos', 'warning')
+            }
+
+        }
+
+        async function addNHijosAsync(vCant, vNombre, vIDparent, vIDproject) {
+            return hijos = await addHijosInDB(vCant, vNombre, vIDparent, vIDproject);
+        };
+
+        function addHijosInDB(vCant, vNombre, vIDparent, vIDproject) {
+            return $.ajax({
+                type: "POST",
+                url: "/Home/funInsertNLvls",
+                data: {                    
+                    "cantidad": vCant,
+                    "nombreBase": vNombre,
+                    "parent": vIDparent,
+                    "projectID": vIDproject,
+                },
+                success: function (response) {
+                },
+            });
+        }
 
 
         //function addColumn(tree, nodoId) {
@@ -1709,31 +1797,48 @@
         </div>
     </div>
 
-    <div class="modal modal-blur fade" id="modal-new-project" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal modal-blur fade" id="modal-utilities" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Clonar Proyecto MASTER</h5>
+                    <h5 class="modal-title">Añadir n elementos hijos</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div class="row" hidden>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label">ID Nodo Parent</label>
+                                <input id="txtIdParent" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label">ProjectID</label>
+                                <input id="txtPyID" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label class="form-label">Tree</label>
+                                <input id="txtTree" class="form-control">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="row">
-                        <div class="col-lg-12">
+                        <div class="col-lg-2">
                             <div class="mb-3">
-                                <label class="form-label">Nombre</label>
-                                <input id="txtPyNombre" type="text" class="form-control"
-                                       name="example-text-input" placeholder="Escribe un Nombre para tu Proyecto">
+                                <label class="form-label"># Elementos</label>
+                                <input id="txtCantidad" type="number" class="form-control">
                             </div>
                         </div>
-
-                        <div class="col-lg-12">
-                            <div>
-                                <label class="form-label">Describe tu proyecto</label>
-                                <textarea id="txtPyDescripcion" class="form-control" rows="8"></textarea>
+                        <div class="col-lg-10">
+                            <div class="mb-3">
+                                <label class="form-label">Nombre base</label>
+                                <input id="txtNombreBase" type="text" class="form-control">
                             </div>
-                        </div>
-
+                        </div>                       
                     </div>
                 </div>
 
@@ -1741,7 +1846,7 @@
                     <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
                         Cancelar
                     </a>
-                    <a onclick="createProject()" class="btn btn-primary ms-auto">
+                    <a onclick="addNHijos()" class="btn btn-primary ms-auto">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              class="icon" width="24" height="24"
                              viewBox="0 0 24 24" stroke-width="2"
@@ -1751,7 +1856,7 @@
                             <line x1="12" y1="5" x2="12" y2="19" />
                             <line x1="5" y1="12" x2="19" y2="12" />
                         </svg>
-                        Clonar
+                        Añadir
                     </a>
                 </div>
             </div>

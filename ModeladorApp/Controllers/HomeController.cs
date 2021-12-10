@@ -96,6 +96,38 @@ namespace ModeladorApp.Controllers
             }
         }
 
+        public int funInsertNLvls(int cantidad, string nombreBase, int parent, int projectID)
+        {
+            var result = "0";
+            var nda = new NivelDA();
+
+            var totalInserts = 0;
+            try
+            {
+                for (int i = 1; i <= cantidad; i++) { 
+
+                    TB_TREE t = new TB_TREE();
+                    
+                    t.title = i+"."+" "+ nombreBase + " " + i;
+                    t.lazy = true;
+                    t.parentId = parent;
+                    t.proyectoId = projectID;
+                    t.fechaCreacion = DateTime.Now;
+
+                    var modelcount = nda.InserNewLevel(t);
+                    totalInserts = totalInserts + modelcount;
+                }
+                return totalInserts;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+
+
         public int funUpdateLvlName(int Id, string nombre)
         {
             var result = "0";
