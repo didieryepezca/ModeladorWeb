@@ -132,6 +132,8 @@
 
 
                                 //function saveData(node.data.id);
+                                //console.log(node.data.id); //id del elemento a actualizar
+                                //console.log(data); //id del nuevo parent
 
                                 return true;
                             },
@@ -248,7 +250,7 @@
                                         } else if (estilosresponse[s].style == 'Red') {
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //ELEMENTO CARPETA.
                                         } else if (estilosresponse[s].style == 'true') {
-                                            console.log("FOLDER")
+                                            //console.log("FOLDER")
                                             node.folder = true;  //LETRA CURSIVA.
                                         }
                                     }
@@ -369,9 +371,32 @@
                                     },
                                 });
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
-
                             }
 
+                            
+                            if (data.operation == "add") {
+
+                                if (typeof (data.childNode.data.id) != 'undefined') {                                
+                                //console.log("----> OPERATION DRAG & DROP")
+                                //console.log(data.operation)
+                                //console.log(data.childNode.data.id) // id actualizar
+                                //console.log(data.node.data.id) // id del nuevo parent
+
+                                    $.ajax({
+                                        type: "POST",
+                                        dataType: "json",
+                                        url: "/Home/funUpdateLvlParent",
+                                        data: {
+                                            "id": data.childNode.data.id,
+                                            "newparentId": data.node.data.id,
+                                        },
+                                        success: function (response) {
+                                            //console.log(response);
+                                        },
+                                    });
+                                }
+                            }
+                           
                         },
                     })
                         .on("nodeCommand", function (event, data) {
@@ -618,7 +643,7 @@
 
                                 case "removefoldericon":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Quitar icono de folder");
+                                    //console.log("Quitar icono de folder");
                                     var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_REMOVE")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
@@ -1203,7 +1228,7 @@
         function fnShowHideColumns(loadedTree) {         
             var select = document.getElementById('selecterColumns');
             var value = select.options[select.selectedIndex].value;
-            console.log(value); // en    
+            //console.log(value); // en    
             
             //console.log(loadedTree);           
             if (accionU == "HIDEALL") {
@@ -1423,7 +1448,7 @@
                 var rpt = addNHijosAsync(vCant, vNombre, vIDparent, vIDproject)
                 rpt.then(function (response) {
 
-                    console.log(response);
+                    //console.log(response);
                     if (response >= 1) {
 
                         $('#txtIdParent').val("");

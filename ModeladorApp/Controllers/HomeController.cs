@@ -144,6 +144,22 @@ namespace ModeladorApp.Controllers
             }
         }
 
+        public int funUpdateLvlParent(int id, int newparentId)
+        {
+            var result = "0";
+            var cDa = new NivelDA();
+            try
+            {
+                var modelcount = cDa.UpdateLvlParent(id, newparentId);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
         public int funDeleteLvlAndSublvls(int Id)
         {
             var result = "0";
