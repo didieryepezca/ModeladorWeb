@@ -17,14 +17,14 @@ namespace ModeladorApp.Controllers
     public class HomeController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly ILogger<HomeController> _logger;       
+        private readonly ILogger<HomeController> _logger;
 
         public HomeController(UserManager<ApplicationUser> userManager, ILogger<HomeController> logger)
         {
             this.userManager = userManager;
-            _logger = logger;            
+            _logger = logger;
         }
-        
+
         //---------------------------------TREE VIEW REAL
         [Authorize]
         public IActionResult Arbol()
@@ -83,7 +83,7 @@ namespace ModeladorApp.Controllers
                 t.parentId = parent;
                 t.proyectoId = projectId;
                 t.fechaCreacion = DateTime.Now;
-                
+
                 var modelcount = nda.InserNewLevel(t);
 
                 return modelcount;
@@ -104,11 +104,12 @@ namespace ModeladorApp.Controllers
             var totalInserts = 0;
             try
             {
-                for (int i = 1; i <= cantidad; i++) { 
+                for (int i = 1; i <= cantidad; i++)
+                {
 
                     TB_TREE t = new TB_TREE();
-                    
-                    t.title = i+"."+" "+ nombreBase + " " + i;
+
+                    t.title = i + "." + " " + nombreBase + " " + i;
                     t.lazy = true;
                     t.parentId = parent;
                     t.proyectoId = projectID;
@@ -174,14 +175,14 @@ namespace ModeladorApp.Controllers
                 {
                     try
                     {
-                        da.DeleteLevel(sublevelsToDelete[i].id);                       
+                        da.DeleteLevel(sublevelsToDelete[i].id);
                     }
                     catch (Exception fe)
                     {
                         result = fe.Message;
                         Console.WriteLine(result);
                     }
-                }                
+                }
                 return modelcount;
             }
             catch (Exception se)
@@ -216,7 +217,7 @@ namespace ModeladorApp.Controllers
                 t.NivelID = idLvl;
                 t.Informacion = info;
                 t.Usuario = userName;
-                t.FechaIngreso = DateTime.Now;               
+                t.FechaIngreso = DateTime.Now;
 
                 nda.InsertNivelInfo(t);
 
@@ -253,7 +254,7 @@ namespace ModeladorApp.Controllers
 
         public List<TB_NIVEL_COLUMN_TITLES> funGetColumnTitles(int idProyecto)
         {
-            var da = new NivelTituloDA();           
+            var da = new NivelTituloDA();
             var titles = da.GetNivelTitulosByIdProyecto(idProyecto).ToList();
 
             return titles;
@@ -270,7 +271,7 @@ namespace ModeladorApp.Controllers
                 TB_NIVEL_COLUMN_TITLES ct = new TB_NIVEL_COLUMN_TITLES();
 
                 ct.proyectoID = proyectoId;
-                ct.titulo = title;               
+                ct.titulo = title;
 
                 nda.InsertColumnTitle(ct);
                 var titleID = ct.TituloID;
@@ -296,6 +297,82 @@ namespace ModeladorApp.Controllers
             {
                 var modelcount = da.UpdateColumnTitle(id, title);
                 return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+        public int funDuplicateLevels(int vId, int vParentId, int projectId)
+        {
+            var result = "0";
+            var nda = new NivelDA();
+
+            var count = 0;
+            try
+            {
+                TB_TREE lvl = new TB_TREE();
+                lvl = nda.GetLevelToDuplicate(vId);
+
+                TB_TREE firstInsert = new TB_TREE();
+                firstInsert.title = lvl.title;
+                firstInsert.lazy = lvl.lazy;
+                firstInsert.parentId = vParentId;
+                firstInsert.proyectoId = projectId;
+                firstInsert.fechaCreacion = DateTime.Now;
+
+                var finsert = nda.InserNewLevel(firstInsert);
+
+                //------------ primer loop del primer nivel...
+                List<TB_TREE> sublvls = new List<TB_TREE>();
+                sublvls = nda.GetSubLvl(lvl.id).ToList();
+
+                //var lastEl = sublvls.Last();
+                //var lastID = lastEl.id;
+
+                //List<TB_TREE> levelsAdded = new List<TB_TREE>();
+                //levelsAdded = nda.getLevelsToDeleteFromProject(projectId).ToList();
+                if (sublvls.Count > 0)
+                {
+                    for (int i = 0; i <= sublvls.Count - 1; i++)
+                    {
+                        TB_TREE dupTree_step1 = new TB_TREE();
+
+                        dupTree_step1.title = sublvls[i].title;
+                        dupTree_step1.lazy = sublvls[i].lazy;
+                        dupTree_step1.parentId = firstInsert.id;
+                        dupTree_step1.proyectoId = projectId;
+                        dupTree_step1.fechaCreacion = DateTime.Now;
+
+                        var countlvl = nda.InserNewLevel(dupTree_step1);
+
+                        //------------ segundo loop...
+                        List<TB_TREE> sublvls2 = new List<TB_TREE>();
+                        sublvls2 = nda.GetSubLvl(sublvls[i].id).ToList();
+
+                        if (sublvls2.Count > 0)
+                        {
+                            for (int j = 0; j <= sublvls2.Count - 1; j++)
+                            {
+                                TB_TREE dupTree_step2 = new TB_TREE();
+
+                                dupTree_step2.title = sublvls2[j].title;
+                                dupTree_step2.lazy = sublvls2[j].lazy;
+                                dupTree_step2.parentId = dupTree_step1.id;
+                                dupTree_step2.proyectoId = projectId;
+                                dupTree_step2.fechaCreacion = DateTime.Now;
+
+                                var countlvl2 = nda.InserNewLevel(dupTree_step2);
+
+                                count = count + countlvl2;
+                            }
+                        }
+                        count = count + countlvl;
+                    }
+                }
+                return count;
             }
             catch (Exception e)
             {
@@ -335,9 +412,10 @@ namespace ModeladorApp.Controllers
 
                     var modelcount = da.InsertNivelStyle(t);
 
-                    return modelcount;                                    
+                    return modelcount;
                 }
-                else {
+                else
+                {
                     return 0;
                 }
             }
@@ -356,11 +434,11 @@ namespace ModeladorApp.Controllers
             var modelcount = 0;
 
             try
-            {                
+            {
                 TB_TREE_STYLE styleToDelete = new TB_TREE_STYLE();
-                styleToDelete = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();               
-               
-                modelcount = da.deleteNivelStyle(styleToDelete.StyleID);              
+                styleToDelete = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();
+
+                modelcount = da.deleteNivelStyle(styleToDelete.StyleID);
 
                 return modelcount;
             }
@@ -409,6 +487,6 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
         //---------------------------------TREE VIEW ANTERIOR
-        
+
     }
 }

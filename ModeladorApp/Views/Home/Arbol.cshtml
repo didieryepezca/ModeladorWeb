@@ -381,7 +381,6 @@
                                 //console.log(data.operation)
                                 //console.log(data.childNode.data.id) // id actualizar
                                 //console.log(data.node.data.id) // id del nuevo parent
-
                                     $.ajax({
                                         type: "POST",
                                         dataType: "json",
@@ -668,6 +667,27 @@
                                     //console.log(nodo.parent);
                                    
                                     break;
+                                case "duplicatelevel":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Añadir n hijos");
+                                    //console.log(node.data.id);
+                                    var rpt = duplicateLevels(node.data.id, node.data.parentId, pySelected)
+                                    rpt.then(function (response) {
+                                        //console.log(styleresponse);
+                                        if (response > 0) {
+                                           
+                                            var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
+                                            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+                                            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
+                                        }
+                                    });
+                                    
+                                    //console.log(nodo.parent);
+
+                                    break;
                                 //case "showgrid":
                                 //    //tree.applyCommand(data.cmd, node);
                                 //    console.log("Mostrar columnas");
@@ -828,6 +848,10 @@
                             {
                                 title: "Añadir n hijos",
                                 cmd: "addnchilds",
+                            },
+                            {
+                                title: "Duplicar elemento",
+                                cmd: "duplicatelevel",
                             }
                             //, {
                             //    title: "Mostrar Grilla",
@@ -1207,36 +1231,23 @@
                 }
             });
         }
-
         //Mensajito para la informacion que se puede editar proyecto
         function EdicionInfo() {
-            Swal.fire('EDITOR', 'Puedes editar éste proyecto en su respectiva pestaña EDITOR, ya sea porque es tuyo o porque te concedieron dicho permiso.', 'info')
-        }
-
-        var tableToExcel = (function () {
-            var uri = 'data:application/vnd.ms-excel;base64,'
-                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
-                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
-            return function (table, name) {
-                if (!table.nodeType) table = document.getElementById(table)
-                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
-                window.location.href = uri + base64(format(template, ctx))
-            }
-        })()
+           Swal.fire('EDITOR', 'Puedes editar éste proyecto en su respectiva pestaña EDITOR, ya sea porque es tuyo o porque te concedieron dicho permiso.', 'info')
+        }        
 
         function fnShowHideColumns(loadedTree) {         
-            var select = document.getElementById('selecterColumns');
-            var value = select.options[select.selectedIndex].value;
-            //console.log(value); // en    
-            
-            //console.log(loadedTree);           
-            if (accionU == "HIDEALL") {
+            //var select = document.getElementById('selecterColumns');
+
+            var select = $("#selecterColumns option:selected").text();
+            console.log(select);
+                       
+            if (select == "HIDEALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
                     $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').hide();
                 }
-            } else if (accionU == "SHOWALL") {
+            } else if (select == "SHOWALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
                     $('#' + loadedTree + ' td:nth-child(' + c + '),th:nth-child(' + c + ')').show();
@@ -1498,6 +1509,37 @@
             });
         }
 
+        //-------------------------------- Duplicar Niveles.
+        async function duplicateLevels(vId,vPid,idPy) {
+            return dups = await duplicateLevelsInDB(vId, vPid,idPy);
+        };
+
+        function duplicateLevelsInDB(vId, vPid, idPy) {
+            return $.ajax({
+                type: "POST",
+                url: "/Home/funDuplicateLevels",
+                data: {
+                    "vId": vId,
+                    "vParentId": vPid,
+                    "projectId": idPy,
+                },
+                success: function (response) {
+                },
+            });
+        }
+
+
+        var tableToExcel = (function () {
+            var uri = 'data:application/vnd.ms-excel;base64,'
+                , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+                , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
+                , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
+            return function (table, name) {
+                if (!table.nodeType) table = document.getElementById(table)
+                var ctx = { worksheet: name || 'Worksheet', table: table.innerHTML }
+                window.location.href = uri + base64(format(template, ctx))
+            }
+        })()
 
         //function addColumn(tree, nodoId) {
         //    console.log(tree,nodoId)
@@ -1668,9 +1710,10 @@
                                 </span>
 
                                 <span class="d-none d-sm-inline">
-                                    <select class="form-select" id="selecterColumns" onchange="fnShowHideColumns('tree_@item.ProyectoID');">                                     
-                                        <option value="SHOWALL">Mostrar todas</option>
-                                        <option value="HIDEALL">Ocultar todas</option>
+                                    <select class="form-select" id="selecterColumns" name="selecterColumns" onchange="fnShowHideColumns('tree_@item.ProyectoID')">
+                                      
+                                        <option >Mostrar todas</option>
+                                        <option >Ocultar todas</option>
                                     </select>
                                 </span>
 

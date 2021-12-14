@@ -130,7 +130,17 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
-
+        public TB_TREE GetLevelToDuplicate(int Id)
+        {
+            var result = new TB_TREE();
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    result = db.TB_TREE.Where(item => item.id == Id).FirstOrDefault();
+                }
+            }
+            return result;
+        }
 
         //--------------------------------- TREE VIEW ANTERIOR
         public IEnumerable<TB_NIVEL> GetMaster()
