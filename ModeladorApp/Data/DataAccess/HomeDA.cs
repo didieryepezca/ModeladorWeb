@@ -19,7 +19,7 @@ namespace ModeladorApp.Data.DataAccess
                 
                 if (!string.IsNullOrWhiteSpace(currentUser))
                 {
-                    query = query.Where(item => item.UsuarioCreacionId == currentUser || item.UsuarioConcedidoId == currentUser);
+                    query = query.Where(item => item.UsuarioCreacionId == currentUser || item.UsuarioConcedidoId == currentUser).OrderByDescending(p => p.FechaPermisoCreado);
                 }               
 
                 return query.ToList();

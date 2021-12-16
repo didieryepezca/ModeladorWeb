@@ -33,16 +33,21 @@ namespace ModeladorApp.Controllers
             var userId = user.Result.Id;
 
             var daPer = new HomeDA();
-            var proyectos = daPer.getProyectosWithPermisos(userId);
+            var allProyectos = daPer.getProyectosWithPermisos(userId);
 
-            return View(proyectos);
+            var firstPy = allProyectos.First();
+            var firstPyID = firstPy.ProyectoID;
+            ViewBag.firstPyID = firstPyID;
+            ViewBag.permiso = firstPy.Permiso;
+
+            return View(allProyectos);
         }
         public List<TB_TREE> funGetLvl()
         {
             var da = new NivelDA();
 
             //Un momento por favor xD
-            System.Threading.Thread.Sleep(2500);
+            System.Threading.Thread.Sleep(200);
             var master = da.GetLvl().ToList();
 
             return master;
@@ -50,22 +55,16 @@ namespace ModeladorApp.Controllers
 
         public List<TB_TREE> funGetLvlFromPyUsuario(int idProyecto)
         {
-            var da = new NivelDA();
-
-            //Un momento por favor xD
-            System.Threading.Thread.Sleep(2500);
+            var da = new NivelDA();                   
             var pyUsuario = da.GetLvlFromPyUsuario(idProyecto).ToList();
-
             return pyUsuario;
         }
 
         public JsonResult funGetSubLvls(int parent)
         {
             var da = new NivelDA();
-
-            System.Threading.Thread.Sleep(1500);
+            System.Threading.Thread.Sleep(200);
             var subMenus = da.GetSubLvl(parent);
-
             return Json(subMenus);
         }
 
@@ -100,7 +99,7 @@ namespace ModeladorApp.Controllers
         {
             var result = "0";
             var nda = new NivelDA();
-
+            System.Threading.Thread.Sleep(1500);
             var totalInserts = 0;
             try
             {
@@ -196,9 +195,8 @@ namespace ModeladorApp.Controllers
         public List<TB_NIVEL_INFO> funGetInfoFromDB(int lvlId)
         {
             var da = new NivelInfoDA();
-
             //Un momento por favor xD
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(400);
             var info = da.GetNivelInfo(lvlId).ToList();
 
             return info;

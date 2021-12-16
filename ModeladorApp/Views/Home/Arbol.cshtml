@@ -49,47 +49,51 @@
 
     <script type="text/javascript">
 
-        window.onload = loadTree();
+        var firstPyID = '@ViewBag.firstPyID';
+        var permiso = '@ViewBag.permiso';
+
+        window.onload = loadTree(firstPyID, permiso);
 
         var CLIPBOARD = null;
         var tempPyId; // servirá para deshacernos de la vista del proyecto.
 
         var pySelected; //servira para identificar los valores de las cajitas por el id del tree elegido.
 
-        async function loadTree(vIdProject, vPermiso) {
+        async function loadTree(firstPyID, vPermiso) {
 
             var treeReach; //la que rendizará los datos en la tabla.
             var data; // la que contendra la data de la función asyncrona.
 
-            //console.log(vPermiso);
+            //console.log(vPermiso);            
+            if (firstPyID != 0) {
+                
+                data = await funGetPyFromUsuario(firstPyID)
+                treeReach = "tree_" + firstPyID;
+                tempPyId = firstPyID;               
 
-            if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
+                pySelected = firstPyID;
+
+            } else {
 
                 data = await funGetMasterData()
                 treeReach = "tree_0";
 
                 pySelected = 0;
-            } else {
-                data = await funGetPyFromUsuario(vIdProject)
-                treeReach = "tree_" + vIdProject;
-                tempPyId = vIdProject;
-
-                pySelected = vIdProject;
             }
 
             if (data.length >= 1) {
 
                 $("#loader").hide();
 
-                if (typeof (vIdProject) === 'undefined' || vIdProject == 0) {
-
-                    $("#proyecto_" + tempPyId).removeClass('active');
-                    $('#proyecto_0').attr('class', "tab-pane active");
-
-                } else {
+                if (firstPyID != 0) {
 
                     $("#proyecto_0").removeClass('active');
-                    $('#proyecto_' + vIdProject).attr('class', "tab-pane active");
+                    $('#proyecto_' + firstPyID).attr('class', "tab-pane active");
+
+                } else {
+                   
+                    $("#proyecto_" + tempPyId).removeClass('active');
+                    $('#proyecto_0').attr('class', "tab-pane active");
                 }
 
                 $(function () {
@@ -111,8 +115,6 @@
                                 data: { parent: node.data.id },
                                 cache: false
                             };
-
-                            //console.log(data);
                         },
 
                         ////Evento Expand para capturar algo cuando se expande el arbol
@@ -255,8 +257,8 @@
                                         }
                                     }
                                 }
-                            });                         
-                           
+                            });
+
                             // (Index #0 is rendered by fancytree by adding the checkbox)
                             // Set column #1 info from node data:
                             //$tdList.eq(0).text(node.getIndexHier());
@@ -270,14 +272,14 @@
                                 var colName = "";
 
                                 if (result.length != 0) {
-                                    // 50 cajas para nombres de  columnas.                                  
-
-                                    for (h = 0; h <= result.length - 1; h++) {
+                                    // 50 cajas para nombres de  columnas.
+                                    //for (h = 0; h <= result.length - 1; h++) { //capturar los 50 titulos
+                                    for (h = 0; h <= 10 - 1; h++) {
                                         $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
                                         colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
                                     }
                                     $('#head_' + treeReach).append(colName).fadeIn(300000);
-                                }                               
+                                }
                             });
 
                             //console.log($tdList);
@@ -293,12 +295,12 @@
 
                                     for (n = 0; n <= result.length - 1; n++) {
 
-                                        for (i = 2; i <= 52; i++) {
+                                        for (i = 2; i <= 11; i++) {
 
                                             $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 60px;">');
                                         }
                                         m = m + 1;
-                                        for (j = m; j <= 52; j++) {
+                                        for (j = m; j <= 11; j++) {
 
                                             $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
 
@@ -307,7 +309,7 @@
                                 } else { // Sino no hay ningun dato en las cajas de un arbol. crear las cajas desde 0
 
                                     //console.log("Construir desde 0");
-                                    for (k = 2; k <= 52; k++) {
+                                    for (k = 2; k <= 11; k++) {
 
                                         $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
 
@@ -373,10 +375,10 @@
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
                             }
 
-                            
+
                             if (data.operation == "add") {
 
-                                if (typeof (data.childNode.data.id) != 'undefined') {                                
+                                if (typeof (data.childNode.data.id) != 'undefined') {
                                 //console.log("----> OPERATION DRAG & DROP")
                                 //console.log(data.operation)
                                 //console.log(data.childNode.data.id) // id actualizar
@@ -395,7 +397,7 @@
                                     });
                                 }
                             }
-                           
+
                         },
                     })
                         .on("nodeCommand", function (event, data) {
@@ -502,7 +504,7 @@
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
                                         }
-                                    });                                    
+                                    });
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "applyitalic":
@@ -614,11 +616,11 @@
                                 case "removesubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Quitar subrayado");
-                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE")                                    
-                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE")                                    
-                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE")                                    
-                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE")                                    
-                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE")                                  
+                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE")
+                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE")
+                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE")
+                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE")
+                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE")
                                     node.span.style.backgroundColor = "";
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
@@ -663,9 +665,9 @@
 
                                     $('#txtIdParent').val(node.data.id);
                                     $('#txtPyID').val(pySelected);
-                                    $('#txtTree').val(treeReach);                                    
+                                    $('#txtTree').val(treeReach);
                                     //console.log(nodo.parent);
-                                   
+
                                     break;
                                 case "duplicatelevel":
                                     //tree.applyCommand(data.cmd, node);
@@ -675,7 +677,7 @@
                                     rpt.then(function (response) {
                                         //console.log(styleresponse);
                                         if (response > 0) {
-                                           
+
                                             var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
                                             var nodo = tree.getActiveNode(); // para obtener el nodo activo.
                                             nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
@@ -684,7 +686,7 @@
                                             Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
                                         }
                                     });
-                                    
+
                                     //console.log(nodo.parent);
 
                                     break;
@@ -1234,14 +1236,14 @@
         //Mensajito para la informacion que se puede editar proyecto
         function EdicionInfo() {
            Swal.fire('EDITOR', 'Puedes editar éste proyecto en su respectiva pestaña EDITOR, ya sea porque es tuyo o porque te concedieron dicho permiso.', 'info')
-        }        
+        }
 
-        function fnShowHideColumns(loadedTree) {         
+        function fnShowHideColumns(loadedTree) {
             //var select = document.getElementById('selecterColumns');
 
             var select = $("#selecterColumns option:selected").text();
             console.log(select);
-                       
+
             if (select == "HIDEALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
@@ -1441,7 +1443,7 @@
         function addNHijos() {
 
             arrayHijos = [];
-            
+
             var vCant = $('#txtCantidad').val();
             var vNombre = $('#txtNombreBase').val();
             var vIDparent = $('#txtIdParent').val();
@@ -1456,6 +1458,8 @@
             var nroCamposLlenos = arrayHijos.length;
             if (nroCamposLlenos == 2) {
 
+                Swal.fire({ title: 'Añadiendo ' + vCant + ' Niveles...', allowOutsideClick: false, showConfirmButton: false })
+
                 var rpt = addNHijosAsync(vCant, vNombre, vIDparent, vIDproject)
                 rpt.then(function (response) {
 
@@ -1465,7 +1469,7 @@
                         $('#txtIdParent').val("");
                         $('#txtCantidad').val("");
                         $('#txtNombreBase').val("");
-                        $('#txtPyID').val("");                        
+                        $('#txtPyID').val("");
 
                         $('#modal-utilities').modal('toggle');
 
@@ -1483,7 +1487,7 @@
                         Swal.fire('ERROR', 'Hubo un problema', 'error')
                     }
                 })
-                
+
             } else {
                 Swal.fire('ADVERTENCIA', 'Complete ambos campos', 'warning')
             }
@@ -1498,7 +1502,7 @@
             return $.ajax({
                 type: "POST",
                 url: "/Home/funInsertNLvls",
-                data: {                    
+                data: {
                     "cantidad": vCant,
                     "nombreBase": vNombre,
                     "parent": vIDparent,
@@ -1554,18 +1558,29 @@
 
     <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
 
-        <li class="nav-item">
-            <a href="#master" onclick="loadTree(0)" class="nav-link active"
-               data-bs-toggle="tab"><strong>MASTER</strong></a>
-        </li>
+        @{ var totalPys = Model.Count(); }
 
         @foreach (var item in Model)
         {
-            <li class="nav-item">
-                <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
-                   data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
-            </li>
+            if (item.ProyectoID == ViewBag.firstPyID)
+            {
+                <li class="nav-item">
+                    <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link active"
+                       data-bs-toggle="tab"><strong>@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</strong>(@item.Permiso)</a>
+                </li>             
+            }
+            else {
+                <li class="nav-item">
+                    <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
+                       data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
+                </li>
+            }            
         }
+
+        <li class="nav-item">
+            <a href="#master" onclick="loadTree(0)" class="nav-link"
+               data-bs-toggle="tab">MASTER</a>
+        </li>
 
     </ul>
 
@@ -1594,7 +1609,7 @@
                                 <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_0',0);" data-bs-toggle="modal" data-bs-target="#modal-simple">
                                     Columnas
                                 </a>
-                            </span>                      
+                            </span>
 
 
                             <span class="d-none d-sm-inline">
@@ -1709,13 +1724,13 @@
                                     </a>
                                 </span>
 
-                                <span class="d-none d-sm-inline">
-                                    <select class="form-select" id="selecterColumns" name="selecterColumns" onchange="fnShowHideColumns('tree_@item.ProyectoID')">
-                                      
-                                        <option >Mostrar todas</option>
-                                        <option >Ocultar todas</option>
-                                    </select>
-                                </span>
+                                @*<span class="d-none d-sm-inline">
+                                        <select class="form-select" id="selecterColumns" name="selecterColumns" onchange="fnShowHideColumns('tree_@item.ProyectoID')">
+
+                                            <option >Mostrar todas</option>
+                                            <option >Ocultar todas</option>
+                                        </select>
+                                    </span>*@
 
                                 <span class="d-none d-sm-inline">
                                     <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
@@ -1886,7 +1901,7 @@
                                 <label class="form-label">Nombre base</label>
                                 <input id="txtNombreBase" type="text" class="form-control">
                             </div>
-                        </div>                       
+                        </div>
                     </div>
                 </div>
 
@@ -1912,8 +1927,16 @@
     </div>
 
     <!-- (Irrelevant source removed.) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree-all-deps.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree.min.js"></script>
+    <script src="~/lib/fancytree/jquery.fancytree.js"></script>
+    <script src="~/lib/fancytree/jquery.fancytree.edit.js"></script>
+    <script src="~/lib/fancytree/jquery.fancytree.dnd5.js"></script>
+    <script src="~/lib/fancytree/jquery.fancytree.table.js"></script>
+    <script src="~/lib/fancytree/jquery.fancytree.gridnav.js"></script>
+
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree-all-deps.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/jquery.fancytree.min.js"></script>*@
+
+
 
 </body>
 
