@@ -161,7 +161,9 @@ namespace ModeladorApp.Controllers
 
                 int countTitulos = 0;
 
-                for (int t = 1; t <= 50; t++) {
+                //for (int t = 1; t <= 50; t++) { //Crear 50 titulos para 50 columnas
+                for (int t = 1; t <= 10; t++)
+                {
 
                     TB_NIVEL_COLUMN_TITLES ct = new TB_NIVEL_COLUMN_TITLES();
 

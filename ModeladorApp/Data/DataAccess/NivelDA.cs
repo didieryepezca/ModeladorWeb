@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Data;
 using ModeladorApp.Models.Entities;
+using System;
 
 namespace ModeladorApp.Data.DataAccess
 {
@@ -116,7 +117,7 @@ namespace ModeladorApp.Data.DataAccess
                 result = db.SaveChanges();
             }
             return result;
-        }
+        }      
 
         public int DeleteLevel(int Id)
         {

@@ -677,7 +677,7 @@
                                     rpt.then(function (response) {
                                         //console.log(styleresponse);
                                         if (response > 0) {
-
+                                            Swal.fire('Nivel duplicado !', '', 'success')
                                             var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
                                             var nodo = tree.getActiveNode(); // para obtener el nodo activo.
                                             nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
@@ -917,7 +917,7 @@
 
         //---------------- carga de proyecto MASTER
         function funGetMasterData() {
-            var url = "/Home/funGetLvl";
+            var url = "/Home/funGetLvlMaster";
             return $.get(url, {}, function (data) {
                 //console.log(data);
             });
@@ -1556,9 +1556,7 @@
 
 <body class="example">
 
-    <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
-
-        @{ var totalPys = Model.Count(); }
+    <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">       
 
         @foreach (var item in Model)
         {
@@ -1662,6 +1660,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            @*<td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -1701,8 +1700,7 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td></td>
-                            <td></td>
+                            <td></td>*@
 
                         </tr>
                     </tbody>
@@ -1777,6 +1775,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
+                                @*<td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -1815,8 +1814,7 @@
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td></td>*@
                             </tr>
                         </tbody>
                     </table>

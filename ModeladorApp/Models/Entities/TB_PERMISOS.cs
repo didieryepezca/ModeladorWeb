@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -32,7 +28,6 @@ namespace ModeladorApp.Models.Entities
 
         [Display(Name = "Fecha de Creación")]
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
-        public DateTime FechaPermisoCreado { get; set; }
-        
+        public DateTime FechaPermisoCreado { get; set; }      
     }
 }
