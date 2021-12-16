@@ -26,7 +26,7 @@ namespace ModeladorApp.Controllers
         }
 
         [Authorize]
-        public IActionResult VerProyectos(string nombre, string tipoProyecto, string accion = "")
+        public IActionResult VerProyectos(string nombre, string tipoProyecto, string accion = "", string nullpys = "")
         {
             var user = userManager.GetUserAsync(User);
             var userId = user.Result.Id;
@@ -55,6 +55,10 @@ namespace ModeladorApp.Controllers
             else
             {
                 ViewBag.tipo = "que puedo Editar";
+            }
+
+            if (nullpys == "emptyProjects") {
+                ViewBag.empty = "Debes crear al menos un proyecto para acceder";
             }
 
             return View(proyectos);

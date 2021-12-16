@@ -4,6 +4,11 @@
 
     <script type="text/javascript">
 
+        var empty = '@ViewBag.empty';
+        if (empty != "") {           
+            alert(empty);
+        }       
+        
         var ArrayCamposProyecto = [];
 
         function crearProyecto() {
@@ -170,6 +175,9 @@
                 success: function (response) { },
             });
         }
+
+       
+
 
     </script>
 

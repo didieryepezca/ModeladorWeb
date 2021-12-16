@@ -47,6 +47,11 @@ C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\bootstrap\LICENSE
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\fancytree\jquery.fancytree.dnd5.js
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\fancytree\jquery.fancytree.edit.js
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\fancytree\jquery.fancytree.gridnav.js
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\fancytree\jquery.fancytree.js
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\fancytree\jquery.fancytree.table.js
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt

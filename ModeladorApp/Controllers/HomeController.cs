@@ -35,13 +35,18 @@ namespace ModeladorApp.Controllers
             var daPer = new HomeDA();
             var allProyectos = daPer.getProyectosWithPermisos(userId);
 
-            var firstPy = allProyectos.First();
-            var firstPyID = firstPy.ProyectoID;
-            ViewBag.firstPyID = firstPyID;
-            ViewBag.permiso = firstPy.Permiso;
-
-            
-            return View(allProyectos);
+            if (allProyectos.ToList().Count > 0)
+            {
+                var firstPy = allProyectos?.First();
+                var firstPyID = firstPy?.ProyectoID;
+                ViewBag.firstPyID = firstPyID;
+                ViewBag.permiso = firstPy.Permiso;
+                
+                return View(allProyectos);
+            }
+            else {
+                return RedirectToAction("VerProyectos", "Proyectos", new { nullpys = "emptyProjects" });                
+            }            
         }
         public List<TB_TREE> funGetLvlMaster()
         {
