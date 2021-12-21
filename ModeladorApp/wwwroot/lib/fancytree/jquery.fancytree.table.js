@@ -263,13 +263,17 @@
 			}
 			// $.ui.fancytree.debug("*** nodeRender " + node + ", isRoot=" + isRootNode, "tr=" + node.tr, "hcp=" + ctx.hasCollapsedParents, "parent.tr=" + (node.parent && node.parent.tr));
 			if (!isRootNode) {
+				
 				if (node.tr && force) {
 					this.nodeRemoveMarkup(ctx);
+					
 				}
 				if (node.tr) {
-					if (force) {
+					
+					if (force) {						
 						// Set icon, link, and title (normally this is only required on initial render)
 						this.nodeRenderTitle(ctx); // triggers renderColumns()
+						
 					} else {
 						// Update element classes according to node state
 						this.nodeRenderStatus(ctx);
@@ -372,18 +376,21 @@
 			// 	this.nodeRenderStatus(ctx);
 			// }
 		},
-		nodeRenderTitle: function(ctx, title) {
+		nodeRenderTitle: function (ctx, title) {
+			
 			var $cb,
 				res,
 				tree = ctx.tree,
 				node = ctx.node,
 				opts = ctx.options,
 				isStatusNode = node.isStatusNode();
-
+			
 			res = this._super(ctx, title);
-
+			
 			if (node.isRootNode()) {
+				
 				return res;
+				
 			}
 			// Move checkbox to custom column
 			if (
@@ -409,17 +416,21 @@
 						ctx
 					);
 				} else if (opts.table.mergeStatusColumns && node.isTopLevel()) {
+					
 					$(node.tr)
 						.find(">td")
 						.eq(0)
 						.prop("colspan", tree.columnCount)
-						.text(node.title)
+						.text(node.title)						
 						.addClass("fancytree-status-merged")
 						.nextAll()
 						.remove();
+					
 				} // else: default rendering for status node: leave other cells empty
 			} else if (opts.renderColumns) {
+				
 				opts.renderColumns.call(tree, { type: "renderColumns" }, ctx);
+				
 			}
 			return res;
 		},

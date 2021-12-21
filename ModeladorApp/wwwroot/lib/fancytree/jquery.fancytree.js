@@ -2280,6 +2280,7 @@
 			this.title = title;
 			this.renderTitle();
 			this.triggerModify("rename");
+			console.log(title)
 		},
 		/**Sort child list by title.
 		 * @param {function} [cmp] custom compare function(a, b) that returns -1, 0, or 1 (defaults to sort by title).
@@ -5131,9 +5132,11 @@
 						) || "";
 				}
 				if (!nodeTitle) {
+					
 					tooltip = FT.evalOption("tooltip", node, node, opts, null);
 					if (tooltip === true) {
 						tooltip = node.title;
+						
 					}
 					// if( node.tooltip ) {
 					// 	tooltip = node.tooltip;
@@ -5144,9 +5147,10 @@
 						? " title='" + _escapeTooltip(tooltip) + "'"
 						: "";
 					tabindex = opts.titlesTabbable ? " tabindex='0'" : "";
-
-					nodeTitle =
-						"<span class='fancytree-title'" +
+					
+					//---------------------- CREACION DEL SPAN DEL SEGUNDO TITULO DEL NODO
+					var nodoCodigo =
+						"<span class='fancytree-nodocodigo'" +
 						tooltip +
 						tabindex +
 						">" +
@@ -5154,8 +5158,32 @@
 							? FT.escapeHtml(node.title)
 							: node.title) +
 						"</span>";
+
+					//---------------------- CREACION DEL SPAN DEL SEGUNDO TITULO DEL NODO
+					var nodeSubCodigo =
+						"<span class='fancytree-nodosubcodigo'" +
+						tooltip +
+						tabindex +
+						">" +
+						(opts.escapeTitles
+						? FT.escapeHtml(node.data.fechaCreacion)
+						: node.data.fechaCreacion) +
+						"</span>";
+					//console.log(node.data.fechaCreacion)
+
+					//---------------------- CREACION DEL SPAN DEL TITULO DEL NODO
+					nodeTitle =
+						"<span class='fancytree-title'" +
+						tooltip +
+						tabindex +
+					">" + nodoCodigo + " - " +  nodeSubCodigo +
+						//(opts.escapeTitles
+						//	? FT.escapeHtml(node.title)
+						//	: node.title) +
+						"</span>";
 				}
 				ares.push(nodeTitle);
+				//ares.push(nodeSubTitle);
 				// Note: this will trigger focusout, if node had the focus
 				//$(node.span).html(ares.join("")); // it will cleanup the jQuery data currently associated with SPAN (if any), but it executes more slowly
 				node.span.innerHTML = ares.join("");
@@ -5669,7 +5697,7 @@
 					tree.focusNode = node;
 					if (opts.titlesTabbable) {
 						if (!isInput) {
-							// #621
+							// #621							
 							$(node.span)
 								.find(".fancytree-title")
 								.focus();

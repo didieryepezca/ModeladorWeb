@@ -150,7 +150,8 @@
                         edit: {
                             triggerStart: ["f2", "shift+click", "mac+enter"],
                             close: function (event, data) {
-
+                                console.log(event)
+                                console.log(data)
                                 if (data.save && data.isNew) {
                                     // Quick-enter: add new nodes until we hit [enter] on an empty title
 
@@ -163,7 +164,7 @@
                                     //console.log(data.node.title); //enviar como title
                                     //console.log(data.node.parent.data.id) //enviar como parent id
                                     //console.log(data.node.parent.data.proyectoId) //enviar como proyectoId
-
+                                    //console.log(data.node);
                                     //------------------------>>AJAX GRABAR NVO NODO
                                     //console.log(data.node.parent.data);
                                     if (typeof (data.node.parent.data.parentId) === 'undefined') {
