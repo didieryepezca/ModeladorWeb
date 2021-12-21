@@ -150,8 +150,8 @@
                         edit: {
                             triggerStart: ["f2", "shift+click", "mac+enter"],
                             close: function (event, data) {
-                                console.log(event)
-                                console.log(data)
+                                
+                                //console.log(data)
                                 if (data.save && data.isNew) {
                                     // Quick-enter: add new nodes until we hit [enter] on an empty title
 
@@ -178,6 +178,7 @@
                                             url: "/Home/funInsertLvl",
                                             data: {
                                                 "titulo": data.node.title,
+                                                "descripcion": data.datadescripcion,
                                                 "parent": data.node.parent.data.id,
                                                 "projectId": data.node.parent.data.proyectoId
                                             },
@@ -191,6 +192,11 @@
 
                                         Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
                                     }
+                                } else if (data.isNew == false && data.datatitulo != "") {
+
+                                    console.log("ANTIGUO")
+                                    console.log(data)
+                                    console.log(data.isNew)
                                 }
                             },
                         },
@@ -324,17 +330,18 @@
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
-
+                            //console.log(data);
                             //console.log(data.childNode.data.id);
                             //console.log(data.childNode.title); //nombre a actualizar
                             //console.log("------------>>")
-
+                            //console.log(data.node)
                             if (data.node.parent != null) {
                                 //console.log("Tiene parent")
                                 //Buscar que solo actualice nodos cuando tienen un id
                                 try {
                                     if (data.childNode.data.id != null && vPermiso == "EDITOR") {
                                         //console.log("entro al update")
+                                        //console.log(data.childNode)
                                         //------------------------>>AJAX Actualizar Nombre de Nodos hijos
                                         $.ajax({
                                             type: "POST",
@@ -359,7 +366,7 @@
                                 //console.log("No se puede realizar nada sin nodo padre.");
                                 //console.log(data.childNode.data.id) //id para actualizar nombre del nodo padre
                                 //console.log(data.childNode.title) //nuevo titulo de nodo padre.
-
+                                
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
                                 $.ajax({
                                     type: "POST",
@@ -376,11 +383,9 @@
                                 //------------------------>>AJAX Actualizar Nombre de Nodo Padre
                             }
 
-
+                            //console.log("----> OPERATION DRAG & DROP")
                             if (data.operation == "add") {
-
-                                if (typeof (data.childNode.data.id) != 'undefined') {
-                                //console.log("----> OPERATION DRAG & DROP")
+                                if (typeof (data.childNode.data.id) != 'undefined') {                               
                                 //console.log(data.operation)
                                 //console.log(data.childNode.data.id) // id actualizar
                                 //console.log(data.node.data.id) // id del nuevo parent
@@ -398,6 +403,7 @@
                                     });
                                 }
                             }
+                            //console.log("----> OPERATION DRAG & DROP")
 
                         },
                     })

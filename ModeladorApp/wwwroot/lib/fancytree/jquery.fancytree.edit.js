@@ -50,8 +50,8 @@
 			local = tree.ext.edit,
 			instOpts = tree.options.edit,
 			$title = $(".fancytree-title", node.span),
-			$codigo = $(".fancytree-nodocodigo", node.span), //added DIDIER YEPEZ 20/12/2021
-			$subcodigo = $(".fancytree-subcodigo", node.span), //added DIDIER YEPEZ 20/12/2021
+			//$codigo = $(".fancytree-inputtitle", node.span), //added DIDIER YEPEZ 20/12/2021
+			//$subcodigo = $(".fancytree-inputdescription", node.span), //added DIDIER YEPEZ 20/12/2021
 			eventData = {
 				node: node,
 				tree: tree,
@@ -59,12 +59,11 @@
 				isNew: $(node[tree.statusClassPropName]).hasClass(
 					"fancytree-edit-new"
 				),
-				orgTitle: node.title,
-				orgSubTitle: node.data.fechaCreacion, //added DIDIER YEPEZ 20/12/2021
-				datacodigo: node.title,
-				datasubcodigo: node.data.fechaCreacion,
-				input: null,
-				input2: null, //added DIDIER YEPEZ 20/12/2021
+				orgTitle: node.title,				
+				datatitulo: node.title,
+				datadescripcion: node.data.descripcion,
+				//input: null,
+				//input2: null, //added DIDIER YEPEZ 20/12/2021
 				dirty: false,
 			};
 
@@ -102,8 +101,8 @@
 			class: "fancytree-edit-input",
 			type: "text",
 			value: tree.options.escapeTitles
-				? eventData.datacodigo
-				: unescapeHtml(eventData.datacodigo),
+				? eventData.datatitulo
+				: unescapeHtml(eventData.datatitulo),
 		});	
 
 		local.eventData.input = $input;
@@ -119,14 +118,12 @@
 			class: "fancytree-edit-input",
 			type: "text",
 			value: tree.options.escapeTitles
-				? eventData.datasubcodigo
-				: unescapeHtml(eventData.datasubcodigo),
+				? eventData.datadescripcion
+				: unescapeHtml(eventData.datadescripcion),
 		});
 
 		$title.html($input);
-		$title.append($input2);
-
-		//$subcodigo.html($input2);
+		$title.append($input2);		
 		//added DIDIER YEPEZ 20/12/2021
 
 		// Focus <input> and bind keyboard handler
@@ -147,7 +144,7 @@
 				event.stopPropagation();
 			})
 			.blur(function (event) {
-				console.log("-------------------------------->")
+				//console.log("-------------------------------->")
 				//return node.editEnd(true, event); //comentado 21/12/2021 previene salir de la caja 
 			});
 
@@ -184,8 +181,8 @@
 		_event
 	) {
 		var newVal,
-			datacodigo,
-			datasubcodigo,
+			datatitulo,
+			datadescripcion,
 			node = this,
 			tree = this.tree,
 			local = tree.ext.edit,
@@ -193,25 +190,23 @@
 			instOpts = tree.options.edit,
 			$title = $(".fancytree-title", node.span),
 			$input = $title.find("input.fancytree-edit-input"),
-			$codigo = $title.find("input.fancytree-edit-input")[0],
-			$subcodigo = $title.find("input.fancytree-edit-input")[1];			
+			$titulo = $title.find("input.fancytree-edit-input")[0],
+			$descripcion = $title.find("input.fancytree-edit-input")[1];			
 
-		datacodigo = $($codigo).val();
-		datasubcodigo = $($subcodigo).val();
+		datatitulo = $($titulo).val();
+		datadescripcion = $($descripcion).val();
 
 		//console.log($input)
 		//console.log(datacodigo)
 		//console.log(datasubcodigo)
 
-		eventData.datacodigo = datacodigo;
-		eventData.datasubcodigo = datasubcodigo;
+		eventData.datatitulo = datatitulo;
+		eventData.datadescripcion = datadescripcion;
 
 		if (instOpts.trim) {
 			$input.val($.trim($input.val()));
 		}
-		newVal = $input.val();		
-		//console.log(eventData.datacodigo)
-		//console.log(eventData.datasubcodigo)
+		newVal = $input.val();			
 
 		eventData.dirty = newVal !== node.title;
 		eventData.originalEvent = _event;
@@ -219,13 +214,13 @@
 		// Find out, if saving is required
 		if (applyChanges === false) {
 			// If true/false was passed, honor this (except in rename mode, if unchanged)
-			eventData.save = false;
+			eventData.save = false;			
 		} else if (eventData.isNew) {
 			// In create mode, we save everything, except for empty text
-			eventData.save = newVal !== "";
+			eventData.save = newVal !== "";			
 		} else {
 			// In rename mode, we save everyting, except for empty or unchanged text
-			eventData.save = eventData.dirty && newVal !== "";
+			eventData.save = eventData.dirty && newVal !== "";			
 		}
 		// Allow to break (keep editor open), modify input, or re-define data.save
 		if (
@@ -249,9 +244,12 @@
 
 		if (eventData.save) {
 			// # 171: escape user input (not required if global escaping is on)
+			
 			node.setTitle(
 				tree.options.escapeTitles ? newVal : escapeHtml(newVal)
 			);
+			//console.log(tree.options.escapeTitles ? datadescripcion : escapeHtml(datadescripcion));
+			
 			node.setFocus();
 		} else {
 			if (eventData.isNew) {

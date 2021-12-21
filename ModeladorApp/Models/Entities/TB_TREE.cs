@@ -17,6 +17,7 @@ namespace ModeladorApp.Models.Entities
         public int proyectoId { get; set; }
 
         [DisplayFormat(DataFormatString = "{0:ddd, d MMMM yyyy, hh:mm tt}")]
-        public DateTime fechaCreacion { get; set; }       
+        public DateTime fechaCreacion { get; set; }
+        public string descripcion { get; set; }
     }
 }

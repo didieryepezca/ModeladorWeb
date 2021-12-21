@@ -73,7 +73,7 @@ namespace ModeladorApp.Controllers
             return Json(subMenus);
         }
 
-        public int funInsertLvl(string titulo, int parent, int projectId)
+        public int funInsertLvl(string titulo, string descripcion ,int parent, int projectId)
         {
             var result = "0";
             var nda = new NivelDA();
@@ -83,6 +83,7 @@ namespace ModeladorApp.Controllers
                 TB_TREE t = new TB_TREE();
 
                 t.title = titulo;
+                t.descripcion = descripcion;
                 t.lazy = true;
                 t.parentId = parent;
                 t.proyectoId = projectId;

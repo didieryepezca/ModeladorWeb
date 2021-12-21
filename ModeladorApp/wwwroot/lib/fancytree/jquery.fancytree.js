@@ -2280,7 +2280,7 @@
 			this.title = title;
 			this.renderTitle();
 			this.triggerModify("rename");
-			console.log(title)
+			//console.log(title)
 		},
 		/**Sort child list by title.
 		 * @param {function} [cmp] custom compare function(a, b) that returns -1, 0, or 1 (defaults to sort by title).
@@ -4976,9 +4976,9 @@
 					aria = opts.aria,
 					level = node.getLevel(),
 					ares = [];
-
+				//console.log(node);
 				if (title !== undefined) {
-					node.title = title;
+					node.title = title;					
 				}
 				if (!node.span || tree._enableUpdate === false) {
 					// Silently bail out if node was not rendered yet, assuming
@@ -5123,7 +5123,8 @@
 				}
 				// Node title
 				nodeTitle = "";
-				if (opts.renderTitle) {
+				
+				if (opts.renderTitle) {					
 					nodeTitle =
 						opts.renderTitle.call(
 							tree,
@@ -5134,6 +5135,7 @@
 				if (!nodeTitle) {
 					
 					tooltip = FT.evalOption("tooltip", node, node, opts, null);
+					
 					if (tooltip === true) {
 						tooltip = node.title;
 						
@@ -5148,9 +5150,9 @@
 						: "";
 					tabindex = opts.titlesTabbable ? " tabindex='0'" : "";
 					
-					//---------------------- CREACION DEL SPAN DEL SEGUNDO TITULO DEL NODO
-					var nodoCodigo =
-						"<span class='fancytree-nodocodigo'" +
+					//---------------------- CREACION DEL SPAN DEL PRIMER INPUT DEL NODO
+					var nodoTitle =
+						"<span class='fancytree-inputtitle'" +
 						tooltip +
 						tabindex +
 						">" +
@@ -5159,24 +5161,24 @@
 							: node.title) +
 						"</span>";
 
-					//---------------------- CREACION DEL SPAN DEL SEGUNDO TITULO DEL NODO
-					var nodeSubCodigo =
-						"<span class='fancytree-nodosubcodigo'" +
+					//---------------------- CREACION DEL SPAN DEL SEGUNDO INPUT DEL NODO
+					var nodoDescription =
+						"<span class='fancytree-inputdescription'" +
 						tooltip +
 						tabindex +
 						">" +
 						(opts.escapeTitles
-						? FT.escapeHtml(node.data.fechaCreacion)
-						: node.data.fechaCreacion) +
+							? FT.escapeHtml(node.data.descripcion)
+							: node.data.descripcion) +
 						"</span>";
-					//console.log(node.data.fechaCreacion)
+					//console.log(node)
 
-					//---------------------- CREACION DEL SPAN DEL TITULO DEL NODO
+					//---------------------- CONCATENACION DE PRIMER Y SEGUNDO INPUT 
 					nodeTitle =
 						"<span class='fancytree-title'" +
 						tooltip +
 						tabindex +
-					">" + nodoCodigo + " - " +  nodeSubCodigo +
+						">" + nodoTitle + " - " + nodoDescription +
 						//(opts.escapeTitles
 						//	? FT.escapeHtml(node.title)
 						//	: node.title) +
