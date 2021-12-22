@@ -156,6 +156,7 @@ namespace ModeladorApp.Controllers
                 TB_TREE newTree = new TB_TREE();
 
                 newTree.title = nombre;
+                newTree.descripcion = "Reescribir aquí la descripción del proyecto.";
                 newTree.lazy = true;
                 newTree.parentId = 0;
                 newTree.proyectoId = py.ProyectoID;
@@ -330,6 +331,7 @@ namespace ModeladorApp.Controllers
                         TB_TREE rootTree = new TB_TREE();
 
                         rootTree.title = levelsFromProject[i].title;
+                        rootTree.descripcion = levelsFromProject[i].descripcion;
                         rootTree.lazy = levelsFromProject[i].lazy;
                         rootTree.parentId = 0;
                         rootTree.proyectoId = py.ProyectoID;

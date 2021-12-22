@@ -115,6 +115,7 @@ namespace ModeladorApp.Controllers
                     TB_TREE t = new TB_TREE();
 
                     t.title = i + "." + " " + nombreBase + " " + i;
+                    t.descripcion = "Descripcion " + i;
                     t.lazy = true;
                     t.parentId = parent;
                     t.proyectoId = projectID;
@@ -324,6 +325,7 @@ namespace ModeladorApp.Controllers
 
                 TB_TREE firstInsert = new TB_TREE();
                 firstInsert.title = lvl.title;
+                firstInsert.descripcion = lvl.descripcion;
                 firstInsert.lazy = lvl.lazy;
                 firstInsert.parentId = vParentId;
                 firstInsert.proyectoId = projectId;
@@ -347,6 +349,7 @@ namespace ModeladorApp.Controllers
                         TB_TREE dupTree_step1 = new TB_TREE();
 
                         dupTree_step1.title = sublvls[a].title;
+                        dupTree_step1.descripcion = sublvls[a].descripcion;
                         dupTree_step1.lazy = sublvls[a].lazy;
                         dupTree_step1.parentId = firstInsert.id;
                         dupTree_step1.proyectoId = projectId;
@@ -365,6 +368,7 @@ namespace ModeladorApp.Controllers
                                 TB_TREE dupTree_step2 = new TB_TREE();
 
                                 dupTree_step2.title = sublvls2[b].title;
+                                dupTree_step2.descripcion = sublvls2[b].descripcion;
                                 dupTree_step2.lazy = sublvls2[b].lazy;
                                 dupTree_step2.parentId = dupTree_step1.id;
                                 dupTree_step2.proyectoId = projectId;
@@ -383,6 +387,7 @@ namespace ModeladorApp.Controllers
                                         TB_TREE dupTree_step3 = new TB_TREE();
 
                                         dupTree_step3.title = sublvls3[c].title;
+                                        dupTree_step3.descripcion = sublvls3[c].descripcion;
                                         dupTree_step3.lazy = sublvls3[c].lazy;
                                         dupTree_step3.parentId = dupTree_step2.id;
                                         dupTree_step3.proyectoId = projectId;
@@ -401,6 +406,7 @@ namespace ModeladorApp.Controllers
                                                 TB_TREE dupTree_step4 = new TB_TREE();
 
                                                 dupTree_step4.title = sublvls4[d].title;
+                                                dupTree_step4.descripcion = sublvls4[d].descripcion;
                                                 dupTree_step4.lazy = sublvls4[d].lazy;
                                                 dupTree_step4.parentId = dupTree_step3.id;
                                                 dupTree_step4.proyectoId = projectId;
@@ -419,6 +425,7 @@ namespace ModeladorApp.Controllers
                                                         TB_TREE dupTree_step5 = new TB_TREE();
 
                                                         dupTree_step5.title = sublvls5[e].title;
+                                                        dupTree_step5.descripcion = sublvls5[e].descripcion;
                                                         dupTree_step5.lazy = sublvls5[e].lazy;
                                                         dupTree_step5.parentId = dupTree_step4.id;
                                                         dupTree_step5.proyectoId = projectId;
@@ -437,6 +444,7 @@ namespace ModeladorApp.Controllers
                                                                 TB_TREE dupTree_step6 = new TB_TREE();
 
                                                                 dupTree_step6.title = sublvls6[f].title;
+                                                                dupTree_step6.descripcion = sublvls6[f].descripcion;
                                                                 dupTree_step6.lazy = sublvls6[f].lazy;
                                                                 dupTree_step6.parentId = dupTree_step5.id;
                                                                 dupTree_step6.proyectoId = projectId;
@@ -455,6 +463,7 @@ namespace ModeladorApp.Controllers
                                                                         TB_TREE dupTree_step7 = new TB_TREE();
 
                                                                         dupTree_step7.title = sublvls7[g].title;
+                                                                        dupTree_step7.descripcion = sublvls7[g].descripcion;
                                                                         dupTree_step7.lazy = sublvls7[g].lazy;
                                                                         dupTree_step7.parentId = dupTree_step6.id;
                                                                         dupTree_step7.proyectoId = projectId;
@@ -474,6 +483,7 @@ namespace ModeladorApp.Controllers
                                                                                 TB_TREE dupTree_step8 = new TB_TREE();
 
                                                                                 dupTree_step8.title = sublvls8[h].title;
+                                                                                dupTree_step8.descripcion = sublvls8[h].descripcion;
                                                                                 dupTree_step8.lazy = sublvls8[h].lazy;
                                                                                 dupTree_step8.parentId = dupTree_step7.id;
                                                                                 dupTree_step8.proyectoId = projectId;
@@ -492,6 +502,7 @@ namespace ModeladorApp.Controllers
                                                                                         TB_TREE dupTree_step9 = new TB_TREE();
 
                                                                                         dupTree_step9.title = sublvls9[i].title;
+                                                                                        dupTree_step9.descripcion = sublvls9[i].descripcion;
                                                                                         dupTree_step9.lazy = sublvls9[i].lazy;
                                                                                         dupTree_step9.parentId = dupTree_step8.id;
                                                                                         dupTree_step9.proyectoId = projectId;
@@ -510,6 +521,7 @@ namespace ModeladorApp.Controllers
                                                                                                 TB_TREE dupTree_step10 = new TB_TREE();
 
                                                                                                 dupTree_step10.title = sublvls10[j].title;
+                                                                                                dupTree_step10.descripcion = sublvls10[j].descripcion;
                                                                                                 dupTree_step10.lazy = sublvls10[j].lazy;
                                                                                                 dupTree_step10.parentId = dupTree_step9.id;
                                                                                                 dupTree_step10.proyectoId = projectId;
@@ -528,6 +540,7 @@ namespace ModeladorApp.Controllers
                                                                                                         TB_TREE dupTree_step11 = new TB_TREE();
 
                                                                                                         dupTree_step11.title = sublvls11[k].title;
+                                                                                                        dupTree_step11.descripcion = sublvls11[k].descripcion;
                                                                                                         dupTree_step11.lazy = sublvls11[k].lazy;
                                                                                                         dupTree_step11.parentId = dupTree_step10.id;
                                                                                                         dupTree_step11.proyectoId = projectId;
@@ -546,6 +559,7 @@ namespace ModeladorApp.Controllers
                                                                                                                 TB_TREE dupTree_step12 = new TB_TREE();
 
                                                                                                                 dupTree_step12.title = sublvls12[m].title;
+                                                                                                                dupTree_step12.descripcion = sublvls12[m].descripcion;
                                                                                                                 dupTree_step12.lazy = sublvls12[m].lazy;
                                                                                                                 dupTree_step12.parentId = dupTree_step11.id;
                                                                                                                 dupTree_step12.proyectoId = projectId;
@@ -564,6 +578,7 @@ namespace ModeladorApp.Controllers
                                                                                                                         TB_TREE dupTree_step13 = new TB_TREE();
 
                                                                                                                         dupTree_step13.title = sublvls13[n].title;
+                                                                                                                        dupTree_step13.descripcion = sublvls13[n].descripcion;
                                                                                                                         dupTree_step13.lazy = sublvls13[n].lazy;
                                                                                                                         dupTree_step13.parentId = dupTree_step12.id;
                                                                                                                         dupTree_step13.proyectoId = projectId;
@@ -582,6 +597,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                 TB_TREE dupTree_step14 = new TB_TREE();
 
                                                                                                                                 dupTree_step14.title = sublvls14[o].title;
+                                                                                                                                dupTree_step14.descripcion = sublvls14[o].descripcion;
                                                                                                                                 dupTree_step14.lazy = sublvls14[o].lazy;
                                                                                                                                 dupTree_step14.parentId = dupTree_step13.id;
                                                                                                                                 dupTree_step14.proyectoId = projectId;
@@ -600,6 +616,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                         TB_TREE dupTree_step15 = new TB_TREE();
 
                                                                                                                                         dupTree_step15.title = sublvls15[p].title;
+                                                                                                                                        dupTree_step15.descripcion = sublvls15[p].descripcion;
                                                                                                                                         dupTree_step15.lazy = sublvls15[p].lazy;
                                                                                                                                         dupTree_step15.parentId = dupTree_step14.id;
                                                                                                                                         dupTree_step15.proyectoId = projectId;
@@ -637,7 +654,6 @@ namespace ModeladorApp.Controllers
                                                                 count = count + countlvl6;
                                                             }
                                                         }
-
                                                         count = count + countlvl5;
                                                     }
                                                 }
