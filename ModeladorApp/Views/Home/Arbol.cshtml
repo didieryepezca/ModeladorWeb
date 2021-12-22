@@ -195,7 +195,7 @@
                                 } else if (data.isNew == false && data.datatitulo != "") {                                    
                                     //console.log(data.node.data.id)
                                     if (vPermiso == "EDITOR") {
-                                        console.log(data)
+                                        //console.log(data)
                                         //------------------------>>AJAX Actualizar Nombre de Nodos
                                         $.ajax({
                                             type: "POST",
@@ -396,37 +396,52 @@
 
                             switch (data.cmd) {
                                 case "addChild":
-                                case "addSibling":
+                                    tree.applyCommand(data.cmd, node);                                    
+                                    break;
+                                case "addSibling":                                   
+                                    tree.applyCommand(data.cmd, node);
+                                    break;                                    
                                 //console.log("------------>>")
                                 //console.log(data.cmd)
                                 case "indent":
                                 case "moveDown":
                                 case "moveUp":
                                 case "outdent":
-
-                                case "remove":
-                                    tree.applyCommand(data.cmd, node);
-
+                                case "remove":         
+                                    
                                     if (data.cmd == "remove" && vPermiso == "EDITOR") {
-
-                                        //console.log(node.data.id); // id a eliminar padre e hijos.
-                                        //------------------------>>AJAX Eliminar Nivel Padre e Hijos
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            url: "/Home/funDeleteLvlAndSublvls",
-                                            data: {
-                                                "Id": node.data.id,
-                                            },
-                                            success: function (response) {
-                                                //console.log(response);
-                                            },
-                                        });
-                                        //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+                                        Swal.fire({
+                                            title: '¿Estás seguro que deseas Eliminarlo?',
+                                            showDenyButton: true,
+                                            showCancelButton: true,
+                                            confirmButtonText: `Si`,
+                                            denyButtonText: `Don't save`,
+                                        }).then((result) => {
+                                            /* Read more about isConfirmed, isDenied below */
+                                            if (result.isConfirmed) {               
+                                                //console.log(node.data.id); // id a eliminar padre e hijos.
+                                                //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+                                                $.ajax({
+                                                    type: "POST",
+                                                    dataType: "json",
+                                                    url: "/Home/funDeleteLvlAndSublvls",
+                                                    data: {
+                                                        "Id": node.data.id,
+                                                    },
+                                                    success: function (response) {
+                                                        //console.log(response);
+                                                        if (response >= 1) {
+                                                            tree.applyCommand(data.cmd, node);
+                                                        }                                                        
+                                                    },
+                                                });
+                                                //------------------------>>AJAX Eliminar Nivel Padre e Hijos                                                                    
+                                                } else if (result.isDenied) {
+                                                    Swal.fire('No', '', 'info')
+                                               }
+                                            })
                                     };
-
                                     break;
-
                                 case "rename":
                                     tree.applyCommand(data.cmd, node);
 
@@ -671,13 +686,20 @@
                                     //console.log(nodo.parent);
 
                                     break;
-                                //case "showgrid":
-                                //    //tree.applyCommand(data.cmd, node);
-                                //    console.log("Mostrar columnas");
-                                //    console.log(node)
-                                //    //console.log(node.data.id); // id del nodo.
-                                //    //addColumn(treeReach, node.data.id);
-                                //    break;
+                                case "setsecondinput":
+                                    //tree.applyCommand(data.cmd, node);                                      
+                                     //var nodoActivo = node;
+                                    //nodoActivo.setExpanded(true); // expandir nodo para obtener la data de los hijos sino sale error
+                                    if (node.expanded === true) { //preguntar si el nodo esta expandido
+                                        var childNodes = node.children;                                        
+                                         buildSecondInput(childNodes, treeReach); //envio los datos de los hijos y el nodo para resetear el nodo padre.
+                                           $('#modal-second-input').modal('show'); 
+                                    } else {
+                                        Swal.fire('ELEMENTO CONTRAIDO', 'Por favor desglose el elemento para continuar con la tarea', 'warning')
+                                    } 
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
                                 //case "hidegrid":
                                 //    //tree.applyCommand(data.cmd, node);
                                 //    console.log("ocultar columnas");
@@ -835,6 +857,10 @@
                             {
                                 title: "Duplicar elemento",
                                 cmd: "duplicatelevel",
+                            }, { title: "----" },
+                            {
+                                title: "Formar Segundo Campo",
+                                cmd: "setsecondinput",
                             }
                             //, {
                             //    title: "Mostrar Grilla",
@@ -1296,7 +1322,7 @@
             });
         }
 
-
+        //------------------------------>>> Chekar todos los checkboxes de los campos de las columnas
         $(document).on('change', 'input[id="checkAll"]', function () {
             checkedColumns = [];
             $('.checkbox_check').prop("checked", this.checked);
@@ -1307,7 +1333,7 @@
             });
             //console.log(checkedColumns);
         });
-        //----------------------------------------------------------> Manejo de los checkboxes de la función anterior.
+        //----------------------------------------------------------> Manejo individual de los checkboxes de la función anterior.
         function fnCheckColumnChanges() {
 
             if ($('input.checkbox_check').is(':checked') == true) {
@@ -1347,6 +1373,112 @@
                 });
             }
         }
+        //------------------------------------------------------>> Setear segundo campo.
+        var checkedCampos = [];
+
+        function campo(valor) {
+            this.valor = valor;
+        };
+
+        function buildSecondInput(childNodes, loadedTree) {           
+            //console.log("Nodos hijos:")
+            //console.log(childNodes)
+            var id = childNodes[0].parent.data.id;
+
+            $('#footer_options').remove();
+            var footerBtns = "";
+
+            $('#tbodyAdminCampos').remove();
+            var tableChildNodes = "";
+
+            tableChildNodes = tableChildNodes + '<tbody id="tbodyAdminCampos">';
+
+            childNodes.forEach(function element(treeNode, index, array) {
+                //console.log(treeNode.title + " " + treeNode.data.descripcion);
+                tableChildNodes = tableChildNodes + '<tr>';
+
+                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeNode.data.descripcion + '`)" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>'; 
+                tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
+
+                tableChildNodes = tableChildNodes + '</tr>';
+            });
+            tableChildNodes = tableChildNodes + '</tbody>';
+
+            $('#tblAdminSecondInput').append(tableChildNodes).fadeIn(300000);
+            //------------------------------------------> Modal Cancel - Apply Options
+            footerBtns = footerBtns + '<div class="modal-footer" id="footer_options">';
+            footerBtns = footerBtns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
+            footerBtns = footerBtns + '<button id="btnApplySecondField" onclick="fnSetSecondFieldValue(`' + loadedTree + '`, ' + id +');" style="display:none" type="button" class="btn btn-primary" data-bs-dismiss="modal">Aplicar</button>';
+            footerBtns = footerBtns + '</div>';
+
+            $('#modalContentFields').append(footerBtns).fadeIn(300000);
+        }
+
+        //------------------------------>>> Chekar todos los checkboxes de los campos hijos
+        $(document).on('change', 'input[id="checkAllDatosHijos"]', function () {
+            checkedCampos = [];
+            $('.checkbox_check_campo').prop("checked", this.checked);
+            $("input[name='checkbox_check_campo[]']:checked").each(function () {
+                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
+                checkedCampos.push(new campo($(this).val()));
+            });
+            if (checkedCampos.length > 0) {
+                $('#btnApplySecondField').show();
+            } else {
+                $('#btnApplySecondField').hide();
+            }
+            //console.log(checkedCampos);
+        });
+        //----------------------------------------------------------> Manejo individual de los checkboxes de la función anterior.
+        function fnCheckFieldChanges(valor) {
+            //console.log(valor);
+            if ($('input.checkbox_check_campo').is(':checked') == true) {
+                checkedCampos = [];
+                var m = jQuery('input:checkbox[class=checkbox_check_campo]:checked').length;
+                if (m > 0) {
+                    jQuery('input:checkbox[class=checkbox_check_campo]:checked').each(function () {
+                        checkedCampos.push(new campo($(this).val()));
+                    });
+                    $('#btnApplySecondField').show();
+                }
+                //console.log(checkedCampos);               
+            } else {
+                checkedCampos = [];
+                $('#btnApplySecondField').hide();                
+            }
+        }
+
+        function fnSetSecondFieldValue(loadedTree, id) {
+            //console.log(loadedTree);
+            var builtField = "";
+
+            checkedCampos.forEach(function (campo) {                
+                builtField = builtField + campo.valor + ", ";
+            });          
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: "/Home/funUpdateLvlDescriptionFromChilds",
+                data: {
+                    "Id": id,
+                    "descriptionfromchilds": builtField
+                },
+                success: function (response) {                    
+                    if (response > 0) {
+                        //console.log(response);
+                        var tree = $('#' + loadedTree).fancytree('getTree');// para obtener el arbol renderizado.
+                        var nodo = tree.getActiveNode(); // para obtener el nodo activo.            
+                        nodo.parent.resetLazy(); //resetear nodo para ver cambios reflejados
+                    } else {
+                        Swal.fire('ERROR', 'Hubo un problema con la creación del segundo campo.', 'error')
+                    }
+                },
+            });
+        }
+        //----------------------------------------------------->> FIN Seteo de segundo campo.
+
         //----------------------------------------------------->> Obteniendo estilos
         async function getStyles(lvlID) {
             return styles = await getStylesFromDB(lvlID);
@@ -1371,7 +1503,6 @@
             //------------------------>>AJAX Obtener estilos
         }
         //----------------------------------------------------->> Obteniendo estilos
-
 
         //----------------------------------------------------->> Aplicando estilos
         async function applyOrRemoveStyle(lvlID, style, action) {
@@ -1537,7 +1668,7 @@
 
 <body class="example">
 
-    <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">       
+    <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
 
         @foreach (var item in Model)
         {
@@ -1546,14 +1677,16 @@
                 <li class="nav-item">
                     <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link active"
                        data-bs-toggle="tab"><strong>@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</strong>(@item.Permiso)</a>
-                </li>             
+                </li>
+
             }
-            else {
+            else
+            {
                 <li class="nav-item">
                     <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
                        data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
                 </li>
-            }            
+            }
         }
 
         <li class="nav-item">
@@ -1642,46 +1775,46 @@
                             <td></td>
                             <td></td>
                             @*<td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>*@
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>*@
 
                         </tr>
                     </tbody>
@@ -1757,45 +1890,45 @@
                                 <td></td>
                                 <td></td>
                                 @*<td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>*@
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>*@
                             </tr>
                         </tbody>
                     </table>
@@ -1901,6 +2034,38 @@
                         Añadir
                     </a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal modal-blur fade" id="modal-second-input" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content" id="modalContentFields">
+                <div class="modal-header">
+                    <h5 class="modal-title">Conformar segundo campo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    Elija los datos de los nodos hijos que desea para conformar su segundo campo.
+
+                    <div class="table-responsive">
+                        <table id="tblAdminSecondInput" class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th><input id="checkAllDatosHijos" type="checkbox" data-parsley-multiple="checkbox"></th>
+                                    <th>Campo</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

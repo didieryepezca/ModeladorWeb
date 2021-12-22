@@ -134,7 +134,21 @@ namespace ModeladorApp.Controllers
             }
         }
 
-
+        public int funUpdateLvlDescriptionFromChilds(int Id, string descriptionfromchilds)
+        {
+            var result = "0";
+            var cDa = new NivelDA();
+            try
+            {
+                var modelcount = cDa.UpdateLvlDescriptionFromChilds(Id, descriptionfromchilds);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
 
         public int funUpdateLvlNameDescription(int Id, string title, string description)
         {

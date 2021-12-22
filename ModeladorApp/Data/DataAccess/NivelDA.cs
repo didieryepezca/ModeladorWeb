@@ -106,6 +106,19 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
+        public int UpdateLvlDescriptionFromChilds(int vId, string description)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var lvl = db.TB_TREE.Where(item => item.id == vId).FirstOrDefault();                
+                lvl.descripcion = description;
+
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
         public int UpdateLvlParent(int id, int newParentID)
         {
             var result = 0;
