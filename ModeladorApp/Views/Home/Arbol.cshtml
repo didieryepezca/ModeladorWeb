@@ -192,11 +192,34 @@
 
                                         Swal.fire('ADVERTENCIA', 'Puedes editar el proyecto en su respectiva pestaña EDITOR, si tienes el permiso correspondiente.', 'warning')
                                     }
-                                } else if (data.isNew == false && data.datatitulo != "") {
-
-                                    console.log("ANTIGUO")
-                                    console.log(data)
-                                    console.log(data.isNew)
+                                } else if (data.isNew == false && data.datatitulo != "") {                                    
+                                    //console.log(data.node.data.id)
+                                    if (vPermiso == "EDITOR") {
+                                        console.log(data)
+                                        //------------------------>>AJAX Actualizar Nombre de Nodos
+                                        $.ajax({
+                                            type: "POST",
+                                            dataType: "json",
+                                            url: "/Home/funUpdateLvlNameDescription",
+                                            data: {
+                                                "Id": data.node.data.id,
+                                                "title": data.node.title,
+                                                "description": data.datadescripcion,
+                                            },
+                                            success: function (response) {
+                                                //console.log(response);
+                                                if (data.node.data.parentId != 0) {
+                                                    data.node.parent.resetLazy()                                                                                        
+                                                } else {
+                                                    var datosReload = funGetPyFromUsuario(firstPyID);                                                    
+                                                    datosReload.then(function (dataReload) {                                                        
+                                                        $.ui.fancytree.getTree().reload(dataReload);
+                                                    });                                                    
+                                                }
+                                            },
+                                        });
+                                        //------------------------>>AJAX Actualizar Nombre de Nodos
+                                    }                                    
                                 }
                             },
                         },
@@ -335,54 +358,6 @@
                             //console.log(data.childNode.title); //nombre a actualizar
                             //console.log("------------>>")
                             //console.log(data.node)
-                            if (data.node.parent != null) {
-                                //console.log("Tiene parent")
-                                //Buscar que solo actualice nodos cuando tienen un id
-                                try {
-                                    if (data.childNode.data.id != null && vPermiso == "EDITOR") {
-                                        //console.log("entro al update")
-                                        //console.log(data.childNode)
-                                        //------------------------>>AJAX Actualizar Nombre de Nodos hijos
-                                        $.ajax({
-                                            type: "POST",
-                                            dataType: "json",
-                                            url: "/Home/funUpdateLvlName",
-                                            data: {
-                                                "Id": data.childNode.data.id,
-                                                "nombre": data.childNode.title,
-                                            },
-                                            success: function (response) {
-                                                //console.log(response);
-                                            },
-                                        });
-                                        //------------------------>>AJAX Actualizar Nombre de Nodos hijos
-                                    }
-                                } catch (error) {
-                                    //console.log("entro al error")
-                                    //console.error(error);
-                                }
-
-                            } else if (data.childNode.data.id != null && vPermiso == "EDITOR") {
-                                //console.log("No se puede realizar nada sin nodo padre.");
-                                //console.log(data.childNode.data.id) //id para actualizar nombre del nodo padre
-                                //console.log(data.childNode.title) //nuevo titulo de nodo padre.
-                                
-                                //------------------------>>AJAX Actualizar Nombre de Nodo Padre
-                                $.ajax({
-                                    type: "POST",
-                                    dataType: "json",
-                                    url: "/Home/funUpdateLvlName",
-                                    data: {
-                                        "Id": data.childNode.data.id,
-                                        "nombre": data.childNode.title,
-                                    },
-                                    success: function (response) {
-                                        //console.log(response);
-                                    },
-                                });
-                                //------------------------>>AJAX Actualizar Nombre de Nodo Padre
-                            }
-
                             //console.log("----> OPERATION DRAG & DROP")
                             if (data.operation == "add") {
                                 if (typeof (data.childNode.data.id) != 'undefined') {                               
@@ -404,7 +379,6 @@
                                 }
                             }
                             //console.log("----> OPERATION DRAG & DROP")
-
                         },
                     })
                         .on("nodeCommand", function (event, data) {

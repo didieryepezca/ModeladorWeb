@@ -135,13 +135,13 @@ namespace ModeladorApp.Controllers
 
 
 
-        public int funUpdateLvlName(int Id, string nombre)
+        public int funUpdateLvlNameDescription(int Id, string title, string description)
         {
             var result = "0";
             var cDa = new NivelDA();
             try
             {
-                var modelcount = cDa.UpdateLvlName(Id, nombre);
+                var modelcount = cDa.UpdateLvlTitleAndDescription(Id, title, description);
                 return modelcount;
             }
             catch (Exception e)

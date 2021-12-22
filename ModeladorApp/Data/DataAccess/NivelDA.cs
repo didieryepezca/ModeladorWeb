@@ -91,14 +91,15 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
-        public int UpdateLvlName(int Id, string nombre)
+        public int UpdateLvlTitleAndDescription(int Id, string title, string description)
         {
             var result = 0;
 
             using (var db = new ApplicationDbContext())
             {
                 var lvl = db.TB_TREE.Where(item => item.id == Id).FirstOrDefault();
-                lvl.title = nombre;
+                lvl.title = title;
+                lvl.descripcion = description;
 
                 result = db.SaveChanges();
             }
