@@ -198,6 +198,8 @@ namespace ModeladorApp.Controllers
             var tida = new NivelTituloDA();
             var infoda = new NivelInfoDA();
 
+            var count = 0;
+
             try
             {
                 System.Threading.Thread.Sleep(10); // demora de 10 milisegundos
@@ -207,7 +209,8 @@ namespace ModeladorApp.Controllers
                 {
                     try
                     {
-                        tda.DeleteLevel(nivelesToDelete[n].id);
+                        var countLevel = tda.DeleteLevel(nivelesToDelete[n].id);
+                        count = count + countLevel;
                     }
                     catch (Exception dn)
                     {
@@ -219,7 +222,8 @@ namespace ModeladorApp.Controllers
                     for (int i = 0; i < infoToDelete.Count; n++) {
                         try
                         {
-                            infoda.deleteInfo(infoToDelete[i].InfoID);
+                            var countInfo = infoda.deleteInfo(infoToDelete[i].InfoID);
+                            count = count + countInfo;
                         }
                         catch (Exception dn)
                         {
@@ -234,7 +238,8 @@ namespace ModeladorApp.Controllers
                 for (int i = 0; i < titulosFromGrilla.Count; i++) {
                     try
                     {
-                        tida.deleteTitulo(titulosFromGrilla[i].TituloID);
+                        var countTitle = tida.deleteTitulo(titulosFromGrilla[i].TituloID);
+                        count = count + countTitle;
                     }
                     catch (Exception dn)
                     {
@@ -249,7 +254,8 @@ namespace ModeladorApp.Controllers
                 {
                     try
                     {
-                        pda.DeletePermiso(permisos[i].PermisoID);
+                        var countPermiso = pda.DeletePermiso(permisos[i].PermisoID);
+                        count = count + countPermiso;
                     }
                     catch (Exception dp)
                     {
@@ -260,14 +266,15 @@ namespace ModeladorApp.Controllers
                 //---------------------------------Eliminamos el proyecto mismo.
                 try
                 {
-                    pyda.deleteProyecto(proyectoId);
+                    var countPy = pyda.deleteProyecto(proyectoId);
+                    count = count + countPy;
                 }
                 catch (Exception py)
                 {
                     result = py.Message;
                     return 0;
                 }
-                return 1;
+                return count;
             }
             catch (Exception e)
             {
@@ -283,7 +290,7 @@ namespace ModeladorApp.Controllers
             var da = new ProyectoDA();
             var pda = new PermisosDA();
             var nda = new NivelDA();
-            var tida = new NivelTituloDA();
+            var tida = new NivelTituloDA();            
 
             try
             {
@@ -313,6 +320,8 @@ namespace ModeladorApp.Controllers
                 permiso.FechaPermisoCreado = DateTime.Now;
 
                 var perCount = pda.InsertPermiso(permiso);
+
+                count = count + perCount;
 
                 //------- Clonar Arbol
                 List<TB_TREE> levelsFromProject = new List<TB_TREE>();
@@ -396,7 +405,6 @@ namespace ModeladorApp.Controllers
                         }
                     }                    
                 }
-
                 //------------------------- titulos
                 var titulosFromGrilla = tida.GetNivelTitulosByIdProyecto(proyectoId).ToList();
                 for (int i = 0; i < titulosFromGrilla.Count; i++)
@@ -408,7 +416,9 @@ namespace ModeladorApp.Controllers
                         ct.proyectoID = py.ProyectoID;
                         ct.titulo = titulosFromGrilla[i].titulo;
 
-                        tida.InsertColumnTitle(ct);
+                        var titleCount = tida.InsertColumnTitle(ct);
+
+                        count = count + titleCount;
                     }
                     catch (Exception dn)
                     {

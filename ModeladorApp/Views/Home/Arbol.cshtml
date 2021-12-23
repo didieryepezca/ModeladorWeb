@@ -669,21 +669,40 @@
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Añadir n hijos");
                                     //console.log(node.data.id);
-                                    var rpt = duplicateLevels(node.data.id, node.data.parentId, pySelected)
-                                    rpt.then(function (response) {
-                                        //console.log(styleresponse);
-                                        if (response > 0) {
-                                            Swal.fire('Nivel duplicado !', '', 'success')
-                                            var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
-                                            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
-                                            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
-
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
-                                        }
-                                    });
-
                                     //console.log(nodo.parent);
+
+                                    Swal.fire({
+                                        title: 'Cantidad de veces a duplicar',
+                                        input: 'number',
+                                        inputAttributes: {
+                                            autocapitalize: 'off',
+                                            min: 1,
+                                        },
+                                        inputValue: 1,
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Duplicar',
+                                        showLoaderOnConfirm: true,                                      
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                            Swal.fire({ title: 'Duplicando ' + result.value + ' veces', allowOutsideClick: false, showConfirmButton: false })
+                                            //--------------------------------->>
+                                            //console.log(result.value) cantidad de veces
+                                            var rpt = duplicateLevels(node.data.id, node.data.parentId, pySelected, result.value)
+                                            rpt.then(function (response) {
+                                                //console.log(styleresponse);
+                                                if (response > 0) {
+                                                    Swal.fire('Nivel duplicado !', '', 'success')
+                                                    var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
+                                                    var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+                                                    nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
+                                                }
+                                            }).catch(error => {
+                                                Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
+                                            });
+                                        }
+                                    });                                   
 
                                     break;
                                 case "setsecondinput":
@@ -1249,7 +1268,7 @@
             //var select = document.getElementById('selecterColumns');
 
             var select = $("#selecterColumns option:selected").text();
-            console.log(select);
+            //console.log(select);
 
             if (select == "HIDEALL") {
                 //for para obtener las columnas por indice.
@@ -1626,11 +1645,11 @@
         }
 
         //-------------------------------- Duplicar Niveles.
-        async function duplicateLevels(vId,vPid,idPy) {
-            return dups = await duplicateLevelsInDB(vId, vPid,idPy);
+        async function duplicateLevels(vId,vPid,idPy,qty) {
+            return dups = await duplicateLevelsInDB(vId, vPid, idPy, qty);
         };
 
-        function duplicateLevelsInDB(vId, vPid, idPy) {
+        function duplicateLevelsInDB(vId, vPid, idPy, qty) {
             return $.ajax({
                 type: "POST",
                 url: "/Home/funDuplicateLevels",
@@ -1638,8 +1657,10 @@
                     "vId": vId,
                     "vParentId": vPid,
                     "projectId": idPy,
+                    "cantidad": qty,
                 },
                 success: function (response) {
+                    console.log(response);
                 },
             });
         }
