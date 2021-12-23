@@ -44,11 +44,14 @@
 	 */
 	$.ui.fancytree._FancytreeNodeClass.prototype.editStart = function() {
 		var $input,
+			$input2, //added DIDIER YEPEZ 20/12/2021
 			node = this,
 			tree = this.tree,
 			local = tree.ext.edit,
 			instOpts = tree.options.edit,
 			$title = $(".fancytree-title", node.span),
+			//$codigo = $(".fancytree-inputtitle", node.span), //added DIDIER YEPEZ 20/12/2021
+			//$subcodigo = $(".fancytree-inputdescription", node.span), //added DIDIER YEPEZ 20/12/2021
 			eventData = {
 				node: node,
 				tree: tree,
@@ -56,8 +59,11 @@
 				isNew: $(node[tree.statusClassPropName]).hasClass(
 					"fancytree-edit-new"
 				),
-				orgTitle: node.title,
-				input: null,
+				orgTitle: node.title,				
+				datatitulo: node.title,
+				datadescripcion: node.data.descripcion,
+				//input: null,
+				//input2: null, //added DIDIER YEPEZ 20/12/2021
 				dirty: false,
 			};
 
@@ -95,9 +101,9 @@
 			class: "fancytree-edit-input",
 			type: "text",
 			value: tree.options.escapeTitles
-				? eventData.orgTitle
-				: unescapeHtml(eventData.orgTitle),
-		});			
+				? eventData.datatitulo
+				: unescapeHtml(eventData.datatitulo),
+		});	
 
 		local.eventData.input = $input;
 		if (instOpts.adjustWidthOfs != null) {
@@ -107,8 +113,18 @@
 			$input.css(instOpts.inputCss);			
 		}	
 
+		//added DIDIER YEPEZ 20/12/2021
+		var $input2 = $("<input />", {
+			class: "fancytree-edit-input",
+			type: "text",
+			value: tree.options.escapeTitles
+				? eventData.datadescripcion
+				: unescapeHtml(eventData.datadescripcion),
+		});
+
 		$title.html($input);
-		
+		$title.append($input2);		
+		//added DIDIER YEPEZ 20/12/2021
 
 		// Focus <input> and bind keyboard handler
 		$input
@@ -123,15 +139,35 @@
 						break;
 					case $.ui.keyCode.ENTER:
 						node.editEnd(true, event);
-						return false; // so we don't start editmode on Mac
+						return false; // so we don't start editmode on Mac							
 				}
 				event.stopPropagation();
 			})
-			.blur(function(event) {
+			.blur(function (event) {
+				//console.log("-------------------------------->")
+				//return node.editEnd(true, event); //comentado 21/12/2021 previene salir de la caja 
+			});
+
+		//------------------- >> añadido 21/12/2021 para controlar la caja de la descripcion
+		$input2
+			.change(function (event) {
+				$input2.addClass("fancytree-edit-dirty");
+			})
+			.on("keydown", function (event) {
+				switch (event.which) {
+					case $.ui.keyCode.ESCAPE:
+						node.editEnd(false, event);
+						break;
+					case $.ui.keyCode.ENTER:
+						node.editEnd(true, event);
+						return false; // so we don't start editmode on Mac		
+				}
+				event.stopPropagation();
+			}).blur(function (event) {
 				return node.editEnd(true, event);
 			});
 
-		instOpts.edit.call(node, { type: "edit" }, eventData);
+		instOpts.edit.call(node, { type: "edit" }, eventData);		
 	};
 
 	/**
@@ -145,18 +181,32 @@
 		_event
 	) {
 		var newVal,
+			datatitulo,
+			datadescripcion,
 			node = this,
 			tree = this.tree,
 			local = tree.ext.edit,
 			eventData = local.eventData,
 			instOpts = tree.options.edit,
 			$title = $(".fancytree-title", node.span),
-			$input = $title.find("input.fancytree-edit-input");
+			$input = $title.find("input.fancytree-edit-input"),
+			$titulo = $title.find("input.fancytree-edit-input")[0],
+			$descripcion = $title.find("input.fancytree-edit-input")[1];			
+
+		datatitulo = $($titulo).val();
+		datadescripcion = $($descripcion).val();
+
+		//console.log($input)
+		//console.log(datacodigo)
+		//console.log(datasubcodigo)
+
+		eventData.datatitulo = datatitulo;
+		eventData.datadescripcion = datadescripcion;
 
 		if (instOpts.trim) {
 			$input.val($.trim($input.val()));
 		}
-		newVal = $input.val();
+		newVal = $input.val();			
 
 		eventData.dirty = newVal !== node.title;
 		eventData.originalEvent = _event;
@@ -164,13 +214,13 @@
 		// Find out, if saving is required
 		if (applyChanges === false) {
 			// If true/false was passed, honor this (except in rename mode, if unchanged)
-			eventData.save = false;
+			eventData.save = false;			
 		} else if (eventData.isNew) {
 			// In create mode, we save everything, except for empty text
-			eventData.save = newVal !== "";
+			eventData.save = newVal !== "";			
 		} else {
 			// In rename mode, we save everyting, except for empty or unchanged text
-			eventData.save = eventData.dirty && newVal !== "";
+			eventData.save = eventData.dirty && newVal !== "";			
 		}
 		// Allow to break (keep editor open), modify input, or re-define data.save
 		if (
@@ -194,9 +244,12 @@
 
 		if (eventData.save) {
 			// # 171: escape user input (not required if global escaping is on)
+			
 			node.setTitle(
 				tree.options.escapeTitles ? newVal : escapeHtml(newVal)
 			);
+			//console.log(tree.options.escapeTitles ? datadescripcion : escapeHtml(datadescripcion));
+			
 			node.setFocus();
 		} else {
 			if (eventData.isNew) {
@@ -362,11 +415,12 @@
 				if (
 					ctx.node.isActive() &&
 					!ctx.node.isEditing() &&
-					$(ctx.originalEvent.target).hasClass("fancytree-title")
+					$(ctx.originalEvent.target).hasClass("fancytree-title") 
 				) {
 					ctx.node.editStart();
 					return false;
-				}
+				}			
+
 			}
 			return this._superApply(arguments);
 		},

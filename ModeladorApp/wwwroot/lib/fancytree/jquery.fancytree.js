@@ -5162,14 +5162,20 @@
 						"</span>";
 
 					//---------------------- CREACION DEL SPAN DEL SEGUNDO INPUT DEL NODO
+					//console.log(node.data.descripcion);
+
+					var descripcion = " ";
+					if (node.data.descripcion != null) {
+						descripcion = node.data.descripcion;
+					}
 					var nodoDescription =
 						"<span class='fancytree-inputdescription'" +
 						tooltip +
 						tabindex +
 						">" +
 						(opts.escapeTitles
-							? FT.escapeHtml(node.data.descripcion)
-							: node.data.descripcion) +
+							? FT.escapeHtml(descripcion)
+							: descripcion) +
 						"</span>";
 					//console.log(node)
 

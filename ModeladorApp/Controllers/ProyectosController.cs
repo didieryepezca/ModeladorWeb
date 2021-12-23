@@ -127,7 +127,7 @@ namespace ModeladorApp.Controllers
 
             try
             {
-                System.Threading.Thread.Sleep(3500);
+                System.Threading.Thread.Sleep(10); //Demora de 10 milisegundos
                 //Proyecto
                 TB_PROYECTO py = new TB_PROYECTO();
                 py.NombreProyecto = nombre;
@@ -200,7 +200,7 @@ namespace ModeladorApp.Controllers
 
             try
             {
-                System.Threading.Thread.Sleep(3000);
+                System.Threading.Thread.Sleep(10); // demora de 10 milisegundos
                 //---------------------------------Eliminamos niveles del arbol del proyecto.
                 var nivelesToDelete = tda.getLevelsToDeleteFromProject(proyectoId).ToList();
                 for (int n = 0; n < nivelesToDelete.Count; n++)
@@ -287,7 +287,7 @@ namespace ModeladorApp.Controllers
 
             try
             {
-                System.Threading.Thread.Sleep(2500);
+                System.Threading.Thread.Sleep(10); // demora de 10 milisegundos
 
                 var count = 0;
 
