@@ -100,6 +100,7 @@
 		var $input = $("<input />", {
 			class: "fancytree-edit-input",
 			type: "text",
+			onkeypress: "this.style.width = (this.value.length + 1) + 'em';",
 			value: tree.options.escapeTitles
 				? eventData.datatitulo
 				: unescapeHtml(eventData.datatitulo),
@@ -111,15 +112,20 @@
 		}
 		if (instOpts.inputCss != null) {
 			$input.css(instOpts.inputCss);			
-		}	
+		}
 
+		var descripcion = " ";
+		if (eventData.datadescripcion != null) {
+			descripcion = eventData.datadescripcion;
+		}
 		//added DIDIER YEPEZ 20/12/2021
 		var $input2 = $("<input />", {
 			class: "fancytree-edit-input",
 			type: "text",
+			onkeypress: "this.style.width = (this.value.length + 1) + 'em';",
 			value: tree.options.escapeTitles
-				? eventData.datadescripcion
-				: unescapeHtml(eventData.datadescripcion),
+				? descripcion
+				: unescapeHtml(descripcion),
 		});
 
 		$title.html($input);

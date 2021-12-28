@@ -5152,7 +5152,7 @@
 					
 					//---------------------- CREACION DEL SPAN DEL PRIMER INPUT DEL NODO
 					var nodoTitle =
-						"<span class='fancytree-inputtitle'" +
+						"<span class='fancytree-inputtitle' style='z-index:-100;'" +
 						tooltip +
 						tabindex +
 						">" +
@@ -5169,7 +5169,7 @@
 						descripcion = node.data.descripcion;
 					}
 					var nodoDescription =
-						"<span class='fancytree-inputdescription'" +
+						"<span class='fancytree-inputdescription' style='z-index:-100;'" +
 						tooltip +
 						tabindex +
 						">" +

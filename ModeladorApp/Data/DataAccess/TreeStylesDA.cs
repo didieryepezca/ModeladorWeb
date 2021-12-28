@@ -8,7 +8,7 @@ namespace ModeladorApp.Data.DataAccess
 {
     public class TreeStylesDA
     {
-        public IEnumerable<TB_TREE_STYLE> GetStylesFromLevel(int lvlID)
+        public IEnumerable<TB_TREE_STYLE> GetAllStylesFromLevel(int lvlID, string campo)
         {
             var ana = new List<TB_TREE_STYLE>();
 
@@ -18,9 +18,14 @@ namespace ModeladorApp.Data.DataAccess
 
                 query = query.Where(item => item.NivelID == lvlID);
 
+                if (!string.IsNullOrWhiteSpace(campo))
+                {
+                    query = query.Where(item => item.campo == campo);
+                }
+
                 return query.ToList();
             }
-        }
+        }        
 
         public int InsertNivelStyle(TB_TREE_STYLE style)
         {

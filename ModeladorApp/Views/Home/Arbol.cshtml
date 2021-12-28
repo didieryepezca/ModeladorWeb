@@ -267,10 +267,15 @@
 
                                     for (s = 0; s <= estilosresponse.length - 1; s++) {
 
-                                        if (estilosresponse[s].style == 'bold') {
-                                            node.span.style.fontWeight = estilosresponse[s].style; //LETRA NEGRITA
-                                        } else if (estilosresponse[s].style == 'italic') {
-                                            node.span.style.fontStyle = estilosresponse[s].style;  //LETRA CURSIVA.
+                                        if (estilosresponse[s].style == 'bold' && estilosresponse[s].campo == "titulo") {                                          
+                                            //node.span.style.fontWeight = estilosresponse[s].style; //LETRA NEGRITA                                         
+                                            node.span.children[2].children[0].style.fontWeight = estilosresponse[s].style; //titulo                                         
+                                        } else if (estilosresponse[s].style == 'bold' && estilosresponse[s].campo == "descripcion") {                                            
+                                            node.span.children[2].children[1].style.fontWeight = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'italic' && estilosresponse[s].campo == "titulo") {                                            
+                                            node.span.children[2].children[0].style.fontStyle = estilosresponse[s].style; //LETRA CURSIVA.
+                                        } else if (estilosresponse[s].style == 'italic' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontStyle = estilosresponse[s].style; //LETRA CURSIVA.
                                         } else if (estilosresponse[s].style == 'Lime') {
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO VERDE.
                                         } else if (estilosresponse[s].style == 'Aqua') {
@@ -471,16 +476,17 @@
                                         ).setActive();
                                     }
                                     break;
-                                case "applybold":
+                                case "applyboldtitle":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Aplicar Negrita");
                                     //console.log(node.data.id); // id del nodo.
-                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY", "titulo")
                                     rpt.then(function (styleresponse) {
 
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
-                                            node.span.style.fontWeight = "bold"
+                                            //node.span.style.fontWeight = "bold"
+                                            node.span.children[2].children[0].style.fontWeight = "bold"; //titulo
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
                                         }
@@ -488,30 +494,65 @@
                                     //if(statusText)
                                     //addColumn(treeReach, node.data.id);
                                     break;
-                                case "removebold":
+                                case "removeboldtitle":
                                     //tree.applyCommand(data.cmd, node);
-                                    //console.log("Quitar negrita");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_REMOVE")
+                                    //console.log("Aplicar Negrita");
+                                    //console.log(node.data.id); // id del nodo.
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_REMOVE", "titulo")
+                                    rpt.then(function (styleresponse) {
+
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {                                            
+                                            node.span.children[2].children[0].style.fontWeight = ""; //titulo
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                        }
+                                    });
+                                    //if(statusText)
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                    
+                                case "applybolddescription":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Aplicar Negrita");
+                                    //console.log(node.data.id); // id del nodo.
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY", "descripcion")
                                     rpt.then(function (styleresponse) {
 
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
-                                            node.span.style.fontWeight = "";
+                                            //node.span.style.fontWeight = "bold"
+                                            node.span.children[2].children[1].style.fontWeight = "bold"; //descripcion
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                        }
+                                    });
+                                    //if(statusText)
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "removebolddescription":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Quitar negrita");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_REMOVE", "descripcion")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.children[2].children[1].style.fontWeight = ""; //descripcion
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
                                         }
                                     });
                                     //addColumn(treeReach, node.data.id);
                                     break;
-                                case "applyitalic":
+                                case "applyitalictitle":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Aplicar Cursiva");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_APPLY","titulo")
                                     rpt.then(function (styleresponse) {
 
                                         //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.fontStyle = "italic"
+                                        if (styleresponse > 0) {                                           
+                                            node.span.children[2].children[0].style.fontStyle = "italic"; //titulo
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
                                         }
@@ -519,14 +560,45 @@
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
-                                case "removeitalic":
+                                case "removeitalictitle":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Quitar negrita");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_REMOVE")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_REMOVE", "titulo")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
-                                            node.span.style.fontStyle = "";
+                                            node.span.children[2].children[0].style.fontStyle = ""; //titulo
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
+                                        }
+                                    });
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "applyitalicdescription":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Aplicar Cursiva");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_APPLY", "descripcion")
+                                    rpt.then(function (styleresponse) {
+
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.children[2].children[1].style.fontStyle = "italic"; //descripcion
+                                        } else {
+                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                        }
+                                    });
+                                    //console.log(node.data.id); // id del nodo.
+                                    //addColumn(treeReach, node.data.id);
+                                    break;
+                                case "removeitalicdescription":
+                                    //tree.applyCommand(data.cmd, node);
+                                    //console.log("Quitar negrita");
+                                    var rpt = applyOrRemoveStyle(node.data.id, "italic", "STYLE_REMOVE", "descripcion")
+                                    rpt.then(function (styleresponse) {
+                                        //console.log(styleresponse);
+                                        if (styleresponse > 0) {
+                                            node.span.children[2].children[1].style.fontStyle = ""; //descripcion
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema quitando el estilo', 'warning')
                                         }
@@ -537,7 +609,7 @@
                                 case "greensubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar verde");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY", "subrayado verde")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -552,7 +624,7 @@
                                 case "bluesubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar azúl");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -567,7 +639,7 @@
                                 case "yellowsubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar amarillo");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY", "subrayado amarillo")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -582,7 +654,7 @@
                                 case "fuchsiasubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar fuchsia");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY", "subrayado fucsia")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -597,7 +669,7 @@
                                 case "redsubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar rojo");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY", "subrayado rojo")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -612,11 +684,11 @@
                                 case "removesubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Quitar subrayado");
-                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE")
-                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE")
-                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE")
-                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE")
-                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE")
+                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE", "subrayado verde")
+                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE", "subrayado azul")
+                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE", "subrayado amarillo")
+                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE", "subrayado fucsia")
+                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE", "subrayado rojo")
                                     node.span.style.backgroundColor = "";
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
@@ -625,7 +697,7 @@
                                 case "setfoldericon":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Añadir icono de folder");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_APPLY")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_APPLY", "")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -641,7 +713,7 @@
                                 case "removefoldericon":
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Quitar icono de folder");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_REMOVE")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "true", "STYLE_REMOVE", "")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
@@ -827,20 +899,46 @@
                                 title: "Nuevo Hijo <kbd>[Ctrl+Shift+N]</kbd>",
                                 cmd: "addChild",
                                 uiIcon: "ui-icon-arrowreturn-1-e",
-                            }, { title: "----" },
+                            }, { title: "----" },                            
                             {
-                                title: "Aplicar letra Negrita",
-                                cmd: "applybold",
+                                title: "Añadir N hijos",
+                                cmd: "addnchilds",
+                            },
+                            {
+                                title: "Duplicar elemento",
+                                cmd: "duplicatelevel",
+                            },
+                            {
+                                title: "Formar Segundo Campo",
+                                cmd: "setsecondinput",
+                            },
+                            { title: "----" },
+                            {
+                                title: "Aplicar letra Negrita al Titulo",
+                                cmd: "applyboldtitle",
                             }, {
-                                title: "Quitar letra Negrita",
-                                cmd: "removebold",
+                                title: "Quitar letra Negrita del Titulo",
+                                cmd: "removeboldtitle",
+                            },
+                            {
+                                title: "Aplicar letra Negrita Descripcion",
+                                cmd: "applybolddescription",
+                            }, {
+                                title: "Quitar letra Negrita de Descripcion",
+                                cmd: "removebolddescription",
                             }
                             , {
-                                title: "Aplicar letra Cursiva",
-                                cmd: "applyitalic",
+                                title: "Aplicar letra Cursiva al Titulo",
+                                cmd: "applyitalictitle",
                             }, {
-                                title: "Quitar letra Cursiva",
-                                cmd: "removeitalic",
+                                title: "Quitar letra Cursiva de Titulo",
+                                cmd: "removeitalictitle",
+                            }, {
+                                title: "Aplicar letra Cursiva Descripcion",
+                                cmd: "applyitalicdescription",
+                            }, {
+                                title: "Quitar letra Cursiva de Descripcion",
+                                cmd: "removeitalicdescription",
                             }, { title: "----" },
                             {
                                 title: "Subrayar verde",
@@ -868,18 +966,6 @@
                             {
                                 title: "Quitar icono de folder",
                                 cmd: "removefoldericon",
-                            }, { title: "----" },
-                            {
-                                title: "Añadir n hijos",
-                                cmd: "addnchilds",
-                            },
-                            {
-                                title: "Duplicar elemento",
-                                cmd: "duplicatelevel",
-                            }, { title: "----" },
-                            {
-                                title: "Formar Segundo Campo",
-                                cmd: "setsecondinput",
                             }
                             //, {
                             //    title: "Mostrar Grilla",
@@ -911,7 +997,6 @@
                             //    uiIcon: "ui-icon-clipboard",
                             //    disabled: true,
                             //},
-
                         ],
                         beforeOpen: function (event, ui) {
                             var node = $.ui.fancytree.getNode(ui.target);
@@ -1524,11 +1609,11 @@
         //----------------------------------------------------->> Obteniendo estilos
 
         //----------------------------------------------------->> Aplicando estilos
-        async function applyOrRemoveStyle(lvlID, style, action) {
-            return styleReponse = await applyOrRemoveStyleToDB(lvlID, style, action);
+        async function applyOrRemoveStyle(lvlID, style, action, campo) {
+            return styleReponse = await applyOrRemoveStyleToDB(lvlID, style, action, campo);
         };
 
-        function applyOrRemoveStyleToDB(lvlID, style, action) {
+        function applyOrRemoveStyleToDB(lvlID, style, action, campo) {
 
             var urlToGo = "";
             var dataToGo;
@@ -1536,7 +1621,7 @@
             if (action == "STYLE_APPLY") {
 
                 urlToGo = "/Home/funInsertLvlStyle";
-                dataToGo = { "nivelID": lvlID, "style": style }
+                dataToGo = { "nivelID": lvlID, "style": style, "campo": campo }
 
                 //------------------------>>AJAX Aplicar estilo
                 return $.ajax({
@@ -1552,7 +1637,7 @@
             } else if (action == "STYLE_REMOVE") {
 
                 urlToGo = "/Home/funDeleteStyle";
-                dataToGo = { "nivelID": lvlID, "style": style }
+                dataToGo = { "nivelID": lvlID, "style": style, "campo": campo }
 
                 //------------------------>>AJAX Aplicar estilo
                 return $.ajax({

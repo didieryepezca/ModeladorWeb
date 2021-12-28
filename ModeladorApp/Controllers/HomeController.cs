@@ -710,11 +710,11 @@ namespace ModeladorApp.Controllers
             var da = new TreeStylesDA();
             //Un momento por favor xD
             System.Threading.Thread.Sleep(100);
-            var estilos = da.GetStylesFromLevel(nivelID).ToList();
+            var estilos = da.GetAllStylesFromLevel(nivelID, "").ToList();
             return estilos;
         }
 
-        public int funInsertLvlStyle(int nivelID, string style)
+        public int funInsertLvlStyle(int nivelID, string style, string campo)
         {
             var result = "0";
             var da = new TreeStylesDA();
@@ -722,17 +722,17 @@ namespace ModeladorApp.Controllers
             try
             {
                 TB_TREE_STYLE stylesfound = new TB_TREE_STYLE();
-                stylesfound = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();
+                stylesfound = da.GetAllStylesFromLevel(nivelID,campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
                 if (stylesfound?.StyleID == null)
                 {
                     TB_TREE_STYLE t = new TB_TREE_STYLE();
 
                     t.NivelID = nivelID;
+                    t.campo = campo;
                     t.style = style;
 
                     var modelcount = da.InsertNivelStyle(t);
-
                     return modelcount;
                 }
                 else
@@ -747,7 +747,7 @@ namespace ModeladorApp.Controllers
             }
         }
 
-        public int funDeleteStyle(int nivelID, string style)
+        public int funDeleteStyle(int nivelID, string style, string campo)
         {
             var result = "0";
             var da = new TreeStylesDA();
@@ -756,7 +756,7 @@ namespace ModeladorApp.Controllers
             try
             {
                 TB_TREE_STYLE styleToDelete = new TB_TREE_STYLE();
-                styleToDelete = da.GetStylesFromLevel(nivelID).Where(r => r.style == style).FirstOrDefault();
+                styleToDelete = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
                 modelcount = da.deleteNivelStyle(styleToDelete.StyleID);
                 return modelcount;

@@ -12,6 +12,7 @@ namespace ModeladorApp.Models.Entities
         [Display(Name = "ID del Estilo")]
         public int StyleID { get; set; }
         public int NivelID { get; set; }
+        public string campo { get; set; }
         public string style { get; set; }
     }
 }
