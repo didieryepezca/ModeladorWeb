@@ -267,8 +267,7 @@
 
                                     for (s = 0; s <= estilosresponse.length - 1; s++) {
 
-                                        if (estilosresponse[s].style == 'bold' && estilosresponse[s].campo == "titulo") {                                          
-                                            //node.span.style.fontWeight = estilosresponse[s].style; //LETRA NEGRITA                                         
+                                        if (estilosresponse[s].style == 'bold' && estilosresponse[s].campo == "titulo") {                                                                            
                                             node.span.children[2].children[0].style.fontWeight = estilosresponse[s].style; //titulo                                         
                                         } else if (estilosresponse[s].style == 'bold' && estilosresponse[s].campo == "descripcion") {                                            
                                             node.span.children[2].children[1].style.fontWeight = estilosresponse[s].style;; //descripcion
@@ -276,7 +275,9 @@
                                             node.span.children[2].children[0].style.fontStyle = estilosresponse[s].style; //LETRA CURSIVA.
                                         } else if (estilosresponse[s].style == 'italic' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.fontStyle = estilosresponse[s].style; //LETRA CURSIVA.
-                                        } else if (estilosresponse[s].style == 'Lime') {
+                                        }
+
+                                        else if (estilosresponse[s].style == 'Lime') {
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO VERDE.
                                         } else if (estilosresponse[s].style == 'Aqua') {
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO AZUL.
@@ -286,10 +287,75 @@
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO FUSCIA.
                                         } else if (estilosresponse[s].style == 'Red') {
                                             node.span.style.backgroundColor = estilosresponse[s].style;  //ELEMENTO CARPETA.
-                                        } else if (estilosresponse[s].style == 'true') {
-                                            //console.log("FOLDER")
-                                            node.folder = true;  //LETRA CURSIVA.
+                                        } else if (estilosresponse[s].style == 'true') {                                          
+                                            node.folder = true;  //ICONO DEL FOLDER.
                                         }
+
+                                        else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'azure' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'indigo' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'purple' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'pink' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'red' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'orange' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'yellow' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'lime' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //titulo
+                                        }
+
+                                        else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'azure' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'indigo' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'purple' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'pink' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'red' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'orange' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'yellow' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'lime' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        }
+
+
+                                        else if (estilosresponse[s].style == 'smaller' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'unset' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'medium' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'large' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
+                                        }
+
+                                        else if (estilosresponse[s].style == 'smaller' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'unset' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'medium' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'large' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
+                                        }
+
                                     }
                                 }
                             });
@@ -606,6 +672,16 @@
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
+
+                                case "changecolorsfontsize":
+                                    //tree.applyCommand(data.cmd, node);                              
+                                    
+                                    //console.log(node.span.children[2].children[0].style);                                   
+                                    $('#txtNodoId').val(node.data.id);
+                                    $('#txtGetTree').val(treeReach);                                   
+                                    $('#modal-color-admin').modal('show');                                   
+                                    //addColumn(treeReach, node.data.id);
+                                    break;                                    
                                 case "greensubrayado":
                                     //tree.applyCommand(data.cmd, node);
                                     console.log("Subrayar verde");
@@ -940,6 +1016,11 @@
                                 title: "Quitar letra Cursiva de Descripcion",
                                 cmd: "removeitalicdescription",
                             }, { title: "----" },
+                            {
+                                title: "Aplicar Colores y Tamaños de Fuente",
+                                cmd: "changecolorsfontsize",
+                            }
+                            , { title: "----" },
                             {
                                 title: "Subrayar verde",
                                 cmd: "greensubrayado",
@@ -1745,11 +1826,76 @@
                     "cantidad": qty,
                 },
                 success: function (response) {
-                    console.log(response);
+                    //console.log(response);
                 },
             });
         }
 
+        var colorsandsizes = [];
+
+        function estilo(valor,campo, tipo) {
+            this.valor = valor;
+            this.campo = campo;
+            this.tipo = tipo;
+        };
+
+        function fnApplyColors() {
+
+            var nodoId = $('#txtNodoId').val();
+            var arbol = $('#txtGetTree').val();
+           
+            colorsandsizes = [];
+        
+            const firstColor = $('input[name=color]:checked').val();
+            const secondColor = $('input[name=color-rounded]:checked').val();
+
+            const firstSize = $('input[name=first-size]:checked').val();
+            const secondSize = $('input[name=second-size]:checked').val();
+
+            if (firstColor != "") {
+                colorsandsizes.push(new estilo(firstColor, "titulo", "color"))
+            } if (secondColor != "") {
+                colorsandsizes.push(new estilo(secondColor, "descripcion", "color"))
+            } if (firstSize != "") {
+                colorsandsizes.push(new estilo(firstSize, "titulo", "size"))
+            } if (secondSize != "") {
+                colorsandsizes.push(new estilo(secondSize, "descripcion", "size"))
+            }
+
+            if (colorsandsizes.length > 0) {               
+
+                var tree = $("#" + arbol).fancytree("getTree"); // para obtener el arbol renderizado.
+                var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+
+                colorsandsizes.forEach(function element(elemento, index, array) {
+
+                    console.log(elemento.valor, elemento.campo)                    
+                    //console.log(nodo.span.children[2]);
+
+                    var rpt = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
+                    rpt.then(function (styleresponse) {
+                        //console.log(styleresponse);
+
+                        if (elemento.tipo == "color") {
+                            if (styleresponse > 0 && elemento.campo == "titulo") {
+                                nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
+                            } else if (styleresponse > 0 && elemento.campo == "descripcion") {
+                                nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
+                            } 
+                        } else {
+                            if (styleresponse > 0 && elemento.campo == "titulo") {
+                                nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
+                            } else if (styleresponse > 0 && elemento.campo == "descripcion") {
+                                nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
+                            } 
+                        }                        
+                    });
+
+                    $('#modal-color-admin').modal('toggle');
+                });
+            }            
+            //console.log(secondSize)           
+        }       
 
         var tableToExcel = (function () {
             var uri = 'data:application/vnd.ms-excel;base64,'
@@ -1861,7 +2007,7 @@
                     <thead>
                         <tr id="head_tree_0">
                             <th>#</th>
-                            <th>Identificador - Nombre</th>
+                            <th></th>
                             @*<th>Nombre</th>*@
                         </tr>
                     </thead>
@@ -1977,7 +2123,7 @@
                         <thead>
                             <tr id="head_tree_@item.ProyectoID">
                                 <th>#</th>
-                                <th>Identificador - Nombre</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2173,6 +2319,228 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+
+    <div class="modal modal-blur fade" id="modal-color-admin" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content" id="modalColorFields">
+                <div class="modal-header">
+                    <h5 class="modal-title">Aplicar Colores y Tamaños de Fuente</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="col-lg-4">
+                        <div class="mb-3" hidden>
+                            <label class="form-label">Id del Nodo</label>
+                            <input id="txtNodoId" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="mb-3" hidden>
+                            <label class="form-label">Arbol Renderizado</label>
+                            <input id="txtGetTree" type="text" class="form-control">
+                        </div>
+                    </div>
+
+                    @*PRIMER CAMPO*@
+
+                    <div class="mb-3">
+                        <label class="form-label">Color de Primer Campo</label>
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="dark" class="form-colorinput-input" checked="">
+                                    <span class="form-colorinput-color bg-dark"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="blue" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-blue"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="azure" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-azure"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="indigo" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-indigo"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="purple" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-purple"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="pink" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-pink"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="red" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-red"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="orange" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-orange"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="yellow" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-yellow"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="lime" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-lime"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*SEGUNDO CAMPO*@
+
+                    <div class="mb-3">
+                        <label class="form-label">Color de Segundo Campo</label>
+                        <div class="row g-2">
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="dark" class="form-colorinput-input" checked="">
+                                    <span class="form-colorinput-color bg-dark rounded-circle"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="blue" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-blue rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="azure" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-azure rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="indigo" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-indigo rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="purple" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-purple rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="pink" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-pink rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="red" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-red rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="orange" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-orange rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="yellow" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-yellow rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="lime" class="form-colorinput-input">
+                                    <span class="form-colorinput-color bg-lime rounded-circle"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-label">Tamaño de letra de Primer Campo</div>
+                        <div>
+                            <label class="form-check form-check-inline">
+                                <input name="first-size" class="form-check-input" value="smaller" type="radio">
+                                <span class="form-check-label" style="font-size:smaller">Pequeño</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="first-size" class="form-check-input" value="unset" type="radio" checked="">
+                                <span class="form-check-label" style="font-size:unset">Normal</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="first-size" class="form-check-input" value="medium" type="radio">
+                                <span class="form-check-label" style="font-size:medium">Mediano</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="first-size" class="form-check-input" value="large" type="radio">
+                                <span class="form-check-label" style="font-size:large">Grande</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-label">Tamaño de letra de Segundo Campo</div>
+                        <div>
+                            <label class="form-check form-check-inline">
+                                <input name="second-size" class="form-check-input" value="smaller" type="radio">
+                                <span class="form-check-label" style="font-size:smaller">Pequeño</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="second-size" class="form-check-input" value="unset" type="radio" checked="">
+                                <span class="form-check-label" style="font-size:unset">Normal</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="second-size" class="form-check-input" value="medium" type="radio">
+                                <span class="form-check-label" style="font-size:medium">Mediano</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="second-size" class="form-check-input" value="large" type="radio">
+                                <span class="form-check-label" style="font-size:large">Grande</span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                    <div class="modal-footer">
+                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </a>
+                        <a onclick="fnApplyColors()" class="btn btn-primary ms-auto">
+                            Aplicar
+                        </a>
+                    </div>
+
+                </div>
         </div>
     </div>
 

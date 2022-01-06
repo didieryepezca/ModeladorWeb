@@ -724,8 +724,43 @@ namespace ModeladorApp.Controllers
                 TB_TREE_STYLE stylesfound = new TB_TREE_STYLE();
                 stylesfound = da.GetAllStylesFromLevel(nivelID,campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
+
+                string[] colors = { "dark","blue", "azure", "indigo", "purple", "pink", "red", "orange", "yellow", "lime" };
+                string[] sizes = { "smaller", "unset", "medium", "large"};
+                //limpiando colores y tamaños de fuente anteriores.
+                foreach (string c in colors)
+                {
+                    try
+                    {
+                        stylesfound = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == c && r.campo == campo).FirstOrDefault();
+                        da.deleteNivelStyle(stylesfound.StyleID);
+                    }
+                    catch (Exception e)
+                    {
+                        result = e.Message;
+                        //continue;
+                        //return 0;
+                    }
+                }
+                foreach (string s in sizes)
+                {
+                    try
+                    {
+                        stylesfound = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == s && r.campo == campo).FirstOrDefault();
+                        da.deleteNivelStyle(stylesfound.StyleID);
+                    }
+                    catch (Exception e)
+                    {
+                        result = e.Message;
+                        //continue;
+                    }
+                }
+
                 if (stylesfound?.StyleID == null)
                 {
+                    
+                    
+
                     TB_TREE_STYLE t = new TB_TREE_STYLE();
 
                     t.NivelID = nivelID;
