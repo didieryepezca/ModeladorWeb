@@ -291,7 +291,15 @@
                                             node.folder = true;  //ICONO DEL FOLDER.
                                         }
 
-                                        else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "titulo") {
+                                        else if (estilosresponse[s].style == 'silver' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'lightslategray' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'grey' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'dimgrey' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
                                         } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
@@ -313,7 +321,16 @@
                                             node.span.children[2].children[1].style.color = estilosresponse[s].style;; //titulo
                                         }
 
-                                        else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "descripcion") {
+
+                                        else if (estilosresponse[s].style == 'silver' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'lightslategray' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'grey' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'dimgrey' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
                                         } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
@@ -336,23 +353,27 @@
                                         }
 
 
-                                        else if (estilosresponse[s].style == 'smaller' && estilosresponse[s].campo == "titulo") {
+                                        else if (estilosresponse[s].style == '8px' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
-                                        } else if (estilosresponse[s].style == 'unset' && estilosresponse[s].campo == "titulo") {
+                                        } else if (estilosresponse[s].style == '10px' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
-                                        } else if (estilosresponse[s].style == 'medium' && estilosresponse[s].campo == "titulo") {
+                                        } else if (estilosresponse[s].style == '12px' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
-                                        } else if (estilosresponse[s].style == 'large' && estilosresponse[s].campo == "titulo") {
+                                        } else if (estilosresponse[s].style == '14px' && estilosresponse[s].campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
+                                        } else if (estilosresponse[s].style == '16px' && estilosresponse[s].campo == "titulo") {
                                             node.span.children[2].children[0].style.fontSize = estilosresponse[s].style;; //titulo
                                         }
 
-                                        else if (estilosresponse[s].style == 'smaller' && estilosresponse[s].campo == "descripcion") {
+                                        else if (estilosresponse[s].style == '8px' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
-                                        } else if (estilosresponse[s].style == 'unset' && estilosresponse[s].campo == "descripcion") {
+                                        } else if (estilosresponse[s].style == '10px' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
-                                        } else if (estilosresponse[s].style == 'medium' && estilosresponse[s].campo == "descripcion") {
+                                        } else if (estilosresponse[s].style == '12px' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
-                                        } else if (estilosresponse[s].style == 'large' && estilosresponse[s].campo == "descripcion") {
+                                        } else if (estilosresponse[s].style == '14px' && estilosresponse[s].campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
+                                        } else if (estilosresponse[s].style == '16px' && estilosresponse[s].campo == "descripcion") {
                                             node.span.children[2].children[1].style.fontSize = estilosresponse[s].style;; //descripcion
                                         }
 
@@ -1735,6 +1756,29 @@
 
         }
         //----------------------------------------------------->> Aplicando estilos
+
+
+        //---------------------------->> removiendo estilos: COLORES Y FUENTES:
+        async function removeColorsAndSizes(lvlID) {
+            return removes = await removeColorsAndSizesToDB(lvlID);
+        };
+
+        function removeColorsAndSizesToDB(lvlID) {        
+
+                //------------------------>>AJAX quitar estilos colores y fuentes
+                return $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Home/funRemoveColorsAndSizes",
+                    data: { "nivelID": lvlID },
+                    success: function (response) {
+                        //console.log(response);
+                    },
+                });
+                //------------------------>>AJAX quitar estilos colores y fuentes   
+        }
+        //---------------------------->> removiendo estilos: COLORES Y FUENTES
+
         var arrayHijos = [];
 
         function addNHijos() {
@@ -1865,27 +1909,32 @@
             if (colorsandsizes.length > 0) {               
 
                 var tree = $("#" + arbol).fancytree("getTree"); // para obtener el arbol renderizado.
-                var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+                var nodo = tree.getActiveNode(); // para obtener el nodo activo.  
+
+                var rpt1 = removeColorsAndSizes(nodoId)
+                rpt1.then(function (res1) {
+                    console.log(res1)
+                });
 
                 colorsandsizes.forEach(function element(elemento, index, array) {
 
-                    console.log(elemento.valor, elemento.campo)                    
-                    //console.log(nodo.span.children[2]);
+                    //console.log(elemento.valor, elemento.campo)                    
 
-                    var rpt = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
-                    rpt.then(function (styleresponse) {
+                    var rpt2 = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
+                    rpt2.then(function (styleresponse) {
+
                         //console.log(styleresponse);
 
                         if (elemento.tipo == "color") {
-                            if (styleresponse > 0 && elemento.campo == "titulo") {
+                            if (elemento.campo == "titulo") {                                
                                 nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
-                            } else if (styleresponse > 0 && elemento.campo == "descripcion") {
+                            } else if (elemento.campo == "descripcion") {                              
                                 nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
                             } 
                         } else {
-                            if (styleresponse > 0 && elemento.campo == "titulo") {
+                            if (elemento.campo == "titulo") {                              
                                 nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
-                            } else if (styleresponse > 0 && elemento.campo == "descripcion") {
+                            } else if (elemento.campo == "descripcion") {                              
                                 nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
                             } 
                         }                        
@@ -2351,6 +2400,35 @@
                     <div class="mb-3">
                         <label class="form-label">Color de Primer Campo</label>
                         <div class="row g-2">
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="silver" class="form-colorinput-input">
+                                    <span style="background-color:silver" class="form-colorinput-color"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="lightslategray" class="form-colorinput-input">
+                                    <span style="background-color: lightslategray" class="form-colorinput-color"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="grey" class="form-colorinput-input">
+                                    <span style="background-color: grey" class="form-colorinput-color"></span>
+                                </label>
+                            </div>
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color" type="radio" value="dimgrey" class="form-colorinput-input">
+                                    <span style="background-color:dimgrey" class="form-colorinput-color"></span>
+                                </label>
+                            </div>
+
                             <div class="col-auto">
                                 <label class="form-colorinput">
                                     <input name="color" type="radio" value="dark" class="form-colorinput-input" checked="">
@@ -2420,6 +2498,32 @@
                     <div class="mb-3">
                         <label class="form-label">Color de Segundo Campo</label>
                         <div class="row g-2">
+
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="silver" class="form-colorinput-input">
+                                    <span style="background-color:silver" class="form-colorinput-color rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="lightslategray" class="form-colorinput-input">
+                                    <span style="background-color: lightslategray" class="form-colorinput-color rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="grey" class="form-colorinput-input">
+                                    <span style="background-color: grey" class="form-colorinput-color rounded-circle"></span>
+                                </label>
+                            </div>
+                            <div class="col-auto">
+                                <label class="form-colorinput">
+                                    <input name="color-rounded" type="radio" value="dimgrey" class="form-colorinput-input">
+                                    <span style="background-color:dimgrey" class="form-colorinput-color rounded-circle"></span>
+                                </label>
+                            </div>
+
                             <div class="col-auto">
                                 <label class="form-colorinput">
                                     <input name="color-rounded" type="radio" value="dark" class="form-colorinput-input" checked="">
@@ -2488,20 +2592,24 @@
                         <div class="form-label">Tamaño de letra de Primer Campo</div>
                         <div>
                             <label class="form-check form-check-inline">
-                                <input name="first-size" class="form-check-input" value="smaller" type="radio">
-                                <span class="form-check-label" style="font-size:smaller">Pequeño</span>
+                                <input name="first-size" class="form-check-input" value="8px" type="radio">
+                                <span class="form-check-label" style="font-size: 8px">8px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="first-size" class="form-check-input" value="unset" type="radio" checked="">
-                                <span class="form-check-label" style="font-size:unset">Normal</span>
+                                <input name="first-size" class="form-check-input" value="10px" type="radio">
+                                <span class="form-check-label" style="font-size: 10px">10px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="first-size" class="form-check-input" value="medium" type="radio">
-                                <span class="form-check-label" style="font-size:medium">Mediano</span>
+                                <input name="first-size" class="form-check-input" value="12px" type="radio" checked="">
+                                <span class="form-check-label" style="font-size: 12px">12px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="first-size" class="form-check-input" value="large" type="radio">
-                                <span class="form-check-label" style="font-size:large">Grande</span>
+                                <input name="first-size" class="form-check-input" value="14px" type="radio">
+                                <span class="form-check-label" style="font-size: 14px">14px</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="first-size" class="form-check-input" value="16px" type="radio">
+                                <span class="form-check-label" style="font-size: 16px">16px</span>
                             </label>
                         </div>
                     </div>
@@ -2510,20 +2618,24 @@
                         <div class="form-label">Tamaño de letra de Segundo Campo</div>
                         <div>
                             <label class="form-check form-check-inline">
-                                <input name="second-size" class="form-check-input" value="smaller" type="radio">
-                                <span class="form-check-label" style="font-size:smaller">Pequeño</span>
+                                <input name="second-size" class="form-check-input" value="8px" type="radio">
+                                <span class="form-check-label" style="font-size: 8px">8px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="second-size" class="form-check-input" value="unset" type="radio" checked="">
-                                <span class="form-check-label" style="font-size:unset">Normal</span>
+                                <input name="second-size" class="form-check-input" value="10px" type="radio">
+                                <span class="form-check-label" style="font-size: 10px">10px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="second-size" class="form-check-input" value="medium" type="radio">
-                                <span class="form-check-label" style="font-size:medium">Mediano</span>
+                                <input name="second-size" class="form-check-input" value="12px" type="radio" checked="">
+                                <span class="form-check-label" style="font-size: 12px">12px</span>
                             </label>
                             <label class="form-check form-check-inline">
-                                <input name="second-size" class="form-check-input" value="large" type="radio">
-                                <span class="form-check-label" style="font-size:large">Grande</span>
+                                <input name="second-size" class="form-check-input" value="14px" type="radio">
+                                <span class="form-check-label" style="font-size: 14px">14px</span>
+                            </label>
+                            <label class="form-check form-check-inline">
+                                <input name="second-size" class="form-check-input" value="16px" type="radio">
+                                <span class="form-check-label" style="font-size: 16px">16px</span>
                             </label>
                         </div>
                     </div>

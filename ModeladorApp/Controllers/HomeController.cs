@@ -718,49 +718,13 @@ namespace ModeladorApp.Controllers
         {
             var result = "0";
             var da = new TreeStylesDA();
-
             try
             {
-                TB_TREE_STYLE stylesfound = new TB_TREE_STYLE();
-                stylesfound = da.GetAllStylesFromLevel(nivelID,campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
+                TB_TREE_STYLE stylesfound_i = new TB_TREE_STYLE();
+                stylesfound_i = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
-
-                string[] colors = { "dark","blue", "azure", "indigo", "purple", "pink", "red", "orange", "yellow", "lime" };
-                string[] sizes = { "smaller", "unset", "medium", "large"};
-                //limpiando colores y tamaños de fuente anteriores.
-                foreach (string c in colors)
+                if (stylesfound_i?.StyleID == null)
                 {
-                    try
-                    {
-                        stylesfound = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == c && r.campo == campo).FirstOrDefault();
-                        da.deleteNivelStyle(stylesfound.StyleID);
-                    }
-                    catch (Exception e)
-                    {
-                        result = e.Message;
-                        //continue;
-                        //return 0;
-                    }
-                }
-                foreach (string s in sizes)
-                {
-                    try
-                    {
-                        stylesfound = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == s && r.campo == campo).FirstOrDefault();
-                        da.deleteNivelStyle(stylesfound.StyleID);
-                    }
-                    catch (Exception e)
-                    {
-                        result = e.Message;
-                        //continue;
-                    }
-                }
-
-                if (stylesfound?.StyleID == null)
-                {
-                    
-                    
-
                     TB_TREE_STYLE t = new TB_TREE_STYLE();
 
                     t.NivelID = nivelID;
@@ -780,6 +744,40 @@ namespace ModeladorApp.Controllers
                 result = e.Message;
                 return 0;
             }
+        }
+
+        public int funRemoveColorsAndSizes(int nivelID) {
+
+            var da = new TreeStylesDA();
+
+            int remove = 0;
+
+            string[] arrayCampos = { "titulo", "descripcion" };
+
+            //string[] colors = { "silver", "lightslategray", "grey", "dimgrey", "dark", "blue", "azure", "indigo", "purple", "pink", "red", "orange", "yellow", "lime" };
+            //string[] sizes = { "8px", "10px", "12px", "14px", "16px" };          
+
+            foreach (string campo in arrayCampos)
+            {
+                string[] arrayColorsandsizes = { "silver", "lightslategray", "8px", "10px" };
+
+                foreach (string estilo in arrayColorsandsizes)
+                {
+                    int removecount = 0;
+                    TB_TREE_STYLE stylesfound_m = new TB_TREE_STYLE();
+                    stylesfound_m = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == estilo && r.campo == campo).FirstOrDefault();
+
+                    if (stylesfound_m != null)
+                    {
+                        removecount = da.deleteNivelStyle(stylesfound_m.StyleID);
+                    }
+
+                    remove = remove + removecount;
+                }
+
+            }
+            return remove;  
+
         }
 
         public int funDeleteStyle(int nivelID, string style, string campo)
