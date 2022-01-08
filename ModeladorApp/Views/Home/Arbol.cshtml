@@ -1913,35 +1913,36 @@
 
                 var rpt1 = removeColorsAndSizes(nodoId)
                 rpt1.then(function (res1) {
-                    console.log(res1)
-                });
+                    //console.log("Eliminando>" + res1)
 
-                colorsandsizes.forEach(function element(elemento, index, array) {
+                    colorsandsizes.forEach(function element(elemento, index, array) {
 
-                    //console.log(elemento.valor, elemento.campo)                    
+                        //console.log(elemento.valor, elemento.campo)                    
 
-                    var rpt2 = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
-                    rpt2.then(function (styleresponse) {
+                        var rpt2 = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
+                        rpt2.then(function (styleresponse) {
 
-                        //console.log(styleresponse);
+                            //console.log("Aplicando>" + styleresponse);
 
-                        if (elemento.tipo == "color") {
-                            if (elemento.campo == "titulo") {                                
-                                nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
-                            } else if (elemento.campo == "descripcion") {                              
-                                nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
-                            } 
-                        } else {
-                            if (elemento.campo == "titulo") {                              
-                                nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
-                            } else if (elemento.campo == "descripcion") {                              
-                                nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
-                            } 
-                        }                        
+                            if (elemento.tipo == "color") {
+                                if (elemento.campo == "titulo") {
+                                    nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
+                                } else if (elemento.campo == "descripcion") {
+                                    nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
+                                }
+                            } else {
+                                if (elemento.campo == "titulo") {
+                                    nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
+                                } else if (elemento.campo == "descripcion") {
+                                    nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
+                                }
+                            }
+                        });
+
+                        $('#modal-color-admin').modal('toggle');
                     });
 
-                    $('#modal-color-admin').modal('toggle');
-                });
+                });                
             }            
             //console.log(secondSize)           
         }       

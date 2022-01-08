@@ -753,15 +753,14 @@ namespace ModeladorApp.Controllers
             int remove = 0;
 
             string[] arrayCampos = { "titulo", "descripcion" };
-
-            //string[] colors = { "silver", "lightslategray", "grey", "dimgrey", "dark", "blue", "azure", "indigo", "purple", "pink", "red", "orange", "yellow", "lime" };
-            //string[] sizes = { "8px", "10px", "12px", "14px", "16px" };          
-
+          
             foreach (string campo in arrayCampos)
             {
-                string[] arrayColorsandsizes = { "silver", "lightslategray", "8px", "10px" };
+                string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "blue", "azure", "indigo"
+                                                    , "purple", "pink", "red", "orange", "yellow", "lime"
+                                                    , "8px", "10px", "12px", "14px", "16px"};
 
-                foreach (string estilo in arrayColorsandsizes)
+                foreach (string estilo in arrayColorsNSizes)
                 {
                     int removecount = 0;
                     TB_TREE_STYLE stylesfound_m = new TB_TREE_STYLE();
@@ -771,13 +770,10 @@ namespace ModeladorApp.Controllers
                     {
                         removecount = da.deleteNivelStyle(stylesfound_m.StyleID);
                     }
-
                     remove = remove + removecount;
                 }
-
             }
             return remove;  
-
         }
 
         public int funDeleteStyle(int nivelID, string style, string campo)
