@@ -78,6 +78,7 @@ namespace ModeladorApp.Controllers
         {
             var result = "0";
             var nda = new NivelDA();
+            var ndas = new TreeStylesDA();
 
             try
             {
@@ -92,7 +93,16 @@ namespace ModeladorApp.Controllers
 
                 var modelcount = nda.InserNewLevel(t);
 
-                return modelcount;
+                //aplicando el estilo negrita a todos los campos de titulos nuevos.
+                TB_TREE_STYLE ts = new TB_TREE_STYLE();
+
+                ts.NivelID = t.id;
+                ts.campo = "titulo";
+                ts.style = "bold";
+
+                var modelstyle = ndas.InsertNivelStyle(ts);
+
+                return modelcount + modelstyle;
             }
             catch (Exception e)
             {
@@ -330,13 +340,15 @@ namespace ModeladorApp.Controllers
             var result = "0";
             var nda = new NivelDA();
 
+            var ndas = new TreeStylesDA();
+
             var count = 0;
             try
             {
                 System.Threading.Thread.Sleep(100); //100 milisegundos de espera.
 
                 for (int qty = 1; qty <= cantidad; qty++)
-                {                    
+                {
                     TB_TREE lvl = new TB_TREE();
                     lvl = nda.GetLevelToDuplicate(vId);
 
@@ -350,6 +362,22 @@ namespace ModeladorApp.Controllers
 
                     var finsert = nda.InserNewLevel(firstInsert);
                     count = count + finsert;
+
+                    //----------- duplicar estilos
+                    var stylesfirst = ndas.GetAllStylesFromLevel(lvl.id, "").ToList();
+                    if (stylesfirst.Count > 0)
+                    {
+                        for (int s = 0; s <= stylesfirst.Count - 1; s++)
+                        {
+                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                            sto.NivelID = firstInsert.id;
+                            sto.campo = stylesfirst[s].campo;
+                            sto.style = stylesfirst[s].style;
+
+                            var modelstyle = ndas.InsertNivelStyle(sto);
+                        }
+                    }
 
                     //------------ primer loop del primer nivel...
                     List<TB_TREE> sublvls = new List<TB_TREE>();
@@ -370,6 +398,22 @@ namespace ModeladorApp.Controllers
 
                             var countlvl = nda.InserNewLevel(dupTree_step1);
 
+                            //----------- duplicar estilos
+                            var step1styles = ndas.GetAllStylesFromLevel(sublvls[a].id, "").ToList();
+                            if (step1styles.Count > 0)
+                            {
+                                for (int s = 0; s <= step1styles.Count - 1; s++)
+                                {
+                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                    sto.NivelID = dupTree_step1.id;
+                                    sto.campo = step1styles[s].campo;
+                                    sto.style = step1styles[s].style;
+
+                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                }
+                            }
+
                             //------------ segundo loop...
                             List<TB_TREE> sublvls2 = new List<TB_TREE>();
                             sublvls2 = nda.GetSubLvl(sublvls[a].id).ToList();
@@ -388,6 +432,22 @@ namespace ModeladorApp.Controllers
                                     dupTree_step2.fechaCreacion = DateTime.Now;
 
                                     var countlvl2 = nda.InserNewLevel(dupTree_step2);
+
+                                    //----------- duplicar estilos
+                                    var step2styles = ndas.GetAllStylesFromLevel(sublvls2[a].id, "").ToList();
+                                    if (step2styles.Count > 0)
+                                    {
+                                        for (int s = 0; s <= step2styles.Count - 1; s++)
+                                        {
+                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                            sto.NivelID = dupTree_step2.id;
+                                            sto.campo = step2styles[s].campo;
+                                            sto.style = step2styles[s].style;
+
+                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                        }
+                                    }
 
 
                                     //------------ tercer loop...
@@ -409,6 +469,21 @@ namespace ModeladorApp.Controllers
 
                                             var countlvl3 = nda.InserNewLevel(dupTree_step3);
 
+                                            //----------- duplicar estilos
+                                            var step3styles = ndas.GetAllStylesFromLevel(sublvls3[a].id, "").ToList();
+                                            if (step3styles.Count > 0)
+                                            {
+                                                for (int s = 0; s <= step3styles.Count - 1; s++)
+                                                {
+                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                    sto.NivelID = dupTree_step3.id;
+                                                    sto.campo = step3styles[s].campo;
+                                                    sto.style = step3styles[s].style;
+
+                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                }
+                                            }
 
                                             //------------ cuarto loop...
                                             List<TB_TREE> sublvls4 = new List<TB_TREE>();
@@ -429,6 +504,21 @@ namespace ModeladorApp.Controllers
 
                                                     var countlvl4 = nda.InserNewLevel(dupTree_step4);
 
+                                                    //----------- duplicar estilos
+                                                    var step4styles = ndas.GetAllStylesFromLevel(sublvls4[a].id, "").ToList();
+                                                    if (step4styles.Count > 0)
+                                                    {
+                                                        for (int s = 0; s <= step4styles.Count - 1; s++)
+                                                        {
+                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                            sto.NivelID = dupTree_step4.id;
+                                                            sto.campo = step4styles[s].campo;
+                                                            sto.style = step4styles[s].style;
+
+                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                        }
+                                                    }
 
                                                     //------------ quinto loop...
                                                     List<TB_TREE> sublvls5 = new List<TB_TREE>();
@@ -449,6 +539,21 @@ namespace ModeladorApp.Controllers
 
                                                             var countlvl5 = nda.InserNewLevel(dupTree_step5);
 
+                                                            //----------- duplicar estilos
+                                                            var step5styles = ndas.GetAllStylesFromLevel(sublvls5[a].id, "").ToList();
+                                                            if (step5styles.Count > 0)
+                                                            {
+                                                                for (int s = 0; s <= step5styles.Count - 1; s++)
+                                                                {
+                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                    sto.NivelID = dupTree_step5.id;
+                                                                    sto.campo = step5styles[s].campo;
+                                                                    sto.style = step5styles[s].style;
+
+                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                }
+                                                            }
 
                                                             //------------ sexto loop...
                                                             List<TB_TREE> sublvls6 = new List<TB_TREE>();
@@ -469,6 +574,21 @@ namespace ModeladorApp.Controllers
 
                                                                     var countlvl6 = nda.InserNewLevel(dupTree_step6);
 
+                                                                    //----------- duplicar estilos
+                                                                    var step6styles = ndas.GetAllStylesFromLevel(sublvls6[a].id, "").ToList();
+                                                                    if (step6styles.Count > 0)
+                                                                    {
+                                                                        for (int s = 0; s <= step6styles.Count - 1; s++)
+                                                                        {
+                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                            sto.NivelID = dupTree_step6.id;
+                                                                            sto.campo = step6styles[s].campo;
+                                                                            sto.style = step6styles[s].style;
+
+                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                        }
+                                                                    }
 
                                                                     //------------ septimo loop...
                                                                     List<TB_TREE> sublvls7 = new List<TB_TREE>();
@@ -489,6 +609,21 @@ namespace ModeladorApp.Controllers
 
                                                                             var countlvl7 = nda.InserNewLevel(dupTree_step7);
 
+                                                                            //----------- duplicar estilos
+                                                                            var step7styles = ndas.GetAllStylesFromLevel(sublvls7[a].id, "").ToList();
+                                                                            if (step7styles.Count > 0)
+                                                                            {
+                                                                                for (int s = 0; s <= step7styles.Count - 1; s++)
+                                                                                {
+                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                    sto.NivelID = dupTree_step7.id;
+                                                                                    sto.campo = step7styles[s].campo;
+                                                                                    sto.style = step7styles[s].style;
+
+                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                }
+                                                                            }
 
                                                                             //------------ octavo loop...
                                                                             List<TB_TREE> sublvls8 = new List<TB_TREE>();
@@ -509,6 +644,21 @@ namespace ModeladorApp.Controllers
 
                                                                                     var countlvl8 = nda.InserNewLevel(dupTree_step8);
 
+                                                                                    //----------- duplicar estilos
+                                                                                    var step8styles = ndas.GetAllStylesFromLevel(sublvls8[a].id, "").ToList();
+                                                                                    if (step8styles.Count > 0)
+                                                                                    {
+                                                                                        for (int s = 0; s <= step8styles.Count - 1; s++)
+                                                                                        {
+                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                            sto.NivelID = dupTree_step8.id;
+                                                                                            sto.campo = step8styles[s].campo;
+                                                                                            sto.style = step8styles[s].style;
+
+                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                        }
+                                                                                    }
 
                                                                                     //------------ noveno loop...
                                                                                     List<TB_TREE> sublvls9 = new List<TB_TREE>();
@@ -529,6 +679,21 @@ namespace ModeladorApp.Controllers
 
                                                                                             var countlvl9 = nda.InserNewLevel(dupTree_step9);
 
+                                                                                            //----------- duplicar estilos
+                                                                                            var step9styles = ndas.GetAllStylesFromLevel(sublvls9[a].id, "").ToList();
+                                                                                            if (step9styles.Count > 0)
+                                                                                            {
+                                                                                                for (int s = 0; s <= step9styles.Count - 1; s++)
+                                                                                                {
+                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                    sto.NivelID = dupTree_step9.id;
+                                                                                                    sto.campo = step9styles[s].campo;
+                                                                                                    sto.style = step9styles[s].style;
+
+                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                }
+                                                                                            }
 
                                                                                             //------------ decimo loop...
                                                                                             List<TB_TREE> sublvls10 = new List<TB_TREE>();
@@ -549,6 +714,21 @@ namespace ModeladorApp.Controllers
 
                                                                                                     var countlvl10 = nda.InserNewLevel(dupTree_step10);
 
+                                                                                                    //----------- duplicar estilos
+                                                                                                    var step10styles = ndas.GetAllStylesFromLevel(sublvls10[a].id, "").ToList();
+                                                                                                    if (step10styles.Count > 0)
+                                                                                                    {
+                                                                                                        for (int s = 0; s <= step10styles.Count - 1; s++)
+                                                                                                        {
+                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                            sto.NivelID = dupTree_step10.id;
+                                                                                                            sto.campo = step10styles[s].campo;
+                                                                                                            sto.style = step10styles[s].style;
+
+                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                        }
+                                                                                                    }
 
                                                                                                     //------------ onceavo loop...
                                                                                                     List<TB_TREE> sublvls11 = new List<TB_TREE>();
@@ -569,6 +749,21 @@ namespace ModeladorApp.Controllers
 
                                                                                                             var countlvl11 = nda.InserNewLevel(dupTree_step11);
 
+                                                                                                            //----------- duplicar estilos
+                                                                                                            var step11styles = ndas.GetAllStylesFromLevel(sublvls11[a].id, "").ToList();
+                                                                                                            if (step11styles.Count > 0)
+                                                                                                            {
+                                                                                                                for (int s = 0; s <= step11styles.Count - 1; s++)
+                                                                                                                {
+                                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                    sto.NivelID = dupTree_step11.id;
+                                                                                                                    sto.campo = step11styles[s].campo;
+                                                                                                                    sto.style = step11styles[s].style;
+
+                                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                }
+                                                                                                            }
 
                                                                                                             //------------ doceavo loop...
                                                                                                             List<TB_TREE> sublvls12 = new List<TB_TREE>();
@@ -590,6 +785,22 @@ namespace ModeladorApp.Controllers
                                                                                                                     var countlvl12 = nda.InserNewLevel(dupTree_step12);
 
 
+                                                                                                                    //----------- duplicar estilos
+                                                                                                                    var step12styles = ndas.GetAllStylesFromLevel(sublvls12[a].id, "").ToList();
+                                                                                                                    if (step12styles.Count > 0)
+                                                                                                                    {
+                                                                                                                        for (int s = 0; s <= step12styles.Count - 1; s++)
+                                                                                                                        {
+                                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                            sto.NivelID = dupTree_step12.id;
+                                                                                                                            sto.campo = step12styles[s].campo;
+                                                                                                                            sto.style = step12styles[s].style;
+
+                                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                        }
+                                                                                                                    }
+
                                                                                                                     //------------ treceabo loop...
                                                                                                                     List<TB_TREE> sublvls13 = new List<TB_TREE>();
                                                                                                                     sublvls13 = nda.GetSubLvl(sublvls12[m].id).ToList();
@@ -609,7 +820,21 @@ namespace ModeladorApp.Controllers
 
                                                                                                                             var countlvl13 = nda.InserNewLevel(dupTree_step13);
 
+                                                                                                                            //----------- duplicar estilos
+                                                                                                                            var step13styles = ndas.GetAllStylesFromLevel(sublvls13[a].id, "").ToList();
+                                                                                                                            if (step13styles.Count > 0)
+                                                                                                                            {
+                                                                                                                                for (int s = 0; s <= step13styles.Count - 1; s++)
+                                                                                                                                {
+                                                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
 
+                                                                                                                                    sto.NivelID = dupTree_step13.id;
+                                                                                                                                    sto.campo = step13styles[s].campo;
+                                                                                                                                    sto.style = step13styles[s].style;
+
+                                                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                                }
+                                                                                                                            }
                                                                                                                             //------------ catorce loop...
                                                                                                                             List<TB_TREE> sublvls14 = new List<TB_TREE>();
                                                                                                                             sublvls14 = nda.GetSubLvl(sublvls13[n].id).ToList();
@@ -628,6 +853,22 @@ namespace ModeladorApp.Controllers
                                                                                                                                     dupTree_step14.fechaCreacion = DateTime.Now;
 
                                                                                                                                     var countlvl14 = nda.InserNewLevel(dupTree_step14);
+
+                                                                                                                                    //----------- duplicar estilos
+                                                                                                                                    var step14styles = ndas.GetAllStylesFromLevel(sublvls14[a].id, "").ToList();
+                                                                                                                                    if (step14styles.Count > 0)
+                                                                                                                                    {
+                                                                                                                                        for (int s = 0; s <= step14styles.Count - 1; s++)
+                                                                                                                                        {
+                                                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                            sto.NivelID = dupTree_step14.id;
+                                                                                                                                            sto.campo = step14styles[s].campo;
+                                                                                                                                            sto.style = step14styles[s].style;
+
+                                                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                                        }
+                                                                                                                                    }
 
 
                                                                                                                                     //------------ quince loop...
@@ -648,6 +889,22 @@ namespace ModeladorApp.Controllers
                                                                                                                                             dupTree_step15.fechaCreacion = DateTime.Now;
 
                                                                                                                                             var countlvl15 = nda.InserNewLevel(dupTree_step15);
+
+                                                                                                                                            //----------- duplicar estilos
+                                                                                                                                            var step15styles = ndas.GetAllStylesFromLevel(sublvls15[a].id, "").ToList();
+                                                                                                                                            if (step15styles.Count > 0)
+                                                                                                                                            {
+                                                                                                                                                for (int s = 0; s <= step15styles.Count - 1; s++)
+                                                                                                                                                {
+                                                                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                    sto.NivelID = dupTree_step15.id;
+                                                                                                                                                    sto.campo = step15styles[s].campo;
+                                                                                                                                                    sto.style = step15styles[s].style;
+
+                                                                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                                                }
+                                                                                                                                            }
 
                                                                                                                                             count = count + countlvl15;
                                                                                                                                         }
@@ -746,14 +1003,15 @@ namespace ModeladorApp.Controllers
             }
         }
 
-        public int funRemoveColorsAndSizes(int nivelID) {
+        public int funRemoveColorsAndSizes(int nivelID)
+        {
 
             var da = new TreeStylesDA();
 
             int remove = 0;
 
             string[] arrayCampos = { "titulo", "descripcion" };
-          
+
             foreach (string campo in arrayCampos)
             {
                 string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "blue", "azure", "indigo"
@@ -773,7 +1031,7 @@ namespace ModeladorApp.Controllers
                     remove = remove + removecount;
                 }
             }
-            return remove;  
+            return remove;
         }
 
         public int funDeleteStyle(int nivelID, string style, string campo)
