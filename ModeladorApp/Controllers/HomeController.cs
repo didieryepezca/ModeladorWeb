@@ -197,9 +197,21 @@ namespace ModeladorApp.Controllers
         {
             var result = "0";
             var da = new NivelDA();
+
+            var sda = new TreeStylesDA();
+
             try
             {
                 var modelcount = da.DeleteLevel(Id);
+
+                //---- > delete styles 
+                List<TB_TREE_STYLE> styles = new List<TB_TREE_STYLE>();
+                styles = sda.GetAllStylesFromLevel(Id, "").ToList();
+                for (int s = 0; s < styles.Count; s++) {
+                    sda.deleteNivelStyle(styles[s].StyleID);                
+                }
+
+                //---
                 List<TB_TREE> sublevelsToDelete = new List<TB_TREE>();
                 sublevelsToDelete = da.GetSubLvl(Id).ToList();
 
@@ -208,6 +220,14 @@ namespace ModeladorApp.Controllers
                     try
                     {
                         da.DeleteLevel(sublevelsToDelete[i].id);
+
+                        //---- > delete sub level styles 
+                        List<TB_TREE_STYLE> sublevelstyles = new List<TB_TREE_STYLE>();
+                        sublevelstyles = sda.GetAllStylesFromLevel(sublevelsToDelete[i].id, "").ToList();
+                        for (int s = 0; s < sublevelstyles.Count; s++)
+                        {
+                            sda.deleteNivelStyle(sublevelstyles[s].StyleID);
+                        }
                     }
                     catch (Exception fe)
                     {
@@ -434,7 +454,7 @@ namespace ModeladorApp.Controllers
                                     var countlvl2 = nda.InserNewLevel(dupTree_step2);
 
                                     //----------- duplicar estilos
-                                    var step2styles = ndas.GetAllStylesFromLevel(sublvls2[a].id, "").ToList();
+                                    var step2styles = ndas.GetAllStylesFromLevel(sublvls2[b].id, "").ToList();
                                     if (step2styles.Count > 0)
                                     {
                                         for (int s = 0; s <= step2styles.Count - 1; s++)
@@ -470,7 +490,7 @@ namespace ModeladorApp.Controllers
                                             var countlvl3 = nda.InserNewLevel(dupTree_step3);
 
                                             //----------- duplicar estilos
-                                            var step3styles = ndas.GetAllStylesFromLevel(sublvls3[a].id, "").ToList();
+                                            var step3styles = ndas.GetAllStylesFromLevel(sublvls3[c].id, "").ToList();
                                             if (step3styles.Count > 0)
                                             {
                                                 for (int s = 0; s <= step3styles.Count - 1; s++)
@@ -505,7 +525,7 @@ namespace ModeladorApp.Controllers
                                                     var countlvl4 = nda.InserNewLevel(dupTree_step4);
 
                                                     //----------- duplicar estilos
-                                                    var step4styles = ndas.GetAllStylesFromLevel(sublvls4[a].id, "").ToList();
+                                                    var step4styles = ndas.GetAllStylesFromLevel(sublvls4[d].id, "").ToList();
                                                     if (step4styles.Count > 0)
                                                     {
                                                         for (int s = 0; s <= step4styles.Count - 1; s++)
@@ -540,7 +560,7 @@ namespace ModeladorApp.Controllers
                                                             var countlvl5 = nda.InserNewLevel(dupTree_step5);
 
                                                             //----------- duplicar estilos
-                                                            var step5styles = ndas.GetAllStylesFromLevel(sublvls5[a].id, "").ToList();
+                                                            var step5styles = ndas.GetAllStylesFromLevel(sublvls5[e].id, "").ToList();
                                                             if (step5styles.Count > 0)
                                                             {
                                                                 for (int s = 0; s <= step5styles.Count - 1; s++)
@@ -575,7 +595,7 @@ namespace ModeladorApp.Controllers
                                                                     var countlvl6 = nda.InserNewLevel(dupTree_step6);
 
                                                                     //----------- duplicar estilos
-                                                                    var step6styles = ndas.GetAllStylesFromLevel(sublvls6[a].id, "").ToList();
+                                                                    var step6styles = ndas.GetAllStylesFromLevel(sublvls6[f].id, "").ToList();
                                                                     if (step6styles.Count > 0)
                                                                     {
                                                                         for (int s = 0; s <= step6styles.Count - 1; s++)
@@ -610,7 +630,7 @@ namespace ModeladorApp.Controllers
                                                                             var countlvl7 = nda.InserNewLevel(dupTree_step7);
 
                                                                             //----------- duplicar estilos
-                                                                            var step7styles = ndas.GetAllStylesFromLevel(sublvls7[a].id, "").ToList();
+                                                                            var step7styles = ndas.GetAllStylesFromLevel(sublvls7[g].id, "").ToList();
                                                                             if (step7styles.Count > 0)
                                                                             {
                                                                                 for (int s = 0; s <= step7styles.Count - 1; s++)
@@ -645,7 +665,7 @@ namespace ModeladorApp.Controllers
                                                                                     var countlvl8 = nda.InserNewLevel(dupTree_step8);
 
                                                                                     //----------- duplicar estilos
-                                                                                    var step8styles = ndas.GetAllStylesFromLevel(sublvls8[a].id, "").ToList();
+                                                                                    var step8styles = ndas.GetAllStylesFromLevel(sublvls8[h].id, "").ToList();
                                                                                     if (step8styles.Count > 0)
                                                                                     {
                                                                                         for (int s = 0; s <= step8styles.Count - 1; s++)
@@ -680,7 +700,7 @@ namespace ModeladorApp.Controllers
                                                                                             var countlvl9 = nda.InserNewLevel(dupTree_step9);
 
                                                                                             //----------- duplicar estilos
-                                                                                            var step9styles = ndas.GetAllStylesFromLevel(sublvls9[a].id, "").ToList();
+                                                                                            var step9styles = ndas.GetAllStylesFromLevel(sublvls9[i].id, "").ToList();
                                                                                             if (step9styles.Count > 0)
                                                                                             {
                                                                                                 for (int s = 0; s <= step9styles.Count - 1; s++)
@@ -715,7 +735,7 @@ namespace ModeladorApp.Controllers
                                                                                                     var countlvl10 = nda.InserNewLevel(dupTree_step10);
 
                                                                                                     //----------- duplicar estilos
-                                                                                                    var step10styles = ndas.GetAllStylesFromLevel(sublvls10[a].id, "").ToList();
+                                                                                                    var step10styles = ndas.GetAllStylesFromLevel(sublvls10[j].id, "").ToList();
                                                                                                     if (step10styles.Count > 0)
                                                                                                     {
                                                                                                         for (int s = 0; s <= step10styles.Count - 1; s++)
@@ -750,7 +770,7 @@ namespace ModeladorApp.Controllers
                                                                                                             var countlvl11 = nda.InserNewLevel(dupTree_step11);
 
                                                                                                             //----------- duplicar estilos
-                                                                                                            var step11styles = ndas.GetAllStylesFromLevel(sublvls11[a].id, "").ToList();
+                                                                                                            var step11styles = ndas.GetAllStylesFromLevel(sublvls11[k].id, "").ToList();
                                                                                                             if (step11styles.Count > 0)
                                                                                                             {
                                                                                                                 for (int s = 0; s <= step11styles.Count - 1; s++)
@@ -786,7 +806,7 @@ namespace ModeladorApp.Controllers
 
 
                                                                                                                     //----------- duplicar estilos
-                                                                                                                    var step12styles = ndas.GetAllStylesFromLevel(sublvls12[a].id, "").ToList();
+                                                                                                                    var step12styles = ndas.GetAllStylesFromLevel(sublvls12[m].id, "").ToList();
                                                                                                                     if (step12styles.Count > 0)
                                                                                                                     {
                                                                                                                         for (int s = 0; s <= step12styles.Count - 1; s++)
@@ -821,7 +841,7 @@ namespace ModeladorApp.Controllers
                                                                                                                             var countlvl13 = nda.InserNewLevel(dupTree_step13);
 
                                                                                                                             //----------- duplicar estilos
-                                                                                                                            var step13styles = ndas.GetAllStylesFromLevel(sublvls13[a].id, "").ToList();
+                                                                                                                            var step13styles = ndas.GetAllStylesFromLevel(sublvls13[n].id, "").ToList();
                                                                                                                             if (step13styles.Count > 0)
                                                                                                                             {
                                                                                                                                 for (int s = 0; s <= step13styles.Count - 1; s++)
@@ -855,7 +875,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                     var countlvl14 = nda.InserNewLevel(dupTree_step14);
 
                                                                                                                                     //----------- duplicar estilos
-                                                                                                                                    var step14styles = ndas.GetAllStylesFromLevel(sublvls14[a].id, "").ToList();
+                                                                                                                                    var step14styles = ndas.GetAllStylesFromLevel(sublvls14[o].id, "").ToList();
                                                                                                                                     if (step14styles.Count > 0)
                                                                                                                                     {
                                                                                                                                         for (int s = 0; s <= step14styles.Count - 1; s++)
@@ -891,7 +911,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                             var countlvl15 = nda.InserNewLevel(dupTree_step15);
 
                                                                                                                                             //----------- duplicar estilos
-                                                                                                                                            var step15styles = ndas.GetAllStylesFromLevel(sublvls15[a].id, "").ToList();
+                                                                                                                                            var step15styles = ndas.GetAllStylesFromLevel(sublvls15[p].id, "").ToList();
                                                                                                                                             if (step15styles.Count > 0)
                                                                                                                                             {
                                                                                                                                                 for (int s = 0; s <= step15styles.Count - 1; s++)
@@ -904,7 +924,49 @@ namespace ModeladorApp.Controllers
 
                                                                                                                                                     var modelstyle = ndas.InsertNivelStyle(sto);
                                                                                                                                                 }
+                                                                                                                                            }// colocar debajo un nuevo nivel si se requiere.
+
+
+                                                                                                                                            //------------ dieciseis loop...
+                                                                                                                                            List<TB_TREE> sublvls16 = new List<TB_TREE>();
+                                                                                                                                            sublvls16 = nda.GetSubLvl(sublvls15[p].id).ToList();
+
+                                                                                                                                            if (sublvls16.Count > 0)
+                                                                                                                                            {
+                                                                                                                                                for (int q = 0; q <= sublvls16.Count - 1; q++)
+                                                                                                                                                {
+                                                                                                                                                    TB_TREE dupTree_step16 = new TB_TREE();
+
+                                                                                                                                                    dupTree_step16.title = sublvls16[q].title;
+                                                                                                                                                    dupTree_step16.descripcion = sublvls16[q].descripcion;
+                                                                                                                                                    dupTree_step16.lazy = sublvls16[q].lazy;
+                                                                                                                                                    dupTree_step16.parentId = dupTree_step15.id;
+                                                                                                                                                    dupTree_step16.proyectoId = projectId;
+                                                                                                                                                    dupTree_step16.fechaCreacion = DateTime.Now;
+
+                                                                                                                                                    var countlvl16 = nda.InserNewLevel(dupTree_step16);
+
+                                                                                                                                                    //----------- duplicar estilos
+                                                                                                                                                    var step16styles = ndas.GetAllStylesFromLevel(sublvls16[q].id, "").ToList();
+                                                                                                                                                    if (step16styles.Count > 0)
+                                                                                                                                                    {
+                                                                                                                                                        for (int s = 0; s <= step16styles.Count - 1; s++)
+                                                                                                                                                        {
+                                                                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                            sto.NivelID = dupTree_step15.id;
+                                                                                                                                                            sto.campo = step16styles[s].campo;
+                                                                                                                                                            sto.style = step16styles[s].style;
+
+                                                                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+                                                                                                                                                        }
+                                                                                                                                                    }// colocar debajo un nuevo nivel si se requiere.
+
+
+                                                                                                                                                    count = count + countlvl16;
+                                                                                                                                                }
                                                                                                                                             }
+
 
                                                                                                                                             count = count + countlvl15;
                                                                                                                                         }

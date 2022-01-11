@@ -106,6 +106,11 @@
 
                     $("#" + treeReach).fancytree({
 
+                        //-->> Para colocar los checkboxes en la prima columna (columna indice 0) y además agregar el modo de selección en cascada.
+                        checkbox: true,
+                        selectMode: 3,
+                        //---->>
+
                         titlesTabbable: true, // Add all node titles to TAB chain
                         quicksearch: true, // Jump to nodes when pressing first character
                         source: data,
@@ -232,7 +237,7 @@
                         table: {
                             indentation: 20,
                             nodeColumnIdx: 1,
-                            //checkboxColumnIdx: 0, //para poner checkboxes en la columna 1
+                            checkboxColumnIdx: 0, //para poner checkboxes en la prima columna (columna indice 0)
                         },
                         gridnav: {
                             autofocusInput: false,
@@ -260,9 +265,11 @@
                                 $tdList = $(node.tr).find(">td");
 
                             //console.log(node.tr.rowIndex);
-                            if (node.tr.rowIndex >= 2) { //obtenemos el indice de la fila creada y apartir de ahi creamos el indexador
-                                $tdList.eq(0).text(node.getIndexHier());
-                            }
+                            //-->codigo para colocar el indexador en la primera columna (columna indice 0)
+                            //if (node.tr.rowIndex >= 2) { 
+                            //    $tdList.eq(0).text(node.getIndexHier());
+                            //}
+
                             //$tdList.eq(2).text(node.data.fechaCreacion);
                             //console.log(node.data.fechaCreacion);
                             //console.log(node.data.id); // id único de cada elemento del arbol.
@@ -570,21 +577,42 @@
                                     }
                                     break;
                                 case "applyboldtitle":
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+                                    //console.log(selectedNodes)
+                                    if (selectedNodes.length > 0) {
+                                        //console.log("aplicando negra a muchos elementos");                                                                                
+                                        selectedNodes.forEach(function element(node) {
+                                            //console.log(node.data.id);
+                                            var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY", "titulo")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    //node.span.style.fontWeight = "bold"
+                                                    node.span.children[2].children[0].style.fontWeight = "bold"; //titulo
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                                }
+                                            });
+                                        });
+
+                                    } else {
                                     //tree.applyCommand(data.cmd, node);
                                     //console.log("Aplicar Negrita");
                                     //console.log(node.data.id); // id del nodo.
-                                    var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY", "titulo")
-                                    rpt.then(function (styleresponse) {
+                                        var rpt = applyOrRemoveStyle(node.data.id, "bold", "STYLE_APPLY", "titulo")
+                                        rpt.then(function (styleresponse) {
 
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            //node.span.style.fontWeight = "bold"
-                                            node.span.children[2].children[0].style.fontWeight = "bold"; //titulo
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
-                                        }
-                                    });
-                                    //if(statusText)
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                //node.span.style.fontWeight = "bold"
+                                                node.span.children[2].children[0].style.fontWeight = "bold"; //titulo
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, probablemente el estilo ya existe.', 'warning')
+                                            }
+                                        });
+                                    }                                 
+                                   
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 case "removeboldtitle":
@@ -883,19 +911,18 @@
                                 case "setsecondinput":
                                     //tree.applyCommand(data.cmd, node);                                      
                                      //var nodoActivo = node;
-                                    node.setExpanded(true); // expandir nodo para obtener la data de los hijos sino sale error
+                                    //node.setExpanded(true); // expandir nodo para obtener la data de los hijos sino sale error
+                                    //console.log(node.data.descripcion);                                   
 
-                                    //console.log(node.data.descripcion);                                    
-
-                                    if (node.expanded === true) { //preguntar si el nodo esta expandido
-                                      
+                                    if (node.expanded === true) { //preguntar si el nodo esta expandido                                      
                                         var childNodes = node.children;
                                         //console.log(node)
                                         buildSecondInput(childNodes, treeReach, node.data.descripcion); //envio los datos de los hijos y el nodo para resetear el nodo padre.
                                            $('#modal-second-input').modal('show'); 
                                     } else {
                                         Swal.fire('ELEMENTO CONTRAIDO', 'Por favor desglose todos los elementos hijos y subhijos que desee incluir', 'warning')
-                                    } 
+                                    }                                   
+
                                     //console.log(node.data.id); // id del nodo.
                                     //addColumn(treeReach, node.data.id);
                                     break;
@@ -1126,7 +1153,8 @@
                             // not interfere with the edit control
                             setTimeout(function () {
                                 $(that).trigger("nodeCommand", { cmd: ui.cmd });
-                            }, 100);
+                            }, 100);                      
+
                         },
                     });
 
@@ -2146,11 +2174,11 @@
                                 </a>
                             </span>
 
-                            <span class="d-none d-sm-inline">
+                            @*<span class="d-none d-sm-inline">
                                 <a onclick="expandOrContract(0)" class="btn btn-secondary">
                                     Expandir/Contraer
                                 </a>
-                            </span>
+                            </span>*@
 
                             @*<span class="d-none d-sm-inline">
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
@@ -2260,11 +2288,12 @@
                                         </select>
                                     </span>*@
 
-                                <span class="d-none d-sm-inline">
+                                @*<span class="d-none d-sm-inline">
                                     <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
                                         Expandir/Contraer
                                     </a>
-                                </span>
+                                </span>*@
+
                                 @if (item.Permiso == "EDITOR")
                                 {
                                     <span class="d-none d-sm-inline">
