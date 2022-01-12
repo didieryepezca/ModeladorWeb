@@ -1107,7 +1107,9 @@ namespace ModeladorApp.Controllers
                 TB_TREE_STYLE styleToDelete = new TB_TREE_STYLE();
                 styleToDelete = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
-                modelcount = da.deleteNivelStyle(styleToDelete.StyleID);
+                if (styleToDelete != null) {
+                    modelcount = da.deleteNivelStyle(styleToDelete.StyleID);
+                }                
                 return modelcount;
             }
             catch (Exception se)

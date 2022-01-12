@@ -512,40 +512,83 @@
                                 case "moveDown":
                                 case "moveUp":
                                 case "outdent":
-                                case "remove":         
-                                    
-                                    if (data.cmd == "remove" && vPermiso == "EDITOR") {
-                                        Swal.fire({
-                                            title: '¿Estás seguro que deseas Eliminarlo?',
-                                            showDenyButton: true,
-                                            showCancelButton: true,
-                                            confirmButtonText: `Si`,
-                                            denyButtonText: `Don't save`,
-                                        }).then((result) => {
-                                            /* Read more about isConfirmed, isDenied below */
-                                            if (result.isConfirmed) {               
-                                                //console.log(node.data.id); // id a eliminar padre e hijos.
-                                                //------------------------>>AJAX Eliminar Nivel Padre e Hijos
-                                                $.ajax({
-                                                    type: "POST",
-                                                    dataType: "json",
-                                                    url: "/Home/funDeleteLvlAndSublvls",
-                                                    data: {
-                                                        "Id": node.data.id,
-                                                    },
-                                                    success: function (response) {
-                                                        //console.log(response);
-                                                        if (response >= 1) {
-                                                            tree.applyCommand(data.cmd, node);
-                                                        }                                                        
-                                                    },
-                                                });
-                                                //------------------------>>AJAX Eliminar Nivel Padre e Hijos                                                                    
+                                case "remove":
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();                                   
+
+                                    if (selectedNodes.length > 0) {
+
+                                        if (data.cmd == "remove" && vPermiso == "EDITOR") {
+                                            Swal.fire({
+                                                title: '¿Estás seguro que deseas Eliminar todos?',
+                                                showDenyButton: true,
+                                                showCancelButton: true,
+                                                confirmButtonText: `Si`,
+                                                denyButtonText: `Don't save`,
+                                            }).then((result) => {
+                                                /* Read more about isConfirmed, isDenied below */
+                                                if (result.isConfirmed) {
+                                                    //console.log(node.data.id); // id a eliminar padre e hijos.
+                                                    //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+
+                                                    selectedNodes.forEach(function element(node) {                                                        
+
+                                                        $.ajax({
+                                                        type: "POST",
+                                                        dataType: "json",
+                                                        url: "/Home/funDeleteLvlAndSublvls",
+                                                        data: {
+                                                            "Id": node.data.id,
+                                                        },
+                                                        success: function (response) {
+                                                            //console.log(response);
+                                                            if (response >= 1) {                         
+                                                                }
+                                                            },
+                                                        });
+                                                    });
+                                                    tree.applyCommand(data.cmd, node); //aplicamos cambios para visualizarlos en el arbol.
+                                                    //------------------------>>AJAX Eliminar Nivel Padre e Hijos                                                                    
                                                 } else if (result.isDenied) {
                                                     Swal.fire('No', '', 'info')
-                                               }
+                                                }
                                             })
-                                    };
+                                        };
+                                    } else {
+                                            if (data.cmd == "remove" && vPermiso == "EDITOR") {
+                                                Swal.fire({
+                                                    title: '¿Estás seguro que deseas Eliminarlo?',
+                                                    showDenyButton: true,
+                                                    showCancelButton: true,
+                                                    confirmButtonText: `Si`,
+                                                    denyButtonText: `Don't save`,
+                                                }).then((result) => {
+                                                    /* Read more about isConfirmed, isDenied below */
+                                                    if (result.isConfirmed) {
+                                                        //console.log(node.data.id); // id a eliminar padre e hijos.
+                                                        //------------------------>>AJAX Eliminar Nivel Padre e Hijos
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            dataType: "json",
+                                                            url: "/Home/funDeleteLvlAndSublvls",
+                                                            data: {
+                                                                "Id": node.data.id,
+                                                            },
+                                                            success: function (response) {
+                                                                //console.log(response);
+                                                                if (response >= 1) {
+                                                                    tree.applyCommand(data.cmd, node);
+                                                                }
+                                                            },
+                                                        });
+                                                        //------------------------>>AJAX Eliminar Nivel Padre e Hijos                                                                    
+                                                    } else if (result.isDenied) {
+                                                        Swal.fire('No', '', 'info')
+                                                    }
+                                                });
+                                        };
+                                    }
+                                   
                                     break;
                                 case "rename":
                                     tree.applyCommand(data.cmd, node);
@@ -886,13 +929,11 @@
                                             }
                                         });
                                     }                                    
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+                                   
                                     break;
 
                                 case "changecolorsfontsize":
-                                    //tree.applyCommand(data.cmd, node);                              
-                                    
+                                    //tree.applyCommand(data.cmd, node);                  
                                     //console.log(node.span.children[2].children[0].style);                                   
                                     $('#txtNodoId').val(node.data.id);
                                     $('#txtGetTree').val(treeReach);                                   
@@ -901,90 +942,218 @@
                                     break;                                    
                                 case "greensubrayado":
                                     //tree.applyCommand(data.cmd, node);
-                                    console.log("Subrayar verde");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY", "subrayado verde")
-                                    rpt.then(function (styleresponse) {
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Lime";
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
-                                        }
-                                    });
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY", "subrayado verde")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    node.span.style.backgroundColor = "Lime";
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                                }
+                                            });
+
+                                        });
+
+                                    } else {
+
+                                        var rpt = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_APPLY", "subrayado verde")
+                                        rpt.then(function (styleresponse) {
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                node.span.style.backgroundColor = "Lime";
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                            }
+                                        });
+                                    } 
+                                                                       
                                     break;
                                 case "bluesubrayado":
-                                    //tree.applyCommand(data.cmd, node);
-                                    console.log("Subrayar azúl");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
-                                    rpt.then(function (styleresponse) {
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Aqua";
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
-                                        }
-                                    });
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    node.span.style.backgroundColor = "Aqua";
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                                }
+                                            });
+                                        });
+
+                                    } else {
+
+                                        var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
+                                        rpt.then(function (styleresponse) {
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                node.span.style.backgroundColor = "Aqua";
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                            }
+                                        });
+                                    };
+                                    
+                                    
                                     break;
                                 case "yellowsubrayado":
-                                    //tree.applyCommand(data.cmd, node);
-                                    console.log("Subrayar amarillo");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY", "subrayado amarillo")
-                                    rpt.then(function (styleresponse) {
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Yellow";
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
-                                        }
-                                    });
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY", "subrayado amarillo")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    node.span.style.backgroundColor = "Yellow";
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                                }
+                                            });
+                                        });
+
+                                    } else {
+
+                                        var rpt = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_APPLY", "subrayado amarillo")
+                                        rpt.then(function (styleresponse) {
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                node.span.style.backgroundColor = "Yellow";
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                            }
+                                        });
+                                    }                                    
+                                   
                                     break;
                                 case "fuchsiasubrayado":
-                                    //tree.applyCommand(data.cmd, node);
-                                    console.log("Subrayar fuchsia");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY", "subrayado fucsia")
-                                    rpt.then(function (styleresponse) {
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Fuchsia";
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
-                                        }
-                                    });
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY", "subrayado fucsia")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    node.span.style.backgroundColor = "Fuchsia";
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                                }
+                                            });
+
+                                        });
+
+                                    } else {
+
+                                        var rpt = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_APPLY", "subrayado fucsia")
+                                        rpt.then(function (styleresponse) {
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                node.span.style.backgroundColor = "Fuchsia";
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                            }
+                                        });
+                                    }                                   
+                                    
                                     break;
                                 case "redsubrayado":
-                                    //tree.applyCommand(data.cmd, node);
-                                    console.log("Subrayar rojo");
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY", "subrayado rojo")
-                                    rpt.then(function (styleresponse) {
-                                        //console.log(styleresponse);
-                                        if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Red";
-                                        } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
-                                        }
-                                    });
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY", "subrayado rojo")
+                                            rpt.then(function (styleresponse) {
+                                                //console.log(styleresponse);
+                                                if (styleresponse > 0) {
+                                                    node.span.style.backgroundColor = "Red";
+                                                } else {
+                                                    Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                                }
+                                            });
+
+                                        });
+
+                                    } else {
+
+                                        var rpt = applyOrRemoveStyle(node.data.id, "Red", "STYLE_APPLY", "subrayado rojo")
+                                        rpt.then(function (styleresponse) {
+                                            //console.log(styleresponse);
+                                            if (styleresponse > 0) {
+                                                node.span.style.backgroundColor = "Red";
+                                            } else {
+                                                Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
+                                            }
+                                        });
+                                    }                                   
+                                   
                                     break;
                                 case "removesubrayado":
-                                    //tree.applyCommand(data.cmd, node);
-                                    //console.log("Quitar subrayado");
-                                    var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE", "subrayado verde")
-                                    var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE", "subrayado azul")
-                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE", "subrayado amarillo")
-                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE", "subrayado fucsia")
-                                    var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE", "subrayado rojo")
-                                    node.span.style.backgroundColor = "";
-                                    //console.log(node.data.id); // id del nodo.
-                                    //addColumn(treeReach, node.data.id);
+
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+
+                                    if (selectedNodes.length > 0) {
+
+                                        selectedNodes.forEach(function element(node) {
+
+                                            var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE", "subrayado verde")
+                                            rpt1.then(function (resp1) {
+                                                var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE", "subrayado azul")
+                                                rpt2.then(function (resp2) {
+                                                    var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE", "subrayado amarillo")
+                                                    rpt3.then(function (resp3) {
+                                                        var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE", "subrayado fucsia")
+                                                        rpt4.then(function (resp4) {
+                                                            var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE", "subrayado rojo")
+                                                            rpt5.then(function (resp5) {
+                                                                node.span.style.backgroundColor = "";
+                                                            });
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+
+                                    } else {
+
+                                        var rpt1 = applyOrRemoveStyle(node.data.id, "Lime", "STYLE_REMOVE", "subrayado verde")
+                                        rpt1.then(function (resp1) {
+                                            var rpt2 = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_REMOVE", "subrayado azul")
+                                            rpt2.then(function (resp2) {
+                                                var rpt3 = applyOrRemoveStyle(node.data.id, "Yellow", "STYLE_REMOVE", "subrayado amarillo")
+                                                rpt3.then(function (resp3) {
+                                                    var rpt4 = applyOrRemoveStyle(node.data.id, "Fuchsia", "STYLE_REMOVE", "subrayado fucsia")
+                                                    rpt4.then(function (resp4) {
+                                                        var rpt5 = applyOrRemoveStyle(node.data.id, "Red", "STYLE_REMOVE", "subrayado rojo")
+                                                        rpt5.then(function (resp5) {
+                                                            node.span.style.backgroundColor = "";
+                                                        });
+                                                    });
+                                                });
+                                            });
+                                        });
+                                    }                                                               
+                                                                                          
                                     break;
 
                                 case "setfoldericon":
@@ -1182,7 +1351,7 @@
                                 uiIcon: "ui-icon-pencil",
                             },
                             {
-                                title: "Eliminar <kbd>[Del]</kbd>",
+                                title: "Eliminar <strong>(M)</strong> <kbd>[Del]</kbd>",
                                 cmd: "remove",
                                 uiIcon: "ui-icon-trash",
                             },
@@ -1211,54 +1380,54 @@
                             },
                             { title: "----" },
                             {
-                                title: "Aplicar Negrita al Titulo (M)",
+                                title: "Aplicar Negrita al Titulo <strong>(M)</strong>",
                                 cmd: "applyboldtitle",
                             }, {
-                                title: "Quitar Negrita del Titulo (M)",
+                                title: "Quitar Negrita del Titulo <strong>(M)</strong>",
                                 cmd: "removeboldtitle",
                             },
                             {
-                                title: "Aplicar Negrita a Descripcion (M)",
+                                title: "Aplicar Negrita a Descripcion <strong>(M)</strong>",
                                 cmd: "applybolddescription",
                             }, {
-                                title: "Quitar Negrita de Descripcion (M)",
+                                title: "Quitar Negrita de Descripcion <strong>(M)</strong>",
                                 cmd: "removebolddescription",
                             }
                             , {
-                                title: "Aplicar Cursiva al Titulo (M)",
+                                title: "Aplicar Cursiva al Titulo <strong>(M)</strong>",
                                 cmd: "applyitalictitle",
                             }, {
-                                title: "Quitar Cursiva de Titulo (M)",
+                                title: "Quitar Cursiva de Titulo <strong>(M)</strong>",
                                 cmd: "removeitalictitle",
                             }, {
-                                title: "Aplicar Cursiva a Descripcion (M)",
+                                title: "Aplicar Cursiva a Descripcion <strong>(M)</strong>",
                                 cmd: "applyitalicdescription",
                             }, {
-                                title: "Quitar Cursiva de Descripcion (M)",
+                                title: "Quitar Cursiva de Descripcion <strong>(M)</strong>",
                                 cmd: "removeitalicdescription",
                             }, { title: "----" },
                             {
-                                title: "Aplicar Colores y Tamaños de Fuente",
+                                title: "Colores y Tamaños de Fuente <strong>(M)</strong>",
                                 cmd: "changecolorsfontsize",
                             }
                             , { title: "----" },
                             {
-                                title: "Subrayar verde",
+                                title: "Subrayar verde <strong>(M)</strong>",
                                 cmd: "greensubrayado",
                             }, {
-                                title: "Subrayar azul",
+                                title: "Subrayar azul <strong>(M)</strong>",
                                 cmd: "bluesubrayado",
                             }, {
-                                title: "Subrayar amarillo",
+                                title: "Subrayar amarillo <strong>(M)</strong>",
                                 cmd: "yellowsubrayado",
                             }, {
-                                title: "Subrayar fuchsia",
+                                title: "Subrayar fuchsia <strong>(M)</strong>",
                                 cmd: "fuchsiasubrayado",
                             }, {
-                                title: "Subrayar rojo",
+                                title: "Subrayar rojo <strong>(M)</strong>",
                                 cmd: "redsubrayado",
                             }, {
-                                title: "Quitar Subrayado",
+                                title: "Quitar Subrayado <strong>(M)</strong>",
                                 cmd: "removesubrayado",
                             }, { title: "----" },
                             {
@@ -1637,14 +1806,11 @@
         }
 
         //-------------------------------- para obtener la info de cada nivel...
-        function expandOrContract(vIdProyecto) {
-
+        function fnExpandNodes(vIdProyecto) {
             $("#tree_" + vIdProyecto).fancytree("getRootNode").visit(function (node) {
-                if (node.isExpanded() == true) {
-                    node.setExpanded(false);
-                } else {
+                if (node.isExpanded() == false) {
                     node.setExpanded(true);
-                }
+                } 
             });
         }
         //Mensajito para la informacion que se puede editar proyecto
@@ -1654,10 +1820,8 @@
 
         function fnShowHideColumns(loadedTree) {
             //var select = document.getElementById('selecterColumns');
-
             var select = $("#selecterColumns option:selected").text();
             //console.log(select);
-
             if (select == "HIDEALL") {
                 //for para obtener las columnas por indice.
                 for (c = 3; c <= 53; c++) {
@@ -2055,9 +2219,7 @@
                         //console.log(response);
                     },
                 });
-
             }
-
         }
         //----------------------------------------------------->> Aplicando estilos
 
@@ -2136,7 +2298,6 @@
             } else {
                 Swal.fire('ADVERTENCIA', 'Complete ambos campos', 'warning')
             }
-
         }
 
         async function addNHijosAsync(vCant, vNombre, vIDparent, vIDproject) {
@@ -2189,9 +2350,8 @@
 
         function fnApplyColors() {
 
-            var nodoId = $('#txtNodoId').val();
             var arbol = $('#txtGetTree').val();
-           
+            
             colorsandsizes = [];
         
             const firstColor = $('input[name=color]:checked').val();
@@ -2210,45 +2370,91 @@
                 colorsandsizes.push(new estilo(secondSize, "descripcion", "size"))
             }
 
-            if (colorsandsizes.length > 0) {               
+            if (colorsandsizes.length > 0) {       
+                               
 
-                var tree = $("#" + arbol).fancytree("getTree"); // para obtener el arbol renderizado.
-                var nodo = tree.getActiveNode(); // para obtener el nodo activo.  
+                var selectedNodes = $.ui.fancytree.getTree("#" + arbol).getSelectedNodes();
+                if (selectedNodes.length > 0) {
 
-                var rpt1 = removeColorsAndSizes(nodoId)
-                rpt1.then(function (res1) {
-                    //console.log("Eliminando>" + res1)
+                    selectedNodes.forEach(function element(node) {
 
-                    colorsandsizes.forEach(function element(elemento, index, array) {
+                        console.log(node.data.id);
 
-                        //console.log(elemento.valor, elemento.campo)                    
+                        var rpt1 = removeColorsAndSizes(node.data.id)
+                        rpt1.then(function (res1) {
+                            //console.log("Eliminando>" + res1)
 
-                        var rpt2 = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
-                        rpt2.then(function (styleresponse) {
+                            colorsandsizes.forEach(function element(elemento, index, array) {
 
-                            //console.log("Aplicando>" + styleresponse);
+                                //console.log(elemento.valor, elemento.campo)                    
 
-                            if (elemento.tipo == "color") {
-                                if (elemento.campo == "titulo") {
-                                    nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
-                                } else if (elemento.campo == "descripcion") {
-                                    nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
-                                }
-                            } else {
-                                if (elemento.campo == "titulo") {
-                                    nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
-                                } else if (elemento.campo == "descripcion") {
-                                    nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
-                                }
-                            }
+                                var rpt2 = applyOrRemoveStyle(node.data.id, elemento.valor, "STYLE_APPLY", elemento.campo)
+                                rpt2.then(function (styleresponse) {
+
+                                    //console.log("Aplicando>" + styleresponse);
+
+                                    if (elemento.tipo == "color") {
+                                        if (elemento.campo == "titulo") {
+                                            node.span.children[2].children[0].style.color = elemento.valor; //titulo
+                                        } else if (elemento.campo == "descripcion") {
+                                            node.span.children[2].children[1].style.color = elemento.valor; //descripcion
+                                        }
+                                    } else {
+                                        if (elemento.campo == "titulo") {
+                                            node.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
+                                        } else if (elemento.campo == "descripcion") {
+                                            node.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
+                                        }
+                                    }
+                                });
+
+                                $('#modal-color-admin').modal('toggle');
+                            });
                         });
 
-                        $('#modal-color-admin').modal('toggle');
                     });
 
-                });                
+                }
+                else {
+
+                    var nodoId = $('#txtNodoId').val();                    
+
+                    var tree = $("#" + arbol).fancytree("getTree"); // para obtener el arbol renderizado.
+                    var nodo = tree.getActiveNode(); // para obtener el nodo activo.  
+
+                     var rpt1 = removeColorsAndSizes(nodoId)
+                        rpt1.then(function (res1) {
+                            //console.log("Eliminando>" + res1)
+
+                            colorsandsizes.forEach(function element(elemento, index, array) {
+
+                                //console.log(elemento.valor, elemento.campo)                    
+
+                                var rpt2 = applyOrRemoveStyle(nodoId, elemento.valor, "STYLE_APPLY", elemento.campo)
+                                rpt2.then(function (styleresponse) {
+
+                                    //console.log("Aplicando>" + styleresponse);
+
+                                    if (elemento.tipo == "color") {
+                                        if (elemento.campo == "titulo") {
+                                            nodo.span.children[2].children[0].style.color = elemento.valor; //titulo
+                                        } else if (elemento.campo == "descripcion") {
+                                            nodo.span.children[2].children[1].style.color = elemento.valor; //descripcion
+                                        }
+                                    } else {
+                                        if (elemento.campo == "titulo") {
+                                            nodo.span.children[2].children[0].style.fontSize = elemento.valor; //titulo
+                                        } else if (elemento.campo == "descripcion") {
+                                            nodo.span.children[2].children[1].style.fontSize = elemento.valor; //descripcion
+                                        }
+                                    }
+                                });
+
+                                $('#modal-color-admin').modal('toggle');
+                            });
+                        }); 
+                }                             
             }            
-            //console.log(secondSize)           
         }       
 
         var tableToExcel = (function () {
@@ -2336,11 +2542,11 @@
                                 </a>
                             </span>
 
-                            @*<span class="d-none d-sm-inline">
-                                <a onclick="expandOrContract(0)" class="btn btn-secondary">
-                                    Expandir/Contraer
+                            <span class="d-none d-sm-inline">
+                                <a onclick="fnExpandNodes(0)" class="btn btn-secondary">
+                                    Expandir
                                 </a>
-                            </span>*@
+                            </span>
 
                             @*<span class="d-none d-sm-inline">
                                     <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
@@ -2450,11 +2656,11 @@
                                         </select>
                                     </span>*@
 
-                                @*<span class="d-none d-sm-inline">
-                                    <a onclick="expandOrContract(@item.ProyectoID)" class="btn btn-secondary">
-                                        Expandir/Contraer
+                                <span class="d-none d-sm-inline">
+                                    <a onclick="fnExpandNodes(@item.ProyectoID)" class="btn btn-secondary">
+                                        Expandir
                                     </a>
-                                </span>*@
+                                </span>
 
                                 @if (item.Permiso == "EDITOR")
                                 {
