@@ -1239,22 +1239,72 @@
                                     });                                   
 
                                     break;
-                                case "setsecondinput":
-                                    //tree.applyCommand(data.cmd, node);                                      
-                                     //var nodoActivo = node;
-                                    //node.setExpanded(true); // expandir nodo para obtener la data de los hijos sino sale error
-                                    //console.log(node.data.descripcion);                                   
+                                case "setsecondinput":                                    
 
-                                    if (node.expanded === true) { //preguntar si el nodo esta expandido                                      
-                                        var childNodes = node.children;
-                                        //console.log(node)
-                                        buildSecondInput(childNodes, treeReach, node.data.descripcion); //envio los datos de los hijos y el nodo para resetear el nodo padre.
-                                           $('#modal-second-input').modal('show'); 
-                                    } else {
-                                        Swal.fire('ELEMENTO CONTRAIDO', 'Por favor desglose todos los elementos hijos y subhijos que desee incluir', 'warning')
-                                    }                                   
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
+                                    
+                                    if (selectedNodes.length > 0) {
 
-                                    //console.log(node.data.id); // id del nodo.
+                                        $('#footer_options').remove();
+                                        var footerBtns = "";
+                                        $('#tbodyAdminCampos').remove();
+                                        var tableChildNodes = "";
+
+                                        var parentIds = [];                               
+
+
+                                        tableChildNodes = tableChildNodes + '<tbody id="tbodyAdminCampos">';
+
+                                        selectedNodes.forEach(function element(node) {                                        
+
+                                            if (node.children != null) {
+
+                                                parentIds.push(node.children[0].data.parentId);
+                                                //console.log(parentId);
+
+                                                tableChildNodes = tableChildNodes + '<tr class="header naranja" style="cursor:pointer;">';
+                                                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + node.children[0].data.parentId + ')" value="' + node.data.descripcion + '" type="checkbox" disabled></td>';
+                                                tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + node.title + '</span></td>';
+                                                tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + node.data.descripcion + '</span></td>';
+                                                tableChildNodes = tableChildNodes + '</tr>';                                               
+                                                
+                                                node.children.forEach(function element(child) {
+
+                                                    //console.log(child);
+                                                    tableChildNodes = tableChildNodes + '<tr class="header" style="cursor:pointer;">';
+                                                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + node.children[0].data.parentId + ')" value="' + [child.data.descripcion, node.children[0].data.parentId] + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                                                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + child.title + '</span></td>';
+                                                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + child.data.descripcion + '</span></td>';
+                                                    tableChildNodes = tableChildNodes + '</tr>';
+                                                });
+                                            }
+                                        });
+
+                                        tableChildNodes = tableChildNodes + '</tbody>';
+
+                                        $('#tblAdminSecondInput').append(tableChildNodes).fadeIn(300000);
+
+                                        //------------------------------------------> Modal Cancel - Apply Options
+                                        footerBtns = footerBtns + '<div class="modal-footer" id="footer_options">';
+                                        footerBtns = footerBtns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
+                                        footerBtns = footerBtns + '<button id="btnApplySecondField" onclick="fnSetSecondFieldValueMultiple(`' + treeReach + '`, `' + parentIds + '`);" style="display:none" type="button" class="btn btn-primary" data-bs-dismiss="modal">Aplicar</button>';
+                                        footerBtns = footerBtns + '</div>';
+
+                                        $('#modalContentFields').append(footerBtns).fadeIn(300000);
+                                        $('#modal-second-input').modal('show');
+
+                                        //console.log(parentIds);
+
+                                    } else { 
+                                        if (node.expanded === true) { //preguntar si el nodo esta expandido                                      
+                                            var childNodes = node.children;
+                                            //console.log(node)
+                                            buildSecondInput(childNodes, treeReach, node.data.descripcion); //envio los datos de los hijos y el nodo para resetear el nodo padre.
+                                            $('#modal-second-input').modal('show');
+                                        } else {
+                                            Swal.fire('ELEMENTO CONTRAIDO', 'Por favor desglose todos los elementos hijos y subhijos que desee incluir', 'warning')
+                                        }
+                                    }                                  
                                     //addColumn(treeReach, node.data.id);
                                     break;
                                 //case "hidegrid":
@@ -1375,7 +1425,7 @@
                                 cmd: "duplicatelevel",
                             },
                             {
-                                title: "Formar Segundo Campo",
+                                title: "Formar Segundo Campo <strong>(M)</strong>",
                                 cmd: "setsecondinput",
                             },
                             { title: "----" },
@@ -1946,8 +1996,9 @@
         }
         //------------------------------------------------------>> Setear segundo campo.
         var checkedCampos = [];
-        function campo(valor) {
+        function campo(valor,id) {
             this.valor = valor;
+            this.id = id;
         };
 
         //-----> Para identificar cuales campos ya se encuentran formando el segundo campo.
@@ -1978,16 +2029,30 @@
 
             tableChildNodes = tableChildNodes + '<tbody id="tbodyAdminCampos">';
 
-            childNodes.forEach(function element(treeNode, index, array) {                  
+            childNodes.forEach(function element(treeNode, index, array) {
 
-                if (treeNode.children != null) {                   
+                const pField0 = alreadyCheckedCampos.find(x => x.val == treeNode.data.descripcion);
 
-                    tableChildNodes = tableChildNodes + '<tr class="header naranja" style="cursor:pointer;">';
-                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeNode.data.descripcion + '`)" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
-                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
-                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
-                    tableChildNodes = tableChildNodes + '</tr>';                   
+                if (treeNode.children != null) {
 
+                    if (typeof (pField0) === 'undefined') {
+
+                        tableChildNodes = tableChildNodes + '<tr class="header naranja" style="cursor:pointer;">';
+                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                        tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
+                        tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
+                        tableChildNodes = tableChildNodes + '</tr>';
+
+                    } else {
+
+                        tableChildNodes = tableChildNodes + '<tr class="header naranja" style="cursor:pointer;">';
+                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
+                        tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
+                        tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
+                        tableChildNodes = tableChildNodes + '</tr>';
+
+                    }
+                    
                     treeNode.children.forEach(function element(treeSonNode1, index, array) {
 
                         const pField1 = alreadyCheckedCampos.find(x => x.val == treeSonNode1.data.descripcion);
@@ -1997,14 +2062,14 @@
 
                             if (typeof (pField1) === 'undefined') {
                                 tableChildNodes = tableChildNodes + '<tr class="" style="cursor:pointer;">';
-                                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeSonNode1.data.descripcion + '`)" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
                                 tableChildNodes = tableChildNodes + '<td><span class="text-muted"> -->' + treeSonNode1.title + '</span></td>';
                                 tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ' + treeSonNode1.data.descripcion + '</span></td>';
                                 tableChildNodes = tableChildNodes + '</tr>';
 
                             } else { //---------->> checkboxes chekados de los campos que se han encontrado ya formando el 2 campo.
                                 tableChildNodes = tableChildNodes + '<tr class="" style="cursor:pointer;">';
-                                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeSonNode1.data.descripcion + '`)" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
+                                tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
                                 tableChildNodes = tableChildNodes + '<td><span class="text-muted"> -->' + treeSonNode1.title + '</span></td>';
                                 tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ' + treeSonNode1.data.descripcion + '</span></td>';
                                 tableChildNodes = tableChildNodes + '</tr>';
@@ -2019,7 +2084,7 @@
                                 if (typeof (pField2) === 'undefined') {
 
                                     tableChildNodes = tableChildNodes + '<tr class="" style="cursor:pointer;">';
-                                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeSonNode2.data.descripcion + '`)" value="' + treeSonNode2.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeSonNode2.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
                                     tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ---->' + treeSonNode2.title + '</span></td>';
                                     tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ' + treeSonNode2.data.descripcion + '</span></td>';
                                     tableChildNodes = tableChildNodes + '</tr>';
@@ -2027,7 +2092,7 @@
                                 } else {//---------->> checkboxes chekados de los campos que se han encontrado ya formando el 2 campo.
 
                                     tableChildNodes = tableChildNodes + '<tr class="" style="cursor:pointer;">';
-                                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeSonNode2.data.descripcion + '`)" value="' + treeSonNode2.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
+                                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeSonNode2.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
                                     tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ---->' + treeSonNode2.title + '</span></td>';
                                     tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ' + treeSonNode2.data.descripcion + '</span></td>';
                                     tableChildNodes = tableChildNodes + '</tr>';
@@ -2039,7 +2104,7 @@
                         } else {
 
                             tableChildNodes = tableChildNodes + '<tr>';
-                            tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeSonNode1.data.descripcion + '`)" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                            tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeSonNode1.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
                             tableChildNodes = tableChildNodes + '<td><span class="text-muted"> -->' + treeSonNode1.title + '</span></td>';
                             tableChildNodes = tableChildNodes + '<td><span class="text-muted"> ' + treeSonNode1.data.descripcion + '</span></td>';
                             tableChildNodes = tableChildNodes + '</tr>';
@@ -2056,13 +2121,13 @@
 
                     if (typeof (pField) === 'undefined') {
 
-                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeNode.data.descripcion + '`)" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
+                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]"></td>';
                         tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
                         tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
 
                     } else { //---------->> checkboxes chekados de los campos que se han encontrado ya formando el 2 campo.
 
-                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(`' + treeNode.data.descripcion + '`)" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
+                        tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckFieldChanges(' + 0 + ')" value="' + treeNode.data.descripcion + '" type="checkbox" class="checkbox_check_campo" name="checkbox_check_campo[]" checked></td>';
                         tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
                         tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
                     }                    
@@ -2094,8 +2159,11 @@
             checkedCampos = [];
             $('.checkbox_check_campo').prop("checked", this.checked);
             $("input[name='checkbox_check_campo[]']:checked").each(function () {
-                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());
-                checkedCampos.push(new campo($(this).val()));
+                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());            
+                const valor = $(this).val();
+                const partido = valor.split(",");
+                //console.log(partido);
+                checkedCampos.push(new campo(partido[0], partido[1]));
             });
             if (checkedCampos.length > 0) {
                 $('#btnApplySecondField').show();
@@ -2104,32 +2172,43 @@
             }
             //console.log(checkedCampos);
         });
-        //----------------------------------------------------------> Manejo individual de los checkboxes de la función anterior.
-        function fnCheckFieldChanges(valor) {
+        //----------------------------------------------------------> Manejo individual de los checkboxes de la función anterior.      
+        
+        function fnCheckFieldChanges(id) {                                  
             //console.log(valor);
             if ($('input.checkbox_check_campo').is(':checked') == true) {
-                checkedCampos = [];
+                checkedCampos = [];                                
                 var m = jQuery('input:checkbox[class=checkbox_check_campo]:checked').length;
-                if (m > 0) {
+                if (m > 0) {              
                     jQuery('input:checkbox[class=checkbox_check_campo]:checked').each(function () {
-                        checkedCampos.push(new campo($(this).val()));
-                    });
+
+                        if (id != 0) {
+                            const valor = $(this).val();
+                            const partido = valor.split(",");
+                            //console.log(partido);
+                            checkedCampos.push(new campo(partido[0], partido[1]));
+
+                        } else {
+                            checkedCampos.push(new campo($(this).val(), id));
+                        }                       
+                   });
+                    console.log(checkedCampos);
                     $('#btnApplySecondField').show();
-                }
-                //console.log(checkedCampos);               
+                }                
+                
             } else {
                 checkedCampos = [];
                 $('#btnApplySecondField').hide();                
-            }
+            } 
         }
 
-        function fnSetSecondFieldValue(loadedTree, id) {
+        function fnSetSecondFieldValue(loadedTree, id) {          
             //console.log(loadedTree);
             var builtField = "";
-
+            //console.log(checkedCampos)
             checkedCampos.forEach(function (campo) {                
                 builtField = builtField + campo.valor + " - ";
-            });          
+            });            
 
             $.ajax({
                 type: "POST",
@@ -2151,6 +2230,52 @@
                 },
             });
         }
+
+
+        function fnSetSecondFieldValueMultiple(loadedTree, id) {            
+
+            const idR = id;
+            const idF = idR.split(",");
+
+            idF.forEach(function (idF) {
+
+                var builtField = "";
+                var eachId = 0;
+
+                checkedCampos.forEach(function (campo) {                 
+
+                    if (campo.id == idF) {
+                        eachId = campo.id;
+                        builtField = builtField + campo.valor + " - ";
+                        //console.log(campo);
+                    }                     
+                });
+                //console.log(eachId);
+                //console.log(builtField);
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/Home/funUpdateLvlDescriptionFromChilds",
+                    data: {
+                        "Id": eachId,
+                        "descriptionfromchilds": builtField
+                    },
+                    success: function (response) {                    
+                        if (response > 0) {
+                            //console.log(response);
+                            var tree = $('#' + loadedTree).fancytree('getTree');// para obtener el arbol renderizado.
+                            var nodo = tree.getActiveNode(); // para obtener el nodo activo.            
+                            nodo.parent.resetLazy(); //resetear nodo para ver cambios reflejados
+                        } else {
+                            Swal.fire('ERROR', 'Hubo un problema con la creación del segundo campo.', 'error')
+                        }
+                    },
+                });
+
+            });            
+        }
+
         //----------------------------------------------------->> FIN Seteo de segundo campo.
 
         //----------------------------------------------------->> Obteniendo estilos

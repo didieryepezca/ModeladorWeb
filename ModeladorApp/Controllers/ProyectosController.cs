@@ -27,7 +27,11 @@ namespace ModeladorApp.Controllers
 
         [Authorize]
         public IActionResult VerProyectos(string nombre, string tipoProyecto, string accion = "", string nullpys = "")
-        {
+        {       
+
+
+
+
             var user = userManager.GetUserAsync(User);
             var userId = user.Result.Id;
             ViewBag.currentUser = userId;

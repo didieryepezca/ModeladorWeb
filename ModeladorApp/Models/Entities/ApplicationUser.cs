@@ -20,10 +20,13 @@ namespace ModeladorApp.Models.Entities
         {
             get { return Nombres + " " + Apellidos; }
         }
+
+        //public virtual ICollection<ApplicationUserRole> UserRoles { get; set; }
+
         //public string inicialesNombres {
 
         //    get { return Nombres.Substring(0, 1) + Apellidos.Substring(0, 1);  }
-        
+
         //}
     }
 }

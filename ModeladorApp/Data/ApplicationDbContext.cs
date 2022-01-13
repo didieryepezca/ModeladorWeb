@@ -40,7 +40,7 @@ namespace ModeladorApp.Data
             //       "Trusted_Connection=False;" +
             //       "TrustServerCertificate = False;" +
             //       "Connection Timeout = 30;");
-        }
+        }       
 
         //Tabla de Usuarios
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
