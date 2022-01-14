@@ -450,11 +450,31 @@
 
                                     }
                                 }
-
                             });
                             // Podemos setear la información en la columna 2 (la que continua al titulo.)
                             //$tdList.eq(2).find("input").val("hola");
                             //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
+                        },
+                        renderNode: function (event, data) {
+                            var node = data.node;
+                            //console.log(node)
+                            if (node.title != "root") {
+                                var hiddens = getStyles(node.data.id);//-------> estilos del árbol
+                                hiddens.then(function (nodohidden) {
+                                    //console.log(nodohidden)
+                                    if (nodohidden.length != 0) {
+                                        for (h = 0; h <= nodohidden.length - 1; h++) {
+                                            if (nodohidden[h].style == 'true' && nodohidden[h].campo == "ocultar nodo") {
+                                                node.tr.hidden = nodohidden[h].style; //ocultar nodo
+                                            } else if (nodohidden[h].style == 'false' && nodohidden[h].campo == "ocultar nodo") {
+                                                node.tr.hidden = nodohidden[h].style; //mostrar nodo
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                            //node.span.hidden = false;
+                            //console.log(node.span.hidden)                           
                         },
                         modifyChild: function (event, data) {
                             data.tree.info(event.type, data);
@@ -1241,8 +1261,7 @@
                                     break;
                                 case "setsecondinput":                                    
 
-                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
-                                    
+                                    var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();                                    
                                     if (selectedNodes.length > 0) {
 
                                         $('#footer_options').remove();
@@ -1250,11 +1269,9 @@
                                         $('#tbodyAdminCampos').remove();
                                         var tableChildNodes = "";
 
-                                        var parentIds = [];                               
-
+                                        var parentIds = [];
 
                                         tableChildNodes = tableChildNodes + '<tbody id="tbodyAdminCampos">';
-
                                         selectedNodes.forEach(function element(node) {                                        
 
                                             if (node.children != null) {
@@ -1294,11 +1311,10 @@
                                         $('#modal-second-input').modal('show');
 
                                         //console.log(parentIds);
-
                                     } else { 
-                                        if (node.expanded === true) { //preguntar si el nodo esta expandido                                      
-                                            var childNodes = node.children;
-                                            //console.log(node)
+                                        if (node.expanded === true) { //preguntar si el nodo esta expandido                                     
+                                            var childNodes = node.children;                                                                                                                                     
+                                          
                                             buildSecondInput(childNodes, treeReach, node.data.descripcion); //envio los datos de los hijos y el nodo para resetear el nodo padre.
                                             $('#modal-second-input').modal('show');
                                         } else {
@@ -1306,6 +1322,17 @@
                                         }
                                     }                                  
                                     //addColumn(treeReach, node.data.id);
+                                    break;
+                                 case "showhidenodes":                                   
+                                    /*console.log("Mostrar y/o ocultar nodos.");*/                                    
+                                    if (node.expanded === true) { //preguntar si el nodo esta expandido                                                    
+                                        var childNodes = node.children;
+                                        fnShowHideElements(childNodes, treeReach); //envio los datos de los hijos y el nodo para resetear el nodo padre.
+                                        $('#modal-showhide-nodes').modal('show');
+                                    } else {
+                                        Swal.fire('ELEMENTO CONTRAIDO', 'Por favor desglose para obtener los elementos hijos', 'warning')
+                                    }                             
+
                                     break;
                                 //case "hidegrid":
                                 //    //tree.applyCommand(data.cmd, node);
@@ -1427,6 +1454,10 @@
                             {
                                 title: "Formar Segundo Campo <strong>(M)</strong>",
                                 cmd: "setsecondinput",
+                            },
+                            {
+                                title: "Mostrar / Ocultar Elementos",
+                                cmd: "showhidenodes",
                             },
                             { title: "----" },
                             {
@@ -1884,7 +1915,12 @@
                 }
             }
         }
-
+        //------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------------------------
+        //------------------------------------------------------------------------------------------------
         //----------------------------------------------------------> CARGA DE COLUMNAS PARA CONFIGURACION
         var checkedColumns = [];
 
@@ -1994,13 +2030,16 @@
                 });
             }
         }
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         //------------------------------------------------------>> Setear segundo campo.
         var checkedCampos = [];
         function campo(valor,id) {
             this.valor = valor;
             this.id = id;
         };
-
         //-----> Para identificar cuales campos ya se encuentran formando el segundo campo.
         var alreadyCheckedCampos = [];
         function Field(val) {
@@ -2173,7 +2212,6 @@
             //console.log(checkedCampos);
         });
         //----------------------------------------------------------> Manejo individual de los checkboxes de la función anterior.      
-        
         function fnCheckFieldChanges(id) {                                  
             //console.log(valor);
             if ($('input.checkbox_check_campo').is(':checked') == true) {
@@ -2192,7 +2230,7 @@
                             checkedCampos.push(new campo($(this).val(), id));
                         }                       
                    });
-                    console.log(checkedCampos);
+                    //console.log(checkedCampos);
                     $('#btnApplySecondField').show();
                 }                
                 
@@ -2229,8 +2267,7 @@
                     }
                 },
             });
-        }
-
+        };
 
         function fnSetSecondFieldValueMultiple(loadedTree, id) {            
 
@@ -2272,12 +2309,162 @@
                         }
                     },
                 });
-
             });            
         }
-
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
         //----------------------------------------------------->> FIN Seteo de segundo campo.
 
+
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //------------------------------------------------------>> Mostrar/ocultar nodos.
+
+        var checkedHideCampos = [];
+        function campohidden(id) {          
+            this.id = id;
+        };
+
+        function fnShowHideElements(childNodes, loadedTree) {           
+
+            $('#footer_options_showhide').remove();
+            var footerBtns = "";
+
+            $('#tbodyAdminShowHide').remove();
+            var tableChildNodes = "";           
+             
+            tableChildNodes = tableChildNodes + '<tbody id="tbodyAdminShowHide">';
+
+            childNodes.forEach(function element(treeNode, index, array) {                        
+              
+                if (treeNode.tr.hidden == true) {
+                    tableChildNodes = tableChildNodes + '<tr class="header" style="cursor:pointer;">';
+                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckCamposToHide()" value="' + treeNode.data.id + '" type="checkbox" class="checkbox_check_campo_visibles" name="checkbox_check_campo_visibles[]" checked></td>';
+                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
+                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
+                    tableChildNodes = tableChildNodes + '</tr>';
+                } else {
+                    tableChildNodes = tableChildNodes + '<tr class="header" style="cursor:pointer;">';
+                    tableChildNodes = tableChildNodes + '<td><input onclick="fnCheckCamposToHide()" value="' + treeNode.data.id + '" type="checkbox" class="checkbox_check_campo_visibles" name="checkbox_check_campo_visibles[]"></td>';
+                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.title + '</span></td>';
+                    tableChildNodes = tableChildNodes + '<td><span class="text-muted">' + treeNode.data.descripcion + '</span></td>';
+                    tableChildNodes = tableChildNodes + '</tr>';
+                }           
+                
+            });
+            //console.log(checkedHideCampos)
+            tableChildNodes = tableChildNodes + '</tbody>';
+
+            $('#tblAdminShowHide').append(tableChildNodes).fadeIn(300000);
+
+            //------------------------------------------> Modal Cancel - Apply Options
+            footerBtns = footerBtns + '<div class="modal-footer" id="footer_options_showhide">';
+            footerBtns = footerBtns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
+            footerBtns = footerBtns + '<button id="btnApplyShowHide" onclick="fnHideNodes(`' + loadedTree +'`);" type="button" class="btn btn-primary" data-bs-dismiss="modal">Ocultar</button>';
+            footerBtns = footerBtns + '</div>';
+
+            $('#modalShowHideNodes').append(footerBtns).fadeIn(300000);
+        }
+
+
+        //----------->> Para crear array con los checkboxes que no se han chequeado.
+        var unCheckedShowCampos = [];
+        function camposhow(id) {
+            this.id = id;
+        };
+        //----------->> Para crear array con los checkboxes que no se han chequeado.
+
+
+        //------------------------------>>> Chekar todos los checkboxes de los campos hijos
+        $(document).on('change', 'input[id="checkAllDatosHijosHide"]', function () {
+            checkedHideCampos = [];
+            $('.checkbox_check_campo_visibles').prop("checked", this.checked);
+            $("input[name='checkbox_check_campo_visibles[]']:checked").each(function () {
+                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());       
+                checkedHideCampos.push(new campohidden($(this).val()));
+            });
+
+            unCheckedShowCampos = [];
+            $("input:checkbox[class=checkbox_check_campo_visibles]:not(:checked)").each(function () {
+                //alert("Id: " + $(this).attr("id") + " Value: " + $(this).val());       
+                unCheckedShowCampos.push(new camposhow($(this).val()));
+            });
+
+            //console.log(unCheckedShowCampos);
+        });
+
+        function fnCheckCamposToHide() {            
+            if ($('input.checkbox_check_campo_visibles').is(':checked') == true) {
+                checkedHideCampos = [];
+                var m = jQuery('input:checkbox[class=checkbox_check_campo_visibles]:checked').length;
+                if (m > 0) {
+                    jQuery('input:checkbox[class=checkbox_check_campo_visibles]:checked').each(function () {
+                      
+                        checkedHideCampos.push(new campohidden($(this).val()));
+                    });
+                    //console.log(checkedHideCampos);               
+                }
+            } else {                
+                checkedHideCampos = [];
+            }
+            
+            var uncheckedNodes = $("input:checkbox[class=checkbox_check_campo_visibles]:not(:checked)").length;
+            if (uncheckedNodes > 0) {
+                unCheckedShowCampos = [];
+                jQuery("input:checkbox[class=checkbox_check_campo_visibles]:not(:checked)").each(function () {
+                    unCheckedShowCampos.push(new camposhow($(this).val()))
+                });
+            }
+            //console.log(unCheckedShowCampos);           
+        }
+        
+        function fnHideNodes(tree) {
+            //console.log(tree)
+            //console.log(checkedHideCampos);
+            var tree = $('#' + tree).fancytree('getTree');// para obtener el arbol renderizado.
+            var nodo = tree.getActiveNode(); // para obtener el nodo activo.                    
+
+            //checkedHideCampos.forEach(function element(campotohide, index, array) {
+            //    //console.log(campotohide.id)
+            //    var hiderpt = applyOrRemoveStyle(campotohide.id, true, "STYLE_APPLY", "ocultar nodo")
+            //    hiderpt.then(function (styleresponse) {                   
+            //        if (styleresponse > 0) {                                                         
+            //            //nodo.span.hidden = true;       
+            //            nodo.children.forEach(function element(childnode, index, array) {                           
+            //                if (campotohide.id == childnode.data.id) {
+            //                    console.log(childnode.data.id)                               
+            //                    childnode.tr.hidden = true;
+            //                };
+            //            });
+            //        } else {
+            //            console.log("Hubo un problema al ocultar el campo");
+            //        }
+            //    });
+            //});
+
+
+            unCheckedShowCampos.forEach(function element(campotohide, index, array) {
+
+
+            });           
+
+
+        }
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //-----------------------------------------------------------------------------
+        //----------------------------------------------------->> FIN Seteo de Mostrar/ocultar nodos..
+
+
+        //--------------------------------------------------------------------------
+        //--------------------------------------------------------------------------
+        //--------------------------------------------------------------------------
+        //--------------------------------------------------------------------------
         //----------------------------------------------------->> Obteniendo estilos
         async function getStyles(lvlID) {
             return styles = await getStylesFromDB(lvlID);
@@ -2503,7 +2690,7 @@
 
                     selectedNodes.forEach(function element(node) {
 
-                        console.log(node.data.id);
+                        //console.log(node.data.id);
 
                         var rpt1 = removeColorsAndSizes(node.data.id)
                         rpt1.then(function (res1) {
@@ -2672,12 +2859,6 @@
                                     Expandir
                                 </a>
                             </span>
-
-                            @*<span class="d-none d-sm-inline">
-                                    <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-new-project">
-                                        Clonar
-                                    </a>
-                                </span>*@
 
                         </div>
                     </div>
@@ -3009,6 +3190,38 @@
     </div>
 
 
+    <div class="modal modal-blur fade" id="modal-showhide-nodes" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+
+            <div class="modal-content" id="modalShowHideNodes">
+                <div class="modal-header">
+                    <h5 class="modal-title">Ocultar elementos del Arbol</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    Elija los elementos que desea ocultar.
+
+                    <div class="table-responsive">
+                        <table id="tblAdminShowHide" class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr>
+                                    <th><input id="checkAllDatosHijosHide" type="checkbox" data-parsley-multiple="checkbox"></th>
+                                    <th>Campo</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <div class="modal modal-blur fade" id="modal-color-admin" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
 
@@ -3280,16 +3493,16 @@
                 </div>
 
 
-                    <div class="modal-footer">
-                        <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
-                            Cancelar
-                        </a>
-                        <a onclick="fnApplyColors()" class="btn btn-primary ms-auto">
-                            Aplicar
-                        </a>
-                    </div>
-
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-link link-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </a>
+                    <a onclick="fnApplyColors()" class="btn btn-primary ms-auto">
+                        Aplicar
+                    </a>
                 </div>
+
+            </div>
         </div>
     </div>
 
