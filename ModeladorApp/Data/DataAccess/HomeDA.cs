@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 using System.Data;
 using Microsoft.EntityFrameworkCore;
-
 using ModeladorApp.Models.Entities;
+
 namespace ModeladorApp.Data.DataAccess
 {
     public class HomeDA

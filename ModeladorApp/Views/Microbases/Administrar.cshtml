@@ -1,0 +1,113 @@
+﻿<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+    <title>ON - Microbases</title>
+    <link rel="icon" type="image/x-icon" href="~/tree-app-icon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+    @section Scripts {
+        <script src="~/js/Microbases/Administrar.js"></script>
+    }
+
+</head>
+
+
+<body>
+    <div class="page-wrapper">
+        <div class="container-xl">
+            <!-- Page title -->
+            <div class="page-header d-print-none">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="page-title">
+                            Administrar Microbases
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-body">
+            <div class="container-xl">
+                <div class="row row-cards">
+
+                    <div class="col-md-12">
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-fill" data-bs-toggle="tabs">
+                                <li class="nav-item">
+                                    <a href="#tabs-datos" class="nav-link active" data-bs-toggle="tab">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copy" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8v-2a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path></svg>
+                                        Datos
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-cargar" class="nav-link" data-bs-toggle="tab">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/user -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-file-upload" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
+                                            <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
+                                            <line x1="12" y1="11" x2="12" y2="17"></line>
+                                            <polyline points="9 14 12 11 15 14"></polyline>
+                                        </svg>
+                                        Cargar
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#tabs-historial" class="nav-link" data-bs-toggle="tab">
+                                        <!-- Download SVG icon from http://tabler-icons.io/i/activity -->
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-history" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                            <polyline points="12 8 12 12 14 14"></polyline>
+                                            <path d="M3.05 11a9 9 0 1 1 .5 4m-.5 5v-5h5"></path>
+                                        </svg>
+                                        Historial de Cargas
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane show active" id="tabs-datos">
+                                        <label>"Aqui aparecerán los datos"</label>
+                                    </div>
+                                    <div class="tab-pane" id="tabs-cargar">
+
+                                        <div class="mb-3">
+                                            <div class="form-label">El archivo selecionado debe ser un documento Excel. Verifique que la extención del documento sea .XLS o .XLSX</div>
+                                            <input id="txtSubirA" type="file" class="form-control">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label">Comentarios del archivo (opcional)</label>
+                                            <textarea id="txtObs" class="form-control" name="example-textarea-input" rows="3"></textarea>
+                                        </div>
+
+                                        <div class="card-footer text-end">
+                                            <div class="d-flex">                                               
+                                                <input onclick="cargarArchivo()" type="submit" value="Cargar Archivo" class="btn btn-primary ms-auto"/>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane" id="tabs-historial">
+                                        <label>"Aqui aparecera un historial de carga de archivos"</label>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
