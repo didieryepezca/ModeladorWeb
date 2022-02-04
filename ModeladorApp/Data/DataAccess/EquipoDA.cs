@@ -21,5 +21,32 @@ namespace ModeladorApp.Data.DataAccess
             }
             return result;
         }
+
+
+        public IEnumerable<TB_EQUIPO> GetAllEquipos()
+        {
+            using (var db = new ApplicationDbContext())
+            {
+                IQueryable<TB_EQUIPO> query = db.TB_EQUIPO.OrderBy(f => f.FECHA_REGISTRO);                
+                return query.ToList();
+            }
+        }
+
+        public int UpdateEquipo(int id, string nombre, decimal ncr)
+        {
+            var result = 0;
+
+            using (var db = new ApplicationDbContext())
+            {
+                var eq = db.TB_EQUIPO.Where(item => item.ID_EQUIPO == id).FirstOrDefault();
+                eq.NOMBRE_EQUIPO = nombre;
+                eq.NCR_EQUIPO = ncr;                
+
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
     }
 }

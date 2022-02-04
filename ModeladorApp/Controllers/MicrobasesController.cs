@@ -14,14 +14,14 @@ using ModeladorApp.Data.DataAccess;
 using System.IO;
 using Excel;
 using System.Data;
+using Newtonsoft.Json;
 
 namespace ModeladorApp.Controllers
 {
     public class MicrobasesController : Controller
     {
         private IHostingEnvironment hostingEnv;
-        private readonly UserManager<ApplicationUser> userManager;
-       
+        private readonly UserManager<ApplicationUser> userManager;      
 
         public MicrobasesController(IHostingEnvironment hostingEnv, UserManager<ApplicationUser> userManager)
         {
@@ -31,6 +31,58 @@ namespace ModeladorApp.Controllers
         public IActionResult Administrar()
         {
             return View();
+        }
+
+        public JsonResult funGetAllEquipos()
+        {
+            var da = new EquipoDA();
+            var equipos = da.GetAllEquipos();
+            return Json(equipos);
+        }
+
+        public JsonResult funGetEquipoCaracteristicas(int idEquipo)
+        {
+            var da = new EquipoCaracteristicaDA();
+            var caracteristicas = da.GetEquipoCaracteristicas(idEquipo);
+            return Json(caracteristicas);
+        }
+
+        public int funUpdateEquipo(string datos)
+        {
+            var result = "0";
+            var cDa = new EquipoDA();
+
+            TB_EQUIPO equipo = JsonConvert.DeserializeObject<TB_EQUIPO>(datos);
+            try
+            {
+                var modelcount = cDa.UpdateEquipo(equipo.ID_EQUIPO, equipo.NOMBRE_EQUIPO, equipo.NCR_EQUIPO);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+        public int funUpdateEquipoCaracteristica(string datos)
+        {
+            var result = "0";
+            var cDa = new EquipoCaracteristicaDA();
+
+            TB_EQUIPO_CARACTERISTICA caracteristica = JsonConvert.DeserializeObject<TB_EQUIPO_CARACTERISTICA>(datos);
+            try
+            {
+                var modelcount = cDa.UpdateEquipoCaracteristica(caracteristica.ID_EQUIPO_C, 
+                                                                caracteristica.NOMBRE_CARACTERISTICA, 
+                                                                caracteristica.NCR_CARACTERISTICA);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
         }
 
         class EquipoTemp {
