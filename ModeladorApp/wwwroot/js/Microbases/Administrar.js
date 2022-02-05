@@ -1,11 +1,11 @@
 ﻿window.onload = loadEquipos();
 
 async function loadEquipos() {
-    
+
     var equipos = await funGetAllEquipos(); // la que contendra la data de la función asyncrona.   
 
     $(function () {
-        $("#dataGrid").dxDataGrid({
+        $("#equiposDataGrid").dxDataGrid({
             dataSource: equipos,
             keyExpr: "iD_EQUIPO",
             allowColumnResizing: true,
@@ -28,7 +28,7 @@ async function loadEquipos() {
                 validationRules: [{
                     type: "required"
                 }]
-                }, {
+            }, {
                 caption: 'FECHA REGISTRO',
                 dataField: "fechA_REGISTRO",
                 dataType: "date",
@@ -37,15 +37,15 @@ async function loadEquipos() {
                 validationRules: [{
                     type: "required"
                 }]
-            },  {
-                dataField: "usuario",               
+            }, {
+                dataField: "usuario",
                 groupIndex: 0,
                 sortOrder: "asc",
                 validationRules: [{
                     type: "required"
                 }]
-                }],        
-            
+            }],
+
             filterRow: { visible: true },
             searchPanel: { visible: true },
             groupPanel: { visible: true },
@@ -61,7 +61,7 @@ async function loadEquipos() {
                 groupItems: [{
                     summaryType: "count"
                 }]
-            },           
+            },
             editing: {
                 mode: "popup",
                 allowUpdating: true,
@@ -80,7 +80,7 @@ async function loadEquipos() {
                 var actualizar = funUpdateEquipo(data);
                 actualizar.then(function (response) {
                     if (response > 0) { console.log("Actualizo Correctamente") }
-                    else { console.log("No se Actualizo Correctamente")}
+                    else { console.log("No se Actualizo Correctamente") }
                 });
 
             },
@@ -89,13 +89,13 @@ async function loadEquipos() {
             },
             onRowInserted: function (e) {
                 delete e.data.iD_EQUIPO; //eliminamos el id que lo autogenerara el insert con entityFramework.
-                var data = JSON.stringify(e.data);               
+                var data = JSON.stringify(e.data);
                 var insertar = funInsertEquipo(data);
                 insertar.then(function (response) {
                     if (response > 0) { console.log("Inserto Correctamente") }
                     else { console.log("No se Inserto Correctamente") }
                 });
-            },            
+            },
             onRowRemoved: function (e) {
                 var eliminare = funDeleteEquipoAndCaracteristica(e.data.iD_EQUIPO);
                 eliminare.then(function (response) {
@@ -115,14 +115,14 @@ async function loadEquipos() {
                         $('<div>')
                             .addClass('master-detail-caption')
                             .text(`Mostrando caracteristicas con ID de Equipo: ${info.data.iD_EQUIPO} `)
-                            .css("background-color", "orange")                            
+                            .css("background-color", "orange")
                             .appendTo(container);
 
                         $('<div>').dxDataGrid({
-                                dataSource: specs,
-                                keyExpr: "iD_EQUIPO_C",
-                                columnAutoWidth: true,
-                                showBorders: true,
+                            dataSource: specs,
+                            keyExpr: "iD_EQUIPO_C",
+                            columnAutoWidth: true,
+                            showBorders: true,
                             columns: [{
                                 caption: 'Caracteristica',
                                 dataField: "nombrE_CARACTERISTICA",
@@ -130,22 +130,22 @@ async function loadEquipos() {
                                     type: "required"
                                 }],
                                 fixed: true
-                                }, {
-                                    caption: 'NCR',
-                                    dataField: "ncR_CARACTERISTICA",
-                                    validationRules: [{
-                                        type: "required"
-                                    }]
-                                }, {
-                                    caption: 'FECHA REGISTRO',
-                                    dataField: "fechA_REGISTRO",
-                                    dataType: "date",
-                                    format: "dd/MM/yyyy HH:mm",
-                                    width: 180,
-                                    validationRules: [{
-                                        type: "required"
-                                    }]
-                                }],
+                            }, {
+                                caption: 'NCR',
+                                dataField: "ncR_CARACTERISTICA",
+                                validationRules: [{
+                                    type: "required"
+                                }]
+                            }, {
+                                caption: 'FECHA REGISTRO',
+                                dataField: "fechA_REGISTRO",
+                                dataType: "date",
+                                format: "dd/MM/yyyy HH:mm",
+                                width: 180,
+                                validationRules: [{
+                                    type: "required"
+                                }]
+                            }],
                             editing: {
                                 mode: "popup",
                                 allowUpdating: true,
@@ -167,7 +167,7 @@ async function loadEquipos() {
                                     else { console.log("No se Actualizo Correctamente") }
                                 });
                             },
-                            onRowInserted: function (e) {                              
+                            onRowInserted: function (e) {
                                 delete e.data.iD_EQUIPO_C; //eliminamos el id que lo autogenerara el insert con entityFramework.
                                 e.data.iD_EQUIPO = info.data.iD_EQUIPO; // añadimos id del equipo padre.
                                 var data = JSON.stringify(e.data);
@@ -177,7 +177,7 @@ async function loadEquipos() {
                                     else { console.log("No se Inserto Correctamente") }
                                 });
                             },
-                            onRowRemoved: function (e) {                                
+                            onRowRemoved: function (e) {
                                 var eliminarc = funDeleteCaracteristica(e.data.iD_EQUIPO_C);
                                 eliminarc.then(function (response) {
                                     if (response > 0) { console.log("Eliminada Correctamente") }
@@ -185,9 +185,9 @@ async function loadEquipos() {
                                 });
                             },
                             filterRow: { visible: true },
-                            }).appendTo(container);
-                    });                
-                }               
+                        }).appendTo(container);
+                    });
+                }
             },
             //export: { enabled: true },
             onExporting: function (e) {
@@ -204,13 +204,13 @@ async function loadEquipos() {
                 e.cancel = true;
             }
         });
-    });   
+    });
     //console.log(equipos);
 }
 
 function funGetAllEquipos() {
     var url = "/Microbases/funGetAllEquipos";
-    return $.get(url, {  }, function (data) {
+    return $.get(url, {}, function (data) {
         //console.log(data);
     });
 };
@@ -221,7 +221,7 @@ async function funGetCaracteristicas(idEq) {
 };
 function funGetEquipoCaracteristicasFromDB(idEq) {
     var url = "/Microbases/funGetEquipoCaracteristicas";
-    return $.get(url, { "idEquipo": idEq}, function (data) {
+    return $.get(url, { "idEquipo": idEq }, function (data) {
         //console.log(data);
     });
 };
@@ -354,7 +354,7 @@ function deleteCaracteristicaFromDB(idc) {
 //-------------------------------------------------------------------------
 function cargarArchivo() {
     var fileUpload = $("#txtSubirA").get(0);
-    
+
     var files = fileUpload.files;
     var file_bytes = new FormData();
     for (var i = 0; i < files.length; i++) {
@@ -381,10 +381,10 @@ function cargarArchivo() {
 
         Swal.fire('ATENCION', 'Por favor agregar un comentario', 'warning')
     }
-    return false;    
+    return false;
 }
 async function funUploadExcel(obs, file_bytes) {
-    return carga = await funUploadExcelToDB(obs, file_bytes);    
+    return carga = await funUploadExcelToDB(obs, file_bytes);
 };
 function funUploadExcelToDB(obs, file_bytes) {
     return $.ajax({
@@ -402,7 +402,7 @@ function funUploadExcelToDB(obs, file_bytes) {
 
 
 //------------------------------------------- Carga de Historial de Archivos
-$('a[data-bs-toggle=tab]').click(function () {   
+$('a[data-bs-toggle=tab]').click(function () {
     if (this.id == 'historial-cargas') {
         var file_data = funGetHistorialArchivos(); // la que contendra la data de la función asyncrona.
         file_data.then(function (data) {
@@ -419,44 +419,43 @@ $('a[data-bs-toggle=tab]').click(function () {
                         enabled: true
                     },
                     allowColumnReordering: true,
-                    //columnChooser: { enabled: true },
                     columns: [{
                         caption: 'ARCHIVO',
-                        dataField: "nombre_archivo",                       
+                        dataField: "nombre_archivo",
                         fixed: true,
                         cellTemplate(container, options) {
                             //console.log(options.data.nombre_archivo)
                             $('<a>' + options.data.nombre_archivo + '</a>')
-                                .attr('href', "~/uploads/" + options.data.nombre_archivo)                               
+                                .attr('href', "~/uploads/" + options.data.nombre_archivo)
                                 .appendTo(container);
                         },
                     }, {
                         caption: 'OBSERVACIONES',
-                        dataField: "observaciones",                       
-                        }, {
+                        dataField: "observaciones",
+                    }, {
                         caption: 'ESTADO',
-                            dataField: "estado_archivo",                           
-                        }, {
+                        dataField: "estado_archivo",
+                    }, {
                         caption: 'FECHA CARGA',
                         dataField: "fecha_carga",
                         dataType: "date",
                         format: "dd/MM/yyyy HH:mm",
-                        width: 180,                        
+                        width: 180,
                     }, {
                         dataField: "usuario",
                         groupIndex: 0,
-                        sortOrder: "asc",                        
+                        sortOrder: "asc",
                     }],
                     filterRow: { visible: true },
                     searchPanel: { visible: true },
                     groupPanel: { visible: true },
-                    selection: { mode: "single" },                    
+                    selection: { mode: "single" },
                     summary: {
                         groupItems: [{
                             summaryType: "count"
                         }]
-                    },                   
-                    //export: { enabled: true },
+                    },
+
                     onExporting: function (e) {
                         const workbook = new ExcelJS.Workbook();
                         const worksheet = workbook.addWorksheet("Main sheet");
@@ -474,7 +473,7 @@ $('a[data-bs-toggle=tab]').click(function () {
             });
             //------ End DxDataGrid
 
-        }); 
+        });
     }
 });
 
