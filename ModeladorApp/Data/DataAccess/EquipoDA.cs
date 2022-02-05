@@ -48,5 +48,18 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+        public int deleteEquipo(int idEquipo)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var e = db.TB_EQUIPO.Where(item => item.ID_EQUIPO == idEquipo).SingleOrDefault();
+                db.TB_EQUIPO.Remove(e);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
     }
 }

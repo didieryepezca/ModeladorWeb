@@ -57,5 +57,19 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+
+        public int deleteCaracteristica(int idc)
+        {
+            var result = 0;
+            using (var db = new ApplicationDbContext())
+            {
+                var c = db.TB_EQUIPO_CARACTERISTICA.Where(item => item.ID_EQUIPO_C == idc).SingleOrDefault();
+                db.TB_EQUIPO_CARACTERISTICA.Remove(c);
+                result = db.SaveChanges();
+            }
+            return result;
+        }
+
+
     }
 }

@@ -1,7 +1,7 @@
 ﻿window.onload = loadEquipos();
 
 async function loadEquipos() {
-
+    
     var equipos = await funGetAllEquipos(); // la que contendra la data de la función asyncrona.   
 
     $(function () {
@@ -41,10 +41,11 @@ async function loadEquipos() {
                 dataField: "usuario",               
                 groupIndex: 0,
                 sortOrder: "asc",
-                //validationRules: [{
-                //    type: "required"
-                //}]
-            }],
+                validationRules: [{
+                    type: "required"
+                }]
+                }],        
+            
             filterRow: { visible: true },
             searchPanel: { visible: true },
             groupPanel: { visible: true },
@@ -60,22 +61,47 @@ async function loadEquipos() {
                 groupItems: [{
                     summaryType: "count"
                 }]
-            },
+            },           
             editing: {
                 mode: "popup",
                 allowUpdating: true,
                 allowDeleting: true,
-                allowAdding: true
+                allowAdding: true,
+                popup: {
+                    title: 'Información del Equipo',
+                    showTitle: true,
+                    width: 700,
+                    height: 525,
+                }
             },
             onRowUpdated: function (e) {
                 var data = JSON.stringify(e.data);
                 //console.log(selectedRow)
                 var actualizar = funUpdateEquipo(data);
                 actualizar.then(function (response) {
-                    if (response > 0) { console.log("Actualizo") }
-                    else { console.log("No se Actualizo")}
+                    if (response > 0) { console.log("Actualizo Correctamente") }
+                    else { console.log("No se Actualizo Correctamente")}
                 });
 
+            },
+            onInitNewRow(e) { //Cuando cargamos el formulario para añadir un nuevo elemento seteamos el usuario              
+                e.data.usuario = currentUser;
+            },
+            onRowInserted: function (e) {
+                delete e.data.iD_EQUIPO; //eliminamos el id que lo autogenerara el insert con entityFramework.
+                var data = JSON.stringify(e.data);               
+                var insertar = funInsertEquipo(data);
+                insertar.then(function (response) {
+                    if (response > 0) { console.log("Inserto Correctamente") }
+                    else { console.log("No se Inserto Correctamente") }
+                });
+            },            
+            onRowRemoved: function (e) {
+                var eliminare = funDeleteEquipoAndCaracteristica(e.data.iD_EQUIPO);
+                eliminare.then(function (response) {
+                    if (response > 0) { console.log("Eliminados Correctamente") }
+                    else { console.log("No se eliminaron los equipos y caracteristicas Correctamente") }
+                });
             },
             masterDetail: {
                 enabled: true,
@@ -88,7 +114,8 @@ async function loadEquipos() {
 
                         $('<div>')
                             .addClass('master-detail-caption')
-                            .text(`Mostrando caracteristicas con ID de Equipo ${info.data.iD_EQUIPO} :`)
+                            .text(`Mostrando caracteristicas con ID de Equipo: ${info.data.iD_EQUIPO} `)
+                            .css("background-color", "orange")                            
                             .appendTo(container);
 
                         $('<div>').dxDataGrid({
@@ -123,17 +150,39 @@ async function loadEquipos() {
                                 mode: "popup",
                                 allowUpdating: true,
                                 allowDeleting: true,
-                                allowAdding: true
+                                allowAdding: true,
+                                popup: {
+                                    title: 'Información de la Característica',
+                                    showTitle: true,
+                                    width: 700,
+                                    height: 525,
+                                }
                             },
                             onRowUpdated: function (e) {
                                 var data = JSON.stringify(e.data);
-                                //console.log(selectedRow)
+                                //console.log(data)
                                 var actualizar = funUpdateEquipoCar(data);
                                 actualizar.then(function (response) {
-                                    if (response > 0) { console.log("Actualizo") }
-                                    else { console.log("No se Actualizo") }
+                                    if (response > 0) { console.log("Actualizo Correctamente") }
+                                    else { console.log("No se Actualizo Correctamente") }
                                 });
-
+                            },
+                            onRowInserted: function (e) {                              
+                                delete e.data.iD_EQUIPO_C; //eliminamos el id que lo autogenerara el insert con entityFramework.
+                                e.data.iD_EQUIPO = info.data.iD_EQUIPO; // añadimos id del equipo padre.
+                                var data = JSON.stringify(e.data);
+                                var insertarC = funInsertEquipoCaracteristica(data);
+                                insertarC.then(function (response) {
+                                    if (response > 0) { console.log("Inserto Correctamente") }
+                                    else { console.log("No se Inserto Correctamente") }
+                                });
+                            },
+                            onRowRemoved: function (e) {                                
+                                var eliminarc = funDeleteCaracteristica(e.data.iD_EQUIPO_C);
+                                eliminarc.then(function (response) {
+                                    if (response > 0) { console.log("Eliminada Correctamente") }
+                                    else { console.log("No se elimino Correctamente") }
+                                });
                             },
                             filterRow: { visible: true },
                             }).appendTo(container);
@@ -155,9 +204,7 @@ async function loadEquipos() {
                 e.cancel = true;
             }
         });
-    });
-    
-    
+    });   
     //console.log(equipos);
 }
 
@@ -179,7 +226,26 @@ function funGetEquipoCaracteristicasFromDB(idEq) {
     });
 };
 //-------------------------------------------------------------------------
+//------------------------------------- Insert Equipo
+async function funInsertEquipo(data) {
+    //console.log(datos);
+    return equipo = await InsertEquipoToDB(data);
+};
 
+function InsertEquipoToDB(data) {
+    //console.log("hola");
+    //console.log(data);
+    return $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Microbases/funInsertEquipo",
+        data: { "datos": data },
+        success: function (response) {
+            //console.log(response);
+        },
+    });
+}
+//-------------------------------------------------------------------------
 //------------------------------------- Update Equipo
 async function funUpdateEquipo(data) {
     //console.log(datos);
@@ -193,6 +259,50 @@ function UpdateEquipoToDB(data) {
         type: "POST",
         dataType: "json",
         url: "/Microbases/funUpdateEquipo",
+        data: { "datos": data },
+        success: function (response) {
+            //console.log(response);
+        },
+    });
+}
+//------------------------------------- Delete Equipo y Caracteristica
+async function funDeleteEquipoAndCaracteristica(idEquipo) {
+    //console.log(datos);
+    return dele = await deleteEquipoAndCaracteristicaFromDB(idEquipo);
+};
+
+function deleteEquipoAndCaracteristicaFromDB(idEquipo) {
+    //console.log("hola");
+    //console.log(data);
+    return $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Microbases/funDeleteEquipoAndCaracteristicas",
+        data: { "idEquipo": idEquipo },
+        success: function (response) {
+            //console.log(response);
+        },
+    });
+}
+//-------------------------------------------------------------------------
+
+
+
+
+//-------------------------------------------------------------------------
+//------------------------------------- Insert Equipo Caracteristicas
+async function funInsertEquipoCaracteristica(data) {
+    //console.log(datos);
+    return caracteristicas = await InsertEquipoCaracteristicaToDB(data);
+};
+
+function InsertEquipoCaracteristicaToDB(data) {
+    //console.log("hola");
+    //console.log(data);
+    return $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Microbases/funInsertEquipoCaracteristica",
         data: { "datos": data },
         success: function (response) {
             //console.log(response);
@@ -214,6 +324,26 @@ function UpdateEquipoCarToDB(data) {
         dataType: "json",
         url: "/Microbases/funUpdateEquipoCaracteristica",
         data: { "datos": data },
+        success: function (response) {
+            //console.log(response);
+        },
+    });
+}
+//-------------------------------------------------------------------------
+//------------------------------------- Delete Caracteristica
+async function funDeleteCaracteristica(idc) {
+    //console.log(datos);
+    return delc = await deleteCaracteristicaFromDB(idc);
+};
+
+function deleteCaracteristicaFromDB(idc) {
+    //console.log("hola");
+    //console.log(data);
+    return $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Microbases/funDeleteCaracteristica",
+        data: { "idc": idc },
         success: function (response) {
             //console.log(response);
         },

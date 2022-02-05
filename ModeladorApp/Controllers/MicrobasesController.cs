@@ -30,6 +30,8 @@ namespace ModeladorApp.Controllers
         }
         public IActionResult Administrar()
         {
+            var user = userManager.GetUserAsync(User);
+            ViewBag.currentUser = user.Result.UsuarioNombreCompleto;
             return View();
         }
 
@@ -47,6 +49,32 @@ namespace ModeladorApp.Controllers
             return Json(caracteristicas);
         }
 
+        public int funInsertEquipo(string datos)
+        {
+            var result = "0";
+            var user = userManager.GetUserAsync(User);
+            var da = new EquipoDA();
+            try
+            {
+                TB_EQUIPO equipo = JsonConvert.DeserializeObject<TB_EQUIPO>(datos);
+                TB_EQUIPO e = new TB_EQUIPO();
+
+                e.NOMBRE_EQUIPO = equipo.NOMBRE_EQUIPO;
+                e.NCR_EQUIPO = equipo.NCR_EQUIPO;
+                e.FECHA_REGISTRO = DateTime.Now;
+                e.USUARIO = user.Result.UsuarioNombreCompleto;                
+
+                var modelcount = da.InsertEquipo(e);              
+
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
         public int funUpdateEquipo(string datos)
         {
             var result = "0";
@@ -56,6 +84,61 @@ namespace ModeladorApp.Controllers
             try
             {
                 var modelcount = cDa.UpdateEquipo(equipo.ID_EQUIPO, equipo.NOMBRE_EQUIPO, equipo.NCR_EQUIPO);
+                return modelcount;
+            }
+            catch (Exception e)
+            {
+                result = e.Message;
+                return 0;
+            }
+        }
+
+        public int funDeleteEquipoAndCaracteristicas(int idEquipo)
+        {
+            var result = "0";
+            var eda = new EquipoDA();
+            var cda = new EquipoCaracteristicaDA();            
+
+            try
+            {
+                int modelcount = 0;
+
+                modelcount = eda.deleteEquipo(idEquipo);
+
+                //---- > eliminar caracteristicas 
+                List<TB_EQUIPO_CARACTERISTICA> caracteristicas = new List<TB_EQUIPO_CARACTERISTICA>();
+                caracteristicas = cda.GetEquipoCaracteristicas(idEquipo).ToList();
+                for (int c = 0; c < caracteristicas.Count; c++)
+                {
+                    cda.deleteCaracteristica(caracteristicas[c].ID_EQUIPO_C);
+                    modelcount = modelcount + 1;
+                }                
+                return modelcount;
+            }
+            catch (Exception se)
+            {
+                result = se.Message;
+                return 0;
+            }
+        }
+        public int funInsertEquipoCaracteristica(string datos)
+        {
+            var result = "0";
+            var user = userManager.GetUserAsync(User);
+            var da = new EquipoCaracteristicaDA();
+            try
+            {
+                TB_EQUIPO_CARACTERISTICA caracteristica = JsonConvert.DeserializeObject<TB_EQUIPO_CARACTERISTICA>(datos);
+                TB_EQUIPO_CARACTERISTICA e = new TB_EQUIPO_CARACTERISTICA();
+
+                e.ID_EQUIPO = caracteristica.ID_EQUIPO;
+                e.NOMBRE_CARACTERISTICA = caracteristica.NOMBRE_CARACTERISTICA;
+                e.NCR_CARACTERISTICA = caracteristica.NCR_CARACTERISTICA;
+                e.FECHA_REGISTRO = DateTime.Now;
+                e.USUARIO = user.Result.UsuarioNombreCompleto;
+
+                var modelcount = da.InsertEquipoCaracteristica(e);
+
                 return modelcount;
             }
             catch (Exception e)
@@ -81,6 +164,22 @@ namespace ModeladorApp.Controllers
             catch (Exception e)
             {
                 result = e.Message;
+                return 0;
+            }
+        }
+        public int funDeleteCaracteristica(int idc)
+        {
+            var result = "0";
+            var da = new EquipoCaracteristicaDA();
+            var modelcount = 0;
+            try
+            {                
+                modelcount = da.deleteCaracteristica(idc);                
+                return modelcount;
+            }
+            catch (Exception se)
+            {
+                result = se.Message;
                 return 0;
             }
         }
