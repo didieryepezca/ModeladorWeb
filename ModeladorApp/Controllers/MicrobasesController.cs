@@ -387,5 +387,15 @@ namespace ModeladorApp.Controllers
             return Json(jres);
         }
 
+        public JsonResult funGetHistorialArchivos()
+        {
+            var da = new ArchivosDA();
+            var archivos = da.getArchivos();
+            return Json(archivos);
+        }
+
+
+
+
     }
 }

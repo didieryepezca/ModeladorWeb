@@ -22,5 +22,20 @@ namespace ModeladorApp.Data.DataAccess
             }
             return result;
         }
+
+        public IEnumerable<TB_ARCHIVOS> getArchivos()
+        {
+            var ana = new List<TB_ARCHIVOS>();
+            using (var db = new ApplicationDbContext())
+            {
+                IQueryable<TB_ARCHIVOS> query = db.TB_ARCHIVOS;             
+
+                query = query.OrderByDescending((item => item.fecha_carga));
+
+                return query.ToList();
+            }
+        }
+
+
     }
 }

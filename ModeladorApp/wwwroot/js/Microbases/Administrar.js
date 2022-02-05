@@ -351,6 +351,7 @@ function deleteCaracteristicaFromDB(idc) {
 }
 //-------------------------------------------------------------------------
 
+//-------------------------------------------------------------------------
 function cargarArchivo() {
     var fileUpload = $("#txtSubirA").get(0);
     
@@ -396,5 +397,94 @@ function funUploadExcelToDB(obs, file_bytes) {
         success: function (obs) {
             //console.log(response);
         },
+    });
+}
+
+
+//------------------------------------------- Carga de Historial de Archivos
+$('a[data-bs-toggle=tab]').click(function () {   
+    if (this.id == 'historial-cargas') {
+        var file_data = funGetHistorialArchivos(); // la que contendra la data de la función asyncrona.
+        file_data.then(function (data) {
+
+            //console.log(data);
+            //------ Start DxDataGrid
+            $(function () {
+                $("#historialDataGrid").dxDataGrid({
+                    dataSource: data,
+                    keyExpr: "codigo",
+                    allowColumnResizing: true,
+                    columnAutoWidth: true,
+                    columnFixing: {
+                        enabled: true
+                    },
+                    allowColumnReordering: true,
+                    //columnChooser: { enabled: true },
+                    columns: [{
+                        caption: 'ARCHIVO',
+                        dataField: "nombre_archivo",                       
+                        fixed: true,
+                        cellTemplate(container, options) {
+                            //console.log(options.data.nombre_archivo)
+                            $('<a>' + options.data.nombre_archivo + '</a>')
+                                .attr('href', "~/uploads/" + options.data.nombre_archivo)                               
+                                .appendTo(container);
+                        },
+                    }, {
+                        caption: 'OBSERVACIONES',
+                        dataField: "observaciones",                       
+                        }, {
+                        caption: 'ESTADO',
+                            dataField: "estado_archivo",                           
+                        }, {
+                        caption: 'FECHA CARGA',
+                        dataField: "fecha_carga",
+                        dataType: "date",
+                        format: "dd/MM/yyyy HH:mm",
+                        width: 180,                        
+                    }, {
+                        dataField: "usuario",
+                        groupIndex: 0,
+                        sortOrder: "asc",                        
+                    }],
+                    filterRow: { visible: true },
+                    searchPanel: { visible: true },
+                    groupPanel: { visible: true },
+                    selection: { mode: "single" },                    
+                    summary: {
+                        groupItems: [{
+                            summaryType: "count"
+                        }]
+                    },                   
+                    //export: { enabled: true },
+                    onExporting: function (e) {
+                        const workbook = new ExcelJS.Workbook();
+                        const worksheet = workbook.addWorksheet("Main sheet");
+                        DevExpress.excelExporter.exportDataGrid({
+                            worksheet: worksheet,
+                            component: e.component,
+                        }).then(function () {
+                            workbook.xlsx.writeBuffer().then(function (buffer) {
+                                saveAs(new Blob([buffer], { type: "application/octet-stream" }), "DataGrid.xlsx");
+                            });
+                        });
+                        e.cancel = true;
+                    }
+                });
+            });
+            //------ End DxDataGrid
+
+        }); 
+    }
+});
+
+async function funGetHistorialArchivos() {
+    return historial = await funGetHistorialArchivosFromDB();
+};
+
+function funGetHistorialArchivosFromDB() {
+    var url = "/Microbases/funGetHistorialArchivos";
+    return $.get(url, {}, function (data) {
+        //console.log(data);
     });
 }
