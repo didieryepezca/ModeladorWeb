@@ -376,6 +376,15 @@ namespace ModeladorApp.Controllers
                 }
                 else
                 {
+
+                    xfile.estado_archivo = "ERROR";
+                    xfile.nombre_archivo = file.FileName;
+                    xfile.observaciones = observaciones;
+                    xfile.usuario = user.Result.UsuarioNombreCompleto;
+                    xfile.fecha_carga = DateTime.Now;
+
+                    var model = files_da.InsertArchivo(xfile);
+
                     jres = new { msg = "Hubo un error con el archivo", registros = "ERROR" };
                     return Json(jres);
                 }                
@@ -393,9 +402,6 @@ namespace ModeladorApp.Controllers
             var archivos = da.getArchivos();
             return Json(archivos);
         }
-
-
-
 
     }
 }
