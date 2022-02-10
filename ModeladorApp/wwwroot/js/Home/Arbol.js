@@ -32,7 +32,16 @@ async function loadTree(firstPyID, vPermiso) {
 
     if (data.length >= 1) {
 
-        $("#loader").hide();
+        //---------------------------- Bloqueamos los tabs
+        var disabledTabs = document.querySelectorAll('.nav-link.disabled');
+        //console.log(disabledTabs);  
+        for (t = 0; t <= disabledTabs.length - 1; t++) {
+            disabledTabs[t].classList.remove("disabled"); //desbloqueamos los tabs          
+        }
+        $("#loader").hide(); //Ocultamos el Loader
+        //--------------------------------------->>
+
+        $('.nav-link.disabled').removeAttr('disabled')
 
         if (firstPyID != 0) {
 
