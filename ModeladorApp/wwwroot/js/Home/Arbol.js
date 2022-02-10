@@ -2825,7 +2825,7 @@ async function modalInsertMicroDB(parentId, treeReach, pySelected) {
     //------------------------------------------> Modal Cancel - Apply Options
     footerBtns = footerBtns + '<div class="modal-footer" id="footer_options_equipos">';
     footerBtns = footerBtns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
-    footerBtns = footerBtns + '<button id="btnAddEquipos" onclick="fnAddEquipos(`' + treeReach + '`, `' + parentId + '`, `' + pySelected + '`);" style="display:none" type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>';
+    footerBtns = footerBtns + '<button id="btnAddEquipos" onclick="fnAddEquipos(`' + treeReach + '`, `' + parentId + '`, `' + pySelected + '`);" style="display:none" type="button" class="btn btn-primary">Agregar</button>';
     footerBtns = footerBtns + '</div>';
 
     $('#modalInsertMicroDB').append(footerBtns).fadeIn(300000);
@@ -2868,16 +2868,34 @@ function fnAddEquipos(treeReach, parentId, pySelected) {
     //console.log(checkedEquipos);
     //console.log(treeReach);
     //console.log(parentId);    
-    var equiposToTree = JSON.stringify(checkedEquipos);   
-    var insercion = funInsertEquiposToTree(equiposToTree, parentId, pySelected);
-    insercion.then(function (response) {
-        if (response > 0) {            
-            var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
-            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
-            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
-            Swal.fire('HECHO', 'Se agregaron los Equipos y características correctamente.', 'success')
+
+    var equiposToTree = JSON.stringify(checkedEquipos);
+
+    Swal.fire({
+        title: '¿Estás seguro que deseas agregarlos?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: `Si`,
+        denyButtonText: `Don't save`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+            $('#modal-insert-microdb').modal('hide');
+            //------------------------>>AJAX 
+            var insercion = funInsertEquiposToTree(equiposToTree, parentId, pySelected);
+            insercion.then(function (response) {
+                if (response > 0) {
+                    var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
+                    var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+                    nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+                    Swal.fire('HECHO', 'Se agregaron los Equipos y características correctamente.', 'success')
+                }
+                else { Swal.fire('ADVERTENCIA', 'Hubo un problema o los equipos que intentas agregar ya existen', 'warning') }
+            });
+            //------------------------>>AJAX                                                                 
+        } else if (result.isDenied) {
+            Swal.fire('No', '', 'info')
         }
-        else { Swal.fire('ADVERTENCIA', 'Hubo un problema al agregar los Equipos', 'warning') }
     });
 }
 

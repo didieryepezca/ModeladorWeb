@@ -45,8 +45,7 @@ namespace ModeladorApp.Data
         //Tabla de Usuarios
         public virtual DbSet<ApplicationUser> ApplicationUser { get; set; }
         public virtual DbSet<TB_PROYECTO> TB_PROYECTO { get; set; }
-        public virtual DbSet<TB_PERMISOS> TB_PERMISOS { get; set; }
-        public virtual DbSet<TB_NIVEL> TB_NIVEL { get; set; }
+        public virtual DbSet<TB_PERMISOS> TB_PERMISOS { get; set; }      
         public virtual DbSet<TB_NIVEL_INFO> TB_NIVEL_INFO { get; set; }
         public virtual DbSet<TB_NIVEL_COLUMN_TITLES> TB_NIVEL_COLUMN_TITLES { get; set; }        
         public virtual DbSet<TB_TREE> TB_TREE { get; set; }

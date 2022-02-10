@@ -208,8 +208,9 @@ namespace ModeladorApp.Controllers
                 //---- > delete styles 
                 List<TB_TREE_STYLE> styles = new List<TB_TREE_STYLE>();
                 styles = sda.GetAllStylesFromLevel(Id, "").ToList();
-                for (int s = 0; s < styles.Count; s++) {
-                    sda.deleteNivelStyle(styles[s].StyleID);                
+                for (int s = 0; s < styles.Count; s++)
+                {
+                    sda.deleteNivelStyle(styles[s].StyleID);
                 }
 
                 //---
@@ -1108,9 +1109,10 @@ namespace ModeladorApp.Controllers
                 TB_TREE_STYLE styleToDelete = new TB_TREE_STYLE();
                 styleToDelete = da.GetAllStylesFromLevel(nivelID, campo).Where(r => r.style == style && r.campo == campo).FirstOrDefault();
 
-                if (styleToDelete != null) {
+                if (styleToDelete != null)
+                {
                     modelcount = da.deleteNivelStyle(styleToDelete.StyleID);
-                }                
+                }
                 return modelcount;
             }
             catch (Exception se)
@@ -1123,10 +1125,10 @@ namespace ModeladorApp.Controllers
         class CaracteristicaEquipo
         {
             public int idC;
-            public int idE;             
+            public int idE;
         }
-        public int funInsertEquiposToTreeInDB(string datos, int idPadre, int projectId) {
-
+        public int funInsertEquiposToTreeInDB(string datos, int idPadre, int projectId)
+        {
             var result = "0";
             var daE = new EquipoDA();
             var daC = new EquipoCaracteristicaDA();
@@ -1135,7 +1137,8 @@ namespace ModeladorApp.Controllers
 
             var modelcount = 0;
 
-            try { 
+            try
+            {
                 //deserializamos una lista de objetos(idCaracteristica, idEquipo) para insertarlos.
                 var caracteristicas = JsonConvert.DeserializeObject<List<CaracteristicaEquipo>>(datos);
 
@@ -1143,10 +1146,15 @@ namespace ModeladorApp.Controllers
                 List<int> equiposDistintos = caracteristicas.Select(o => o.idE).Distinct().ToList();
                 List<int> caracDistintas = caracteristicas.Select(o => o.idC).Distinct().ToList();
 
-                foreach (int idEquipo in equiposDistintos) {
-
+                foreach (int idEquipo in equiposDistintos)
+                {
                     TB_EQUIPO e = new TB_EQUIPO();
                     e = daE.getEquipo(idEquipo);
+
+                    TB_TREE lvlFoundEquipo = new TB_TREE();
+                    lvlFoundEquipo = dat.getInfoLevelBeforeDuplicate(e.NOMBRE_EQUIPO, projectId);
+
+                    int idEquipoParent = 0;
 
                     TB_TREE te = new TB_TREE();
 
@@ -1157,49 +1165,82 @@ namespace ModeladorApp.Controllers
                     te.proyectoId = projectId;
                     te.fechaCreacion = DateTime.Now;
 
-                    modelcount = dat.InserNewLevel(te);
-                    modelcount = modelcount + 1;
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dat.InserNewLevel(te);
+                        modelcount = modelcount + 1;
+                    }
+                    else {
+                        idEquipoParent = lvlFoundEquipo.id;
+                    }
 
                     TB_NIVEL_INFO infoe = new TB_NIVEL_INFO();
 
-                    infoe.NivelID = te.id;
+                    if (lvlFoundEquipo == null) { infoe.NivelID = te.id; }
+                    else { infoe.NivelID = lvlFoundEquipo.id; }
+
                     infoe.Informacion = Convert.ToString(e.NCR_EQUIPO);
                     infoe.Usuario = "APLICACION";
                     infoe.FechaIngreso = DateTime.Now;
 
-                    modelcount = dai.InsertNivelInfo(infoe);
-                    modelcount = modelcount + 1;
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infoe);
+                        modelcount = modelcount + 1;
+                    }
 
-                    foreach (int idCar in caracDistintas) {
-
+                    foreach (int idCar in caracDistintas)
+                    {
                         TB_EQUIPO_CARACTERISTICA carEncontrada = new TB_EQUIPO_CARACTERISTICA();
+                        //obtenemos las caracteristicas segun los ID que enviamos en AJAX.
                         carEncontrada = daC.GetEquipoCaracteristicas(e.ID_EQUIPO).Where(r => r.ID_EQUIPO_C == idCar).FirstOrDefault();
                         if (carEncontrada != null)
                         {
+                            TB_TREE lvlFoundCar = new TB_TREE();
+                            lvlFoundCar = dat.getInfoLevelBeforeDuplicate(carEncontrada.NOMBRE_CARACTERISTICA, projectId);                           
+
                             TB_TREE tc = new TB_TREE();
 
                             tc.title = carEncontrada.NOMBRE_CARACTERISTICA;
                             tc.descripcion = null;
                             tc.lazy = true;
-                            tc.parentId = te.id;
+
+                            if (lvlFoundCar == null && te.id == 0) { tc.parentId = idEquipoParent; }
+                            else if (lvlFoundCar == null ) { tc.parentId = te.id; }
+                           
+
                             tc.proyectoId = projectId;
                             tc.fechaCreacion = DateTime.Now;
 
-                            modelcount = dat.InserNewLevel(tc);
-                            modelcount = modelcount + 1;
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dat.InserNewLevel(tc);
+                                modelcount = modelcount + 1;
+                            }
 
+                            //---------- Si se quiere agregar mas datos a la grilla tendrá que contarse la cantidad de columnas
+                            //---------- y hacer la cantidad de Inserts necesarios a TB_NIVEL_INFO con el mismo ID basados en el conteo de columnas.
                             TB_NIVEL_INFO infoc = new TB_NIVEL_INFO();
 
-                            infoc.NivelID = tc.id;
+                            if (lvlFoundCar == null && te.id == 0) { 
+                                tc.parentId = idEquipoParent; 
+                                infoc.NivelID = tc.id; 
+                            } else if (lvlFoundCar == null ) { infoc.NivelID = tc.id; }                          
+
                             infoc.Informacion = Convert.ToString(carEncontrada.NCR_CARACTERISTICA);
                             infoc.Usuario = "APLICACION";
                             infoc.FechaIngreso = DateTime.Now;
 
-                            modelcount = dai.InsertNivelInfo(infoc);
-                            modelcount = modelcount + 1;
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infoc);
+                                modelcount = modelcount + 1;
+                            }
+                            //----------------------------->
                         }
                     }
                 }
+
                 return modelcount;
             }
             catch (Exception se)
@@ -1209,40 +1250,7 @@ namespace ModeladorApp.Controllers
             }
         }
 
-        //---------------------------------TREE VIEW REAL
-
-
-        //---------------------------------TREE VIEW ANTERIOR
-        [Authorize]
-        public IActionResult Index()
-        {
-            var user = userManager.GetUserAsync(User);
-            ViewBag.usuarioId = user.Result.Id;
-            var userId = user.Result.Id;
-
-            var daPer = new HomeDA();
-            var proyectos = daPer.getProyectosWithPermisos(userId);
-
-            return View(proyectos);
-        }
-
-        public List<TB_NIVEL> funGetMaster(string mode, int parent)
-        {
-            var da = new NivelDA();
-            var master = da.GetMaster().ToList();
-            return master;
-        }
-
-        public JsonResult funGetSubNiveles(int parentId)
-        {
-            var da = new NivelDA();
-
-            System.Threading.Thread.Sleep(100);
-            var subMenus = da.GetSubNiveles(parentId);
-
-            return Json(subMenus);
-        }
-        //---------------------------------TREE VIEW ANTERIOR
+        //---------------------------------TREE VIEW REAL        
 
     }
 }

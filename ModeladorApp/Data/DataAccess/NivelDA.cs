@@ -157,46 +157,19 @@ namespace ModeladorApp.Data.DataAccess
             return result;
         }
 
-        //--------------------------------- TREE VIEW ANTERIOR
-        public IEnumerable<TB_NIVEL> GetMaster()
+
+        //--------------------> comprobar si el ya existe en la BD antes de ingresar un duplicado de la microbase.
+        public TB_TREE getInfoLevelBeforeDuplicate(string titulo, int pyId)
         {
-            var ana = new List<TB_NIVEL>();
-
-            using (var db = new ApplicationDbContext())
+            var result = new TB_TREE();
             {
-                IQueryable<TB_NIVEL> query = db.TB_NIVEL;
-
-                query = query.Where(item => item.ParentNivelID == 0 && item.ProyectoId == 0);
-
-                query = query.OrderBy(p => p.NivelID);
-
-                return query.ToList();
-            }
-        }
-
-        public IEnumerable<TB_NIVEL> GetSubNiveles(int pId)
-        {
-            var ana = new List<TB_NIVEL>();
-
-            using (var db = new ApplicationDbContext())
-            {
-                IQueryable<TB_NIVEL> query = db.TB_NIVEL;
-
-                if (pId > 0)
+                using (var db = new ApplicationDbContext())
                 {
-                    query = query.Where(item => item.ParentNivelID == pId);
+                    result = db.TB_TREE.Where(item => item.title == titulo && item.proyectoId == pyId).FirstOrDefault();
                 }
-
-                query = query.OrderBy(p => p.NivelID);
-
-                return query.ToList();
             }
+            return result;
         }
-
-
-
-
-        
 
 
 

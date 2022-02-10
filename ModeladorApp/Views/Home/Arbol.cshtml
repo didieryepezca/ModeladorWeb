@@ -79,22 +79,21 @@
             if (item.ProyectoID == ViewBag.firstPyID)
             {
                 <li class="nav-item">
-                    <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link active"
+                    <a class="nav-link active disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" 
                        data-bs-toggle="tab"><strong>@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</strong>(@item.Permiso)</a>
                 </li>
-
             }
             else
             {
                 <li class="nav-item">
-                    <a href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" class="nav-link"
+                    <a class="nav-link disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" 
                        data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
                 </li>
             }
         }
 
         <li class="nav-item">
-            <a href="#master" onclick="loadTree(0)" class="nav-link"
+            <a class="nav-link disabled" href="#master" onclick="loadTree(0)" 
                data-bs-toggle="tab">MASTER</a>
         </li>
 
