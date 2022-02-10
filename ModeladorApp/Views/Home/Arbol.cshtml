@@ -63,6 +63,10 @@
         #tblAdminSecondInput .naranja {
             background-color: orange;
         }
+
+        #tblDataFromMicroDB .equiponaranja {
+            background-color: orange;
+        }
     </style>
 </head>
 
@@ -777,6 +781,42 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal modal-blur fade" id="modal-insert-microdb" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-full-width modal-dialog-centered" role="document">
+
+            <div class="modal-content" id="modalInsertMicroDB">
+                <div class="modal-header">
+                    <h5 class="modal-title">Microbases de Excel</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    Elija el equipo y sus variables respectivas que desea insertar.
+
+                    <div class="table-responsive">
+                        <table id="tblDataFromMicroDB" class="table card-table table-vcenter text-nowrap datatable">
+                            <thead>
+                                <tr class="header">
+                                    <th><input type="checkbox" disabled></th>
+                                    <th>Equipo</th>
+                                    <th>NRC</th>
+                                </tr>
+                            </thead>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
 </body>
 
 </html>

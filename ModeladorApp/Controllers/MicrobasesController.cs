@@ -128,6 +128,7 @@ namespace ModeladorApp.Controllers
             var da = new EquipoCaracteristicaDA();
             try
             {
+                //deserializamos el Json que enviamos desde el Front para convertirlo en nuestro objeto.
                 TB_EQUIPO_CARACTERISTICA caracteristica = JsonConvert.DeserializeObject<TB_EQUIPO_CARACTERISTICA>(datos);
                 TB_EQUIPO_CARACTERISTICA e = new TB_EQUIPO_CARACTERISTICA();
 
@@ -153,6 +154,7 @@ namespace ModeladorApp.Controllers
             var result = "0";
             var cDa = new EquipoCaracteristicaDA();
 
+            //deserializamos el Json que enviamos desde el Front para convertirlo en nuestro objeto.
             TB_EQUIPO_CARACTERISTICA caracteristica = JsonConvert.DeserializeObject<TB_EQUIPO_CARACTERISTICA>(datos);
             try
             {

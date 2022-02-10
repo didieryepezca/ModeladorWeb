@@ -61,5 +61,18 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
+        public TB_EQUIPO getEquipo(int idEquipo)
+        {
+            var result = new TB_EQUIPO();
+            {
+                using (var db = new ApplicationDbContext())
+                {
+                    result = db.TB_EQUIPO.Where(item => item.ID_EQUIPO == idEquipo).FirstOrDefault();
+                }
+            }
+            return result;
+        }
+
+
     }
 }

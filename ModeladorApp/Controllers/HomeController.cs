@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using ModeladorApp.Models.Entities;
 using ModeladorApp.Data.DataAccess;
+using Newtonsoft.Json;
 
 namespace ModeladorApp.Controllers
 {
@@ -1118,8 +1119,97 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
-        //---------------------------------TREE VIEW REAL
 
+        class CaracteristicaEquipo
+        {
+            public int idC;
+            public int idE;             
+        }
+        public int funInsertEquiposToTreeInDB(string datos, int idPadre, int projectId) {
+
+            var result = "0";
+            var daE = new EquipoDA();
+            var daC = new EquipoCaracteristicaDA();
+            var dat = new NivelDA();
+            var dai = new NivelInfoDA();
+
+            var modelcount = 0;
+
+            try { 
+                //deserializamos una lista de objetos(idCaracteristica, idEquipo) para insertarlos.
+                var caracteristicas = JsonConvert.DeserializeObject<List<CaracteristicaEquipo>>(datos);
+
+                //obtenemos los ids de los equipos distintos.
+                List<int> equiposDistintos = caracteristicas.Select(o => o.idE).Distinct().ToList();
+                List<int> caracDistintas = caracteristicas.Select(o => o.idC).Distinct().ToList();
+
+                foreach (int idEquipo in equiposDistintos) {
+
+                    TB_EQUIPO e = new TB_EQUIPO();
+                    e = daE.getEquipo(idEquipo);
+
+                    TB_TREE te = new TB_TREE();
+
+                    te.title = e.NOMBRE_EQUIPO;
+                    te.descripcion = null;
+                    te.lazy = true;
+                    te.parentId = idPadre;
+                    te.proyectoId = projectId;
+                    te.fechaCreacion = DateTime.Now;
+
+                    modelcount = dat.InserNewLevel(te);
+                    modelcount = modelcount + 1;
+
+                    TB_NIVEL_INFO infoe = new TB_NIVEL_INFO();
+
+                    infoe.NivelID = te.id;
+                    infoe.Informacion = Convert.ToString(e.NCR_EQUIPO);
+                    infoe.Usuario = "APLICACION";
+                    infoe.FechaIngreso = DateTime.Now;
+
+                    modelcount = dai.InsertNivelInfo(infoe);
+                    modelcount = modelcount + 1;
+
+                    foreach (int idCar in caracDistintas) {
+
+                        TB_EQUIPO_CARACTERISTICA carEncontrada = new TB_EQUIPO_CARACTERISTICA();
+                        carEncontrada = daC.GetEquipoCaracteristicas(e.ID_EQUIPO).Where(r => r.ID_EQUIPO_C == idCar).FirstOrDefault();
+                        if (carEncontrada != null)
+                        {
+                            TB_TREE tc = new TB_TREE();
+
+                            tc.title = carEncontrada.NOMBRE_CARACTERISTICA;
+                            tc.descripcion = null;
+                            tc.lazy = true;
+                            tc.parentId = te.id;
+                            tc.proyectoId = projectId;
+                            tc.fechaCreacion = DateTime.Now;
+
+                            modelcount = dat.InserNewLevel(tc);
+                            modelcount = modelcount + 1;
+
+                            TB_NIVEL_INFO infoc = new TB_NIVEL_INFO();
+
+                            infoc.NivelID = tc.id;
+                            infoc.Informacion = Convert.ToString(carEncontrada.NCR_CARACTERISTICA);
+                            infoc.Usuario = "APLICACION";
+                            infoc.FechaIngreso = DateTime.Now;
+
+                            modelcount = dai.InsertNivelInfo(infoc);
+                            modelcount = modelcount + 1;
+                        }
+                    }
+                }
+                return modelcount;
+            }
+            catch (Exception se)
+            {
+                result = se.Message;
+                return 0;
+            }
+        }
+
+        //---------------------------------TREE VIEW REAL
 
 
         //---------------------------------TREE VIEW ANTERIOR

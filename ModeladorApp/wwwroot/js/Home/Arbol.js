@@ -1284,6 +1284,13 @@ async function loadTree(firstPyID, vPermiso) {
                             }
 
                             break;
+                        case "insertmicrodb":
+                            console.log("Ingresando microbase de excel...");
+                            $('#modal-insert-microdb').modal('show');
+                            var parentId = node.data.id;
+                            modalInsertMicroDB(parentId, treeReach, pySelected);
+
+                            break;
                         //case "hidegrid":
                         //    //tree.applyCommand(data.cmd, node);
                         //    console.log("ocultar columnas");
@@ -1408,6 +1415,9 @@ async function loadTree(firstPyID, vPermiso) {
                     {
                         title: "Mostrar / Ocultar Elementos",
                         cmd: "showhidenodes",
+                    },{
+                        title: "<strong>Ingresar Microbase</strong>",
+                        cmd: "insertmicrodb",
                     },
                     { title: "----" },
                     {
@@ -2760,3 +2770,142 @@ var tableToExcel = (function () {
         //    $('#' + tree + ' tbody tr').append('<td id=td' + nodoId +'><input type="text" placeholder="Ingrese algo"></td>');
         //}
 
+//------------------------------------------------------->> FASE 2 09/02/2022
+//------------------------------------------------------------------------->>
+
+async function modalInsertMicroDB(parentId, treeReach, pySelected) {    
+    //pySelected
+    $('#footer_options_equipos').remove();
+    var footerBtns = "";
+    $('#tbodyDataEquipos').remove();
+    var tableDataEquipos = "";    
+
+    var equipos = await funGetAllEquiposFromDB();   
+        
+    tableDataEquipos = tableDataEquipos + '<tbody id="tbodyDataEquipos">';
+
+    equipos.forEach(function element(ele) {
+
+        tableDataEquipos = tableDataEquipos + '<tr class="header equiponaranja" style="cursor:pointer;">';
+        tableDataEquipos = tableDataEquipos + '<td><input type="checkbox" disabled></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.nombrE_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.ncR_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '</tr>';
+
+            //---------------------------------------Caracteristicas
+            var caracteristica = function () {
+                var salidaAjax = null;
+                $.ajax({
+                    url: '/Microbases/funGetEquipoCaracteristicas',
+                    type: "GET",
+                    dataType: "JSON",
+                    async: false,
+                    data: { "idEquipo": ele.iD_EQUIPO },
+                    success: function (data) {                       
+                        salidaAjax = data;
+                    }
+                });
+                return salidaAjax;
+            }();
+          
+            caracteristica.forEach(function element(elec) {
+                        tableDataEquipos = tableDataEquipos + '<tr class="" style="cursor:pointer;">';
+                tableDataEquipos = tableDataEquipos + '<td><input class="checkbox_equipo" onclick="fnSetEquipo()" value="' + [elec.iD_EQUIPO_C, elec.iD_EQUIPO] + '" data-parsley-multiple="checkbox" type="checkbox"></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.nombrE_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.ncR_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '</tr>';
+            });
+            //---------------------------------------Caracteristicas
+    });
+
+    tableDataEquipos = tableDataEquipos + '</tbody>';
+    
+    $('#tblDataFromMicroDB').append(tableDataEquipos).fadeIn(300000);       
+
+    //------------------------------------------> Modal Cancel - Apply Options
+    footerBtns = footerBtns + '<div class="modal-footer" id="footer_options_equipos">';
+    footerBtns = footerBtns + '<button type="button" class="btn me-auto" data-bs-dismiss="modal">Cancelar</button>';
+    footerBtns = footerBtns + '<button id="btnAddEquipos" onclick="fnAddEquipos(`' + treeReach + '`, `' + parentId + '`, `' + pySelected + '`);" style="display:none" type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar</button>';
+    footerBtns = footerBtns + '</div>';
+
+    $('#modalInsertMicroDB').append(footerBtns).fadeIn(300000);
+
+    //-------> desglose de columnas para seleccionar las caracteristicas de los equipos
+    $('#tblDataFromMicroDB tr:not(.header)').hide();
+    $('#tblDataFromMicroDB .header').click(function () {
+        $(this).nextUntil('tr.header').slideToggle(300);
+    });
+}
+
+
+var checkedEquipos = [];
+function caracteristicaEquipo(idC, idE) {
+    this.idC = idC;
+    this.idE = idE;
+};
+function fnSetEquipo() {
+    //console.log("ID Caracteristica:", vIdC)
+    //console.log("ID Equipo Padre:", vIdE)
+    if ($('input.checkbox_equipo').is(':checked') == true) {
+        checkedEquipos = [];
+        var m = jQuery('input:checkbox[class=checkbox_equipo]:checked').length;
+        if (m > 0) {
+            jQuery('input:checkbox[class=checkbox_equipo]:checked').each(function () {
+                const ids = $(this).val();
+                const splitedId = ids.split(",");                
+                checkedEquipos.push(new caracteristicaEquipo(splitedId[0], splitedId[1]));
+            });
+            //console.log(checkedEquipos);
+            $('#btnAddEquipos').show();
+        }
+    } else {
+        checkedEquipos = [];
+        $('#btnAddEquipos').hide();
+    }
+}
+
+function fnAddEquipos(treeReach, parentId, pySelected) {
+    //console.log(checkedEquipos);
+    //console.log(treeReach);
+    //console.log(parentId);    
+    var equiposToTree = JSON.stringify(checkedEquipos);   
+    var insercion = funInsertEquiposToTree(equiposToTree, parentId, pySelected);
+    insercion.then(function (response) {
+        if (response > 0) {            
+            var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
+            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+            Swal.fire('HECHO', 'Se agregaron los Equipos y características correctamente.', 'success')
+        }
+        else { Swal.fire('ADVERTENCIA', 'Hubo un problema al agregar los Equipos', 'warning') }
+    });
+}
+
+//------------------------------------- Insert Equipo
+async function funInsertEquiposToTree(data, parentId, pySelected) {
+    //console.log(datos);
+    return equipos = await InsertEquiposToTreeInDB(data, parentId, pySelected);
+};
+
+function InsertEquiposToTreeInDB(data, parentId, pySelected) {
+    //console.log("hola");
+    //console.log(data);
+    return $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: "/Home/funInsertEquiposToTreeInDB",
+        data: { "datos": data, "idPadre": parentId, "projectId": pySelected},
+        success: function (response) {
+            //console.log(response);
+        },
+    });
+}
+
+//--------------------------------------> Llamada DB Equipos.
+function funGetAllEquiposFromDB() {
+    var url = "/Microbases/funGetAllEquipos";
+    return $.get(url, {}, function (data) {
+        //console.log(data);
+    });
+};
+//--------------------------------------->>
