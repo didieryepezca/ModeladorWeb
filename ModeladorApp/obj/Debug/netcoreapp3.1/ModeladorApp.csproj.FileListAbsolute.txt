@@ -434,8 +434,8 @@ C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\Mo
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\ModeladorApp.genruntimeconfig.cache
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\Razor\Views\Proyectos\VerProyectos.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\Razor\Views\Proyectos\OverviewProyecto.cshtml.g.cs
-C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\ModeladorApp.csproj.AssemblyReference.cache
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\Razor\Views\Home\Arbol.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\Razor\Views\Microbases\Administrar.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\bin\Debug\netcoreapp3.1\Excel.dll
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\bin\Debug\netcoreapp3.1\ICSharpCode.SharpZipLib.dll
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Debug\netcoreapp3.1\ModeladorApp.csproj.AssemblyReference.cache
