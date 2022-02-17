@@ -159,13 +159,15 @@ namespace ModeladorApp.Data.DataAccess
 
 
         //--------------------> comprobar si el ya existe en la BD antes de ingresar un duplicado de la microbase.
-        public TB_TREE getInfoLevelBeforeDuplicate(string titulo, int pyId)
+        public TB_TREE getInfoLevelBeforeDuplicate(string titulo, int pyId, int parentId)
         {
             var result = new TB_TREE();
             {
                 using (var db = new ApplicationDbContext())
                 {
-                    result = db.TB_TREE.Where(item => item.title == titulo && item.proyectoId == pyId).FirstOrDefault();
+                    result = db.TB_TREE.Where(item => item.title == titulo && 
+                                                      item.proyectoId == pyId && 
+                                                      item.parentId == parentId).FirstOrDefault();
                 }
             }
             return result;

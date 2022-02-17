@@ -31,6 +31,7 @@
     ".NETCoreApp,Version=v3.1": {
       "ModeladorApp/1.0.0": {
         "dependencies": {
+          "ExcelDataReader": "2.1.2.3",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "3.1.19",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "3.1.21",
           "Microsoft.AspNetCore.Identity.UI": "3.1.21",
@@ -307,6 +308,20 @@
         },
         "compile": {
           "ModeladorApp.dll": {}
+        }
+      },
+      "ExcelDataReader/2.1.2.3": {
+        "dependencies": {
+          "SharpZipLib": "0.86.0"
+        },
+        "runtime": {
+          "lib/net45/Excel.dll": {
+            "assemblyVersion": "2.1.2.3",
+            "fileVersion": "2.1.2.3"
+          }
+        },
+        "compile": {
+          "lib/net45/Excel.dll": {}
         }
       },
       "Microsoft.AspNetCore.Cryptography.Internal/3.1.21": {
@@ -1434,6 +1449,17 @@
             "assetType": "native",
             "fileVersion": "4.6.25512.1"
           }
+        }
+      },
+      "SharpZipLib/0.86.0": {
+        "runtime": {
+          "lib/20/ICSharpCode.SharpZipLib.dll": {
+            "assemblyVersion": "0.86.0.518",
+            "fileVersion": "0.86.0.518"
+          }
+        },
+        "compile": {
+          "lib/20/ICSharpCode.SharpZipLib.dll": {}
         }
       },
       "System.AppContext/4.3.0": {
@@ -3969,6 +3995,13 @@
       "serviceable": false,
       "sha512": ""
     },
+    "ExcelDataReader/2.1.2.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-SAXvsLfc9Fy0XiUr8iz/HvpK1ILYwPk5Y/yFuXeOx3jTnWjN984Epx4CQTDxOfndWB4Vg0208vWYev/vuud2Zw==",
+      "path": "exceldatareader/2.1.2.3",
+      "hashPath": "exceldatareader.2.1.2.3.nupkg.sha512"
+    },
     "Microsoft.AspNetCore.Cryptography.Internal/3.1.21": {
       "type": "package",
       "serviceable": true,
@@ -4563,6 +4596,13 @@
       "sha512": "sha512-YhEdSQUsTx+C8m8Bw7ar5/VesXvCFMItyZF7G1AUY+OM0VPZUOeAVpJ4Wl6fydBGUYZxojTDR3I6Bj/+BPkJNA==",
       "path": "runtime.win-x86.runtime.native.system.data.sqlclient.sni/4.4.0",
       "hashPath": "runtime.win-x86.runtime.native.system.data.sqlclient.sni.4.4.0.nupkg.sha512"
+    },
+    "SharpZipLib/0.86.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5DbS1SlKLMi+WG00Cm0ueYf2oyXJrowETQk8nx96rmdjTuHsA3laPykGV7Sxi0R5Xxfx0Kh/EfacAZ1f6M7y/g==",
+      "path": "sharpziplib/0.86.0",
+      "hashPath": "sharpziplib.0.86.0.nupkg.sha512"
     },
     "System.AppContext/4.3.0": {
       "type": "package",

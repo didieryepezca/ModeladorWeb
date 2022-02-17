@@ -1078,8 +1078,8 @@ namespace ModeladorApp.Controllers
 
             foreach (string campo in arrayCampos)
             {
-                string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "blue", "azure", "indigo"
-                                                    , "purple", "pink", "red", "orange", "yellow", "lime"
+                string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "#206bc4", "#4299e1", "#4263eb"
+                                                    , "#ae3ec9", "#d6336c", "#d63939", "#f76707", "#f59f00", "#74b816"
                                                     , "8px", "10px", "12px", "14px", "16px"};
 
                 foreach (string estilo in arrayColorsNSizes)
@@ -1152,7 +1152,7 @@ namespace ModeladorApp.Controllers
                     e = daE.getEquipo(idEquipo);
 
                     TB_TREE lvlFoundEquipo = new TB_TREE();
-                    lvlFoundEquipo = dat.getInfoLevelBeforeDuplicate(e.NOMBRE_EQUIPO, projectId);
+                    lvlFoundEquipo = dat.getInfoLevelBeforeDuplicate(e.NOMBRE_EQUIPO, projectId, idPadre);
 
                     int idEquipoParent = 0;
 
@@ -1197,7 +1197,7 @@ namespace ModeladorApp.Controllers
                         if (carEncontrada != null)
                         {
                             TB_TREE lvlFoundCar = new TB_TREE();
-                            lvlFoundCar = dat.getInfoLevelBeforeDuplicate(carEncontrada.NOMBRE_CARACTERISTICA, projectId);                           
+                            lvlFoundCar = dat.getInfoLevelBeforeDuplicate(carEncontrada.NOMBRE_CARACTERISTICA, projectId, idEquipoParent);                           
 
                             TB_TREE tc = new TB_TREE();
 

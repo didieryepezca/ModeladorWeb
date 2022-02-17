@@ -421,7 +421,6 @@ C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewImports.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Areas\Identity\Pages\_ViewStart.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Home\Arbol.cshtml.g.cs
-C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Proyectos\OverviewProyecto.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Proyectos\VerProyectos.cshtml.g.cs
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Shared\Error.cshtml.g.cs
@@ -437,3 +436,6 @@ C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\ModeladorApp.dll
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\ModeladorApp.pdb
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\ModeladorApp.genruntimeconfig.cache
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\bin\Release\netcoreapp3.1\Excel.dll
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\bin\Release\netcoreapp3.1\ICSharpCode.SharpZipLib.dll
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\Razor\Views\Microbases\Administrar.cshtml.g.cs
