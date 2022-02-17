@@ -1078,8 +1078,15 @@ namespace ModeladorApp.Controllers
 
             foreach (string campo in arrayCampos)
             {
-                string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "#206bc4", "#4299e1", "#4263eb"
-                                                    , "#ae3ec9", "#d6336c", "#d63939", "#f76707", "#f59f00", "#74b816"
+                string[] arrayColorsNSizes = { "silver", "lightslategray", "grey", "dimgrey", "dark", "#206bc4"
+                                                , "#4299e1"
+                                                , "#4263eb"
+                                                , "#ae3ec9"
+                                                , "#d6336c"
+                                                , "#d63939"
+                                                , "#f76707"
+                                                , "#f59f00"
+                                                , "#74b816"
                                                     , "8px", "10px", "12px", "14px", "16px"};
 
                 foreach (string estilo in arrayColorsNSizes)

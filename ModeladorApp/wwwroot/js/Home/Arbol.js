@@ -283,7 +283,7 @@ async function loadTree(firstPyID, vPermiso) {
                                 } else if (estilosresponse[s].style == '#f59f00' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
                                 } else if (estilosresponse[s].style == '#74b816' && estilosresponse[s].campo == "titulo") {
-                                    node.span.children[2].children[1].style.color = estilosresponse[s].style;; //titulo
+                                    node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
                                 }
 
 

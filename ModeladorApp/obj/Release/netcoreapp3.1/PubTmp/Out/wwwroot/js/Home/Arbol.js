@@ -244,7 +244,7 @@ async function loadTree(firstPyID, vPermiso) {
 
                                 else if (estilosresponse[s].style == 'Lime') {
                                     node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO VERDE.
-                                } else if (estilosresponse[s].style == 'Aqua') {
+                                } else if (estilosresponse[s].style == 'SkyBlue') {
                                     node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO AZUL.
                                 } else if (estilosresponse[s].style == 'Yellow') {
                                     node.span.style.backgroundColor = estilosresponse[s].style;  //SUBRAYADO AMARILLO.
@@ -266,23 +266,23 @@ async function loadTree(firstPyID, vPermiso) {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
                                 } else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#206bc4' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'azure' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#4299e1' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'indigo' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#4263eb' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'purple' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#ae3ec9' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'pink' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#d6336c' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'red' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#d63939' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'orange' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#f76707' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'yellow' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#f59f00' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[0].style.color = estilosresponse[s].style;; //titulo
-                                } else if (estilosresponse[s].style == 'lime' && estilosresponse[s].campo == "titulo") {
+                                } else if (estilosresponse[s].style == '#74b816' && estilosresponse[s].campo == "titulo") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //titulo
                                 }
 
@@ -297,23 +297,23 @@ async function loadTree(firstPyID, vPermiso) {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
                                 } else if (estilosresponse[s].style == 'dark' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'blue' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#206bc4' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'azure' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#4299e1' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'indigo' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#4263eb' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'purple' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#ae3ec9' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'pink' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#d6336c' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'red' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#d63939' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'orange' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#f76707' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'yellow' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#f59f00' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
-                                } else if (estilosresponse[s].style == 'lime' && estilosresponse[s].campo == "descripcion") {
+                                } else if (estilosresponse[s].style == '#74b816' && estilosresponse[s].campo == "descripcion") {
                                     node.span.children[2].children[1].style.color = estilosresponse[s].style;; //descripcion
                                 }
 
@@ -509,9 +509,7 @@ async function loadTree(firstPyID, vPermiso) {
                                         if (result.isConfirmed) {
                                             //console.log(node.data.id); // id a eliminar padre e hijos.
                                             //------------------------>>AJAX Eliminar Nivel Padre e Hijos
-
                                             selectedNodes.forEach(function element(node) {
-
                                                 $.ajax({
                                                     type: "POST",
                                                     dataType: "json",
@@ -960,11 +958,11 @@ async function loadTree(firstPyID, vPermiso) {
 
                                 selectedNodes.forEach(function element(node) {
 
-                                    var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
+                                    var rpt = applyOrRemoveStyle(node.data.id, "SkyBlue", "STYLE_APPLY", "subrayado azul")
                                     rpt.then(function (styleresponse) {
                                         //console.log(styleresponse);
                                         if (styleresponse > 0) {
-                                            node.span.style.backgroundColor = "Aqua";
+                                            node.span.style.backgroundColor = "SkyBlue";
                                         } else {
                                             Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
                                         }
@@ -973,11 +971,11 @@ async function loadTree(firstPyID, vPermiso) {
 
                             } else {
 
-                                var rpt = applyOrRemoveStyle(node.data.id, "Aqua", "STYLE_APPLY", "subrayado azul")
+                                var rpt = applyOrRemoveStyle(node.data.id, "SkyBlue", "STYLE_APPLY", "subrayado azul")
                                 rpt.then(function (styleresponse) {
                                     //console.log(styleresponse);
                                     if (styleresponse > 0) {
-                                        node.span.style.backgroundColor = "Aqua";
+                                        node.span.style.backgroundColor = "SkyBlue";
                                     } else {
                                         Swal.fire('ERROR', 'Hubo un problema, si ya cuenta con un subrayado quítelo antes de agregar otro.', 'warning')
                                     }
