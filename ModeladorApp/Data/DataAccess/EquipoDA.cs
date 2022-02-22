@@ -32,7 +32,8 @@ namespace ModeladorApp.Data.DataAccess
             }
         }
 
-        public int UpdateEquipo(int id, string nombre, decimal ncr)
+        public int UpdateEquipo(int id, string nombre, decimal ncr, decimal cant, string und, decimal desc1, decimal subtotal1, decimal mrc,
+                                                decimal desc2, decimal subtotal2)
         {
             var result = 0;
 
@@ -40,7 +41,14 @@ namespace ModeladorApp.Data.DataAccess
             {
                 var eq = db.TB_EQUIPO.Where(item => item.ID_EQUIPO == id).FirstOrDefault();
                 eq.NOMBRE_EQUIPO = nombre;
-                eq.NCR_EQUIPO = ncr;                
+                eq.NRC_EQUIPO = ncr;
+                eq.CANT_EQUIPO = cant;
+                eq.UND_EQUIPO = und;
+                eq.DESC1_EQUIPO = desc1;
+                eq.SUB_TOTAL1_EQ = subtotal1;
+                eq.MRC_EQUIPO = mrc;
+                eq.DESC2_EQUIPO = desc2;
+                eq.SUB_TOTAL2_EQ = subtotal2;
 
                 result = db.SaveChanges();
             }

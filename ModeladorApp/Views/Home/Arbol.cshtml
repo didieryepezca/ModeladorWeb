@@ -3,10 +3,10 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
     <title>ON - Modelador Web</title>
-    @*<title>@ViewBag.strAplicacionTitulo | @ViewBag.Title</title>*@   
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-bootstrap-n/ui.fancytree.min.css">       
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-xp/ui.fancytree.min.css">      
+    @*<title>@ViewBag.strAplicacionTitulo | @ViewBag.Title</title>*@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-bootstrap-n/ui.fancytree.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.fancytree/2.38.0/skin-xp/ui.fancytree.min.css">
 
     <link rel="icon" type="image/x-icon" href="~/tree-app-icon.ico">
     <!-- jQuery v3.6.0 -->
@@ -80,21 +80,21 @@
             if (item.ProyectoID == ViewBag.firstPyID)
             {
                 <li class="nav-item">
-                    <a class="nav-link active disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" 
+                    <a class="nav-link active disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')"
                        data-bs-toggle="tab"><strong>@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto)</strong>(@item.Permiso)</a>
                 </li>
             }
             else
             {
                 <li class="nav-item">
-                    <a class="nav-link disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')" 
+                    <a class="nav-link disabled" href="#proyecto_@item.ProyectoID" onclick="loadTree('@item.ProyectoID', '@item.Permiso')"
                        data-bs-toggle="tab">@Html.DisplayFor(modelItem => item.TB_PROYECTO.NombreProyecto) (@item.Permiso)</a>
                 </li>
             }
         }
 
         <li class="nav-item">
-            <a class="nav-link disabled" href="#master" onclick="loadTree(0)" 
+            <a class="nav-link disabled" href="#master" onclick="loadTree(0)"
                data-bs-toggle="tab">MASTER</a>
         </li>
 
@@ -106,7 +106,7 @@
         <div class="card-body" id="loader">
             <div class="empty">
                 <div class="empty-img">
-                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">                   
+                    <img src="https://miro.medium.com/max/875/1*CsJ05WEGfunYMLGfsT2sXA.gif" height="128">
                 </div>
                 <p class="empty-title">Cargando proyectos...</p>
             </div>
@@ -119,49 +119,56 @@
 
                 <div class="row align-items-center">
                     <div class="col-auto ms-auto d-print-none">
-                        <div class="btn-list">
-
+                        <div class="btn-list">                            
                             <span class="d-none d-sm-inline">
                                 <a href="#" class="btn btn-primary" onclick="loadColumnas('tree_0',0);" data-bs-toggle="modal" data-bs-target="#modal-simple">
                                     Columnas
                                 </a>
                             </span>
-
-
                             <span class="d-none d-sm-inline">
                                 <a onclick="tableToExcel('tree_0', 'Modelador_Master')" style="cursor:pointer" href="#" class="btn btn-secondary">
                                     EXCEL
                                 </a>
                             </span>
-
                             <span class="d-none d-sm-inline">
                                 <a onclick="fnExpandNodes(0)" class="btn btn-secondary">
                                     Expandir
                                 </a>
                             </span>
-
                         </div>
                     </div>
                 </div>
 
                 <table id="tree_0">
                     <colgroup>
-                        <col width="2%" />
-                        <col width="88%" />
                         <col width="1%" />
+                        <col width="30%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
+                        <col width="5%" />
                     </colgroup>
                     <thead>
                         <tr id="head_tree_0">
-                            <th>#</th>
                             <th></th>
-                            @*<th>Nombre</th>*@
+                            <th></th>
+                            <th>NRC</th>
+                            <th>CANTIDAD</th>
+                            <th>UNIDAD</th>
+                            <th>DSCTO 1</th>
+                            <th>SUBTOTAL 1</th>
+                            <th>MRC</th>
+                            <th>DSCTO 2</th>
+                            <th>SUBTOTAL 2</th>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Define a row template for all invariant markup: -->
                         <tr>
-                            <td></td>
-                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -263,21 +270,34 @@
 
                     <table id="tree_@item.ProyectoID">
                         <colgroup>
-                            <col width="2%" />
-                            <col width="88%" />
                             <col width="1%" />
+                            <col width="30%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
+                            <col width="5%" />
                         </colgroup>
                         <thead>
                             <tr id="head_tree_@item.ProyectoID">
-                                <th>#</th>
                                 <th></th>
+                                <th></th>
+                                <th>NRC</th>
+                                <th>CANTIDAD</th>
+                                <th>UNIDAD</th>
+                                <th>DSCTO 1</th>
+                                <th>SUBTOTAL 1</th>
+                                <th>MRC</th>
+                                <th>DSCTO 2</th>
+                                <th>SUBTOTAL 2</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Define a row template for all invariant markup: -->
                             <tr>
-                                <td></td>
-                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -569,7 +589,7 @@
                             <div class="col-auto">
                                 <label class="form-colorinput">
                                     <input name="color" type="radio" value="#206bc4" class="form-colorinput-input">
-                                    <span class="form-colorinput-color bg-blue"></span>                                   
+                                    <span class="form-colorinput-color bg-blue"></span>
                                 </label>
                             </div>
                             <div class="col-auto">
@@ -615,7 +635,7 @@
                                 </label>
                             </div>
                             <div class="col-auto">
-                                <label class="form-colorinput">                                   
+                                <label class="form-colorinput">
                                     <input name="color" type="radio" value="#74b816" class="form-colorinput-input">
                                     <span class="form-colorinput-color bg-lime"></span>
                                 </label>

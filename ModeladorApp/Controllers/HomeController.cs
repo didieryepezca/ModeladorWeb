@@ -1186,7 +1186,7 @@ namespace ModeladorApp.Controllers
                     if (lvlFoundEquipo == null) { infoe.NivelID = te.id; }
                     else { infoe.NivelID = lvlFoundEquipo.id; }
 
-                    infoe.Informacion = Convert.ToString(e.NCR_EQUIPO);
+                    infoe.Informacion = Convert.ToString(e.NRC_EQUIPO);
                     infoe.Usuario = "APLICACION";
                     infoe.FechaIngreso = DateTime.Now;
 
@@ -1234,7 +1234,7 @@ namespace ModeladorApp.Controllers
                                 infoc.NivelID = tc.id; 
                             } else if (lvlFoundCar == null ) { infoc.NivelID = tc.id; }                          
 
-                            infoc.Informacion = Convert.ToString(carEncontrada.NCR_CARACTERISTICA);
+                            infoc.Informacion = Convert.ToString(carEncontrada.NRC_CARACTERISTICA);
                             infoc.Usuario = "APLICACION";
                             infoc.FechaIngreso = DateTime.Now;
 

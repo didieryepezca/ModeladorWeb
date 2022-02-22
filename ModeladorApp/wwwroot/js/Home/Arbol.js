@@ -353,21 +353,21 @@ async function loadTree(firstPyID, vPermiso) {
 
                     //---------------------------------------------------------->>>
                     //console.log(pySelected)
-                    var titles = funGetTitulos(pySelected)
-                    titles.then(function (result) {
-                        //console.log(result);
-                        var colName = "";
+                    //var titles = funGetTitulos(pySelected)
+                    //titles.then(function (result) {
+                    //    //console.log(result);
+                    //    var colName = "";
 
-                        if (result.length != 0) {
-                            // 50 cajas para nombres de  columnas.
-                            //for (h = 0; h <= result.length - 1; h++) { //capturar los 50 titulos
-                            for (h = 0; h <= 10 - 1; h++) {
-                                $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
-                                colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
-                            }
-                            $('#head_' + treeReach).append(colName).fadeIn(300000);
-                        }
-                    });
+                    //    if (result.length != 0) {
+                    //        // 50 cajas para nombres de  columnas.
+                    //        //for (h = 0; h <= result.length - 1; h++) { //capturar los 50 titulos
+                    //        for (h = 0; h <= 10 - 1; h++) {
+                    //            $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
+                    //            colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
+                    //        }
+                    //        $('#head_' + treeReach).append(colName).fadeIn(300000);
+                    //    }
+                    //});
 
                     //console.log($tdList);
                     //console.log(node.data.id);
@@ -384,12 +384,12 @@ async function loadTree(firstPyID, vPermiso) {
 
                                 for (i = 2; i <= 11; i++) {
 
-                                    $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 60px;">');
+                                    $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 100%;">');
                                 }
                                 m = m + 1;
                                 for (j = m; j <= 11; j++) {
 
-                                    $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
+                                    $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 100%;"/>');
 
                                 }
                             }
@@ -398,7 +398,7 @@ async function loadTree(firstPyID, vPermiso) {
                             //console.log("Construir desde 0");
                             for (k = 2; k <= 11; k++) {
 
-                                $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
+                                $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 100%;"/>');
 
                             }
                         }

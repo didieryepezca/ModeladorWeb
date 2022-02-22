@@ -49,6 +49,24 @@ namespace ModeladorApp.Controllers
             return Json(caracteristicas);
         }
 
+
+        //Creamos esta clase temporal equipo porque el id_equipo que viene de DxDataGrid es un string entonces para no 
+        //tener conflicto con nuestro id_equipo de TB_EQUIPO que es un int que se autogenera lo Deserializamos con esta clase auxiliar.
+        class equipo
+        {
+            public string id_equipo;
+            public string nombre_equipo;
+            public decimal nrc_equipo;
+            public decimal cant_equipo;
+            public string und_equipo;
+            public decimal desc1_equipo;
+            public decimal sub_total1_eq;
+            public decimal mrc_equipo;
+            public decimal desc2_equipo;
+            public decimal sub_total2_eq;
+            public DateTime fecha_registro;
+            public string usuario;
+        }
         public int funInsertEquipo(string datos)
         {
             var result = "0";
@@ -56,17 +74,25 @@ namespace ModeladorApp.Controllers
             var da = new EquipoDA();
             try
             {
-                TB_EQUIPO equipo = JsonConvert.DeserializeObject<TB_EQUIPO>(datos);
+                //deserializamos el Json que viene con el id_equipo en string, pero para insertarlo no lo consideramos.
+                equipo equipo = JsonConvert.DeserializeObject<equipo>(datos);
                 TB_EQUIPO e = new TB_EQUIPO();
 
-                e.NOMBRE_EQUIPO = equipo.NOMBRE_EQUIPO;
-                e.NCR_EQUIPO = equipo.NCR_EQUIPO;
+                e.NOMBRE_EQUIPO = equipo.nombre_equipo;
+                e.NRC_EQUIPO = equipo.nrc_equipo;
+                e.CANT_EQUIPO = equipo.cant_equipo;
+                e.UND_EQUIPO = equipo.und_equipo;
+                e.DESC1_EQUIPO = equipo.desc1_equipo;
+                e.SUB_TOTAL1_EQ = equipo.sub_total1_eq;
+                e.MRC_EQUIPO = equipo.mrc_equipo;
+                e.DESC2_EQUIPO = equipo.desc2_equipo;
+                e.SUB_TOTAL2_EQ = equipo.sub_total2_eq;
                 e.FECHA_REGISTRO = DateTime.Now;
                 e.USUARIO = user.Result.UsuarioNombreCompleto;                
 
-                var modelcount = da.InsertEquipo(e);              
+                da.InsertEquipo(e);              
 
-                return modelcount;
+                return e.ID_EQUIPO;
             }
             catch (Exception e)
             {
@@ -83,7 +109,16 @@ namespace ModeladorApp.Controllers
             TB_EQUIPO equipo = JsonConvert.DeserializeObject<TB_EQUIPO>(datos);
             try
             {
-                var modelcount = cDa.UpdateEquipo(equipo.ID_EQUIPO, equipo.NOMBRE_EQUIPO, equipo.NCR_EQUIPO);
+                var modelcount = cDa.UpdateEquipo(equipo.ID_EQUIPO,
+                                                  equipo.NOMBRE_EQUIPO, 
+                                                  equipo.NRC_EQUIPO,
+                                                  equipo.CANT_EQUIPO,
+                                                  equipo.UND_EQUIPO,
+                                                  equipo.DESC1_EQUIPO,
+                                                  equipo.SUB_TOTAL1_EQ,
+                                                  equipo.MRC_EQUIPO,
+                                                  equipo.DESC2_EQUIPO,
+                                                  equipo.SUB_TOTAL2_EQ);
                 return modelcount;
             }
             catch (Exception e)
@@ -121,6 +156,26 @@ namespace ModeladorApp.Controllers
                 return 0;
             }
         }
+
+        //Creamos esta clase temporal equipo_caracteristica porque el id_equipo_c que viene de DxDataGrid es un string entonces para no 
+        //tener conflicto con nuestro id_equipo_c de TB_EQUIPO_CARACTERISTICA que es un int que se autogenera lo Deserializamos con esta clase auxiliar.
+        class equipo_caracteristica
+        {
+            public string id_equipo_c;
+            public int id_equipo;
+            public string nombre_caracteristica;
+            public decimal nrc_caracteristica;
+            public decimal cant_caracteristica;
+            public string und_caracteristica;
+            public decimal desc1_caracteristica;
+            public decimal sub_total1;
+            public decimal mrc_caracteristica;
+            public decimal desc2_caracteristica;
+            public decimal sub_total2;
+            public DateTime fecha_registro;
+            public string usuario;
+        }
+
         public int funInsertEquipoCaracteristica(string datos)
         {
             var result = "0";
@@ -129,18 +184,25 @@ namespace ModeladorApp.Controllers
             try
             {
                 //deserializamos el Json que enviamos desde el Front para convertirlo en nuestro objeto.
-                TB_EQUIPO_CARACTERISTICA caracteristica = JsonConvert.DeserializeObject<TB_EQUIPO_CARACTERISTICA>(datos);
+                equipo_caracteristica caracteristica = JsonConvert.DeserializeObject<equipo_caracteristica>(datos);
                 TB_EQUIPO_CARACTERISTICA e = new TB_EQUIPO_CARACTERISTICA();
 
-                e.ID_EQUIPO = caracteristica.ID_EQUIPO;
-                e.NOMBRE_CARACTERISTICA = caracteristica.NOMBRE_CARACTERISTICA;
-                e.NCR_CARACTERISTICA = caracteristica.NCR_CARACTERISTICA;
+                e.ID_EQUIPO = caracteristica.id_equipo;
+                e.NOMBRE_CARACTERISTICA = caracteristica.nombre_caracteristica;
+                e.NRC_CARACTERISTICA = caracteristica.nrc_caracteristica;
+                e.CANT_CARACTERISTICA = caracteristica.cant_caracteristica;
+                e.UND_CARACTERISTICA = caracteristica.und_caracteristica;
+                e.DESC1_CARACTERISTICA = caracteristica.desc1_caracteristica;
+                e.SUB_TOTAL1 = caracteristica.sub_total1;
+                e.MRC_CARACTERISTICA = caracteristica.mrc_caracteristica;
+                e.DESC2_CARACTERISTICA = caracteristica.desc2_caracteristica;
+                e.SUB_TOTAL2 = caracteristica.sub_total2;
                 e.FECHA_REGISTRO = DateTime.Now;
                 e.USUARIO = user.Result.UsuarioNombreCompleto;
 
-                var modelcount = da.InsertEquipoCaracteristica(e);
+                da.InsertEquipoCaracteristica(e);
 
-                return modelcount;
+                return e.ID_EQUIPO_C;
             }
             catch (Exception e)
             {
@@ -160,7 +222,14 @@ namespace ModeladorApp.Controllers
             {
                 var modelcount = cDa.UpdateEquipoCaracteristica(caracteristica.ID_EQUIPO_C, 
                                                                 caracteristica.NOMBRE_CARACTERISTICA, 
-                                                                caracteristica.NCR_CARACTERISTICA);
+                                                                caracteristica.NRC_CARACTERISTICA,
+                                                                caracteristica.CANT_CARACTERISTICA,
+                                                                caracteristica.UND_CARACTERISTICA,
+                                                                caracteristica.DESC1_CARACTERISTICA,
+                                                                caracteristica.SUB_TOTAL1,
+                                                                caracteristica.MRC_CARACTERISTICA,
+                                                                caracteristica.DESC2_CARACTERISTICA,
+                                                                caracteristica.SUB_TOTAL2);
                 return modelcount;
             }
             catch (Exception e)
@@ -189,7 +258,14 @@ namespace ModeladorApp.Controllers
         class EquipoTemp {
             public int id_equipo;
             public string nombre;
-            public decimal ncr;
+            public decimal nrc;
+            public decimal cantidad;
+            public string unidad;
+            public decimal desc1;
+            public decimal subtotal1;
+            public decimal mrc;
+            public decimal desc2;
+            public decimal subtotal2;
             public int? id_caracteristica;
         }
 
@@ -281,7 +357,15 @@ namespace ModeladorApp.Controllers
                                     }                                   
 
                                     eq_temp.nombre = result.Tables[0].Rows[i]["EQUIPO"].ToString();
-                                    eq_temp.ncr = Convert.ToDecimal(result.Tables[0].Rows[i]["NCR"].ToString());
+                                    eq_temp.nrc = Convert.ToDecimal(result.Tables[0].Rows[i]["NRC"].ToString());
+                                    eq_temp.cantidad = Convert.ToDecimal(result.Tables[0].Rows[i]["CANTIDAD"].ToString());
+                                    eq_temp.unidad = result.Tables[0].Rows[i]["UNIDAD"].ToString();
+                                    eq_temp.desc1 = Convert.ToDecimal(result.Tables[0].Rows[i]["DESCUENTO 1"].ToString());
+                                    eq_temp.subtotal1 = Convert.ToDecimal(result.Tables[0].Rows[i]["SUBTOTAL 1"].ToString());
+                                    eq_temp.mrc = Convert.ToDecimal(result.Tables[0].Rows[i]["MRC"].ToString());
+                                    eq_temp.desc2 = Convert.ToDecimal(result.Tables[0].Rows[i]["DESCUENTO 2"].ToString());
+                                    eq_temp.subtotal2 = Convert.ToDecimal(result.Tables[0].Rows[i]["SUBTOTAL 2"].ToString());
+
                                     equiposTemp.Add(eq_temp);                                                                            
                                    
                                     i++;
@@ -293,16 +377,21 @@ namespace ModeladorApp.Controllers
                                 }
                             }
                         }
-                        reader.Close();
-
-                        
+                        reader.Close();                        
 
                         foreach (var element in equiposTemp) {                           
 
                             TB_EQUIPO e_entity = new TB_EQUIPO();
 
                             e_entity.NOMBRE_EQUIPO = element.nombre;
-                            e_entity.NCR_EQUIPO = element.ncr;
+                            e_entity.NRC_EQUIPO = element.nrc;
+                            e_entity.CANT_EQUIPO = element.cantidad;
+                            e_entity.UND_EQUIPO = element.unidad;
+                            e_entity.DESC1_EQUIPO = element.desc1;
+                            e_entity.SUB_TOTAL1_EQ = element.subtotal1;
+                            e_entity.MRC_EQUIPO = element.mrc;
+                            e_entity.DESC2_EQUIPO = element.desc2;
+                            e_entity.SUB_TOTAL2_EQ = element.subtotal2;
                             e_entity.USUARIO = user.Result.UsuarioNombreCompleto;
                             e_entity.FECHA_REGISTRO = DateTime.Now;
 
@@ -332,7 +421,14 @@ namespace ModeladorApp.Controllers
 
                                     c_entity.ID_EQUIPO = e_entity.ID_EQUIPO;
                                     c_entity.NOMBRE_CARACTERISTICA = subelementos[s].nombre;
-                                    c_entity.NCR_CARACTERISTICA = subelementos[s].ncr;
+                                    c_entity.NRC_CARACTERISTICA = subelementos[s].nrc;
+                                    c_entity.CANT_CARACTERISTICA = subelementos[s].cantidad;
+                                    c_entity.UND_CARACTERISTICA = subelementos[s].unidad;
+                                    c_entity.DESC1_CARACTERISTICA = subelementos[s].desc1;
+                                    c_entity.SUB_TOTAL1 = subelementos[s].subtotal1;
+                                    c_entity.MRC_CARACTERISTICA = subelementos[s].mrc;
+                                    c_entity.DESC2_CARACTERISTICA = subelementos[s].desc2;
+                                    c_entity.SUB_TOTAL2 = subelementos[s].subtotal2;
                                     c_entity.USUARIO = user.Result.UsuarioNombreCompleto;
                                     c_entity.FECHA_REGISTRO = DateTime.Now;
 

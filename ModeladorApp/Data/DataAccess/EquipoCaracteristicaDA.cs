@@ -41,7 +41,8 @@ namespace ModeladorApp.Data.DataAccess
         }
 
 
-        public int UpdateEquipoCaracteristica(int id, string nombre, decimal ncr)
+        public int UpdateEquipoCaracteristica(int id, string nombre, decimal ncr, decimal cant,string und, decimal desc1, decimal subtotal1, decimal mrc,
+                                                decimal desc2, decimal subtotal2)
         {
             var result = 0;
 
@@ -49,7 +50,14 @@ namespace ModeladorApp.Data.DataAccess
             {
                 var eq = db.TB_EQUIPO_CARACTERISTICA.Where(item => item.ID_EQUIPO_C == id).FirstOrDefault();
                 eq.NOMBRE_CARACTERISTICA = nombre;
-                eq.NCR_CARACTERISTICA = ncr;
+                eq.NRC_CARACTERISTICA = ncr;
+                eq.CANT_CARACTERISTICA = cant;
+                eq.UND_CARACTERISTICA = und;
+                eq.DESC1_CARACTERISTICA = desc1;
+                eq.SUB_TOTAL1 = subtotal1;
+                eq.MRC_CARACTERISTICA = mrc;
+                eq.DESC2_CARACTERISTICA = desc2;
+                eq.SUB_TOTAL2 = subtotal2;
 
                 result = db.SaveChanges();
             }
