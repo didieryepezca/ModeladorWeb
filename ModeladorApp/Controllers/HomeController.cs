@@ -1181,6 +1181,9 @@ namespace ModeladorApp.Controllers
                         idEquipoParent = lvlFoundEquipo.id;
                     }
 
+
+                    //--------------------------------------->> Data Grilla Equipo
+                    //------------------------------------------NCR
                     TB_NIVEL_INFO infoe = new TB_NIVEL_INFO();
 
                     if (lvlFoundEquipo == null) { infoe.NivelID = te.id; }
@@ -1194,8 +1197,115 @@ namespace ModeladorApp.Controllers
                     {
                         modelcount = dai.InsertNivelInfo(infoe);
                         modelcount = modelcount + 1;
+                    }                   
+                    //------------------------------------------Cantidad
+                    TB_NIVEL_INFO infocae = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infocae.NivelID = te.id; }
+                    else { infocae.NivelID = lvlFoundEquipo.id; }
+
+                    infocae.Informacion = Convert.ToString(e.CANT_EQUIPO);
+                    infocae.Usuario = "APLICACION";
+                    infocae.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infocae);
+                        modelcount = modelcount + 1;
+                    }
+                    //------------------------------------------Unidad
+                    TB_NIVEL_INFO infounde = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infounde.NivelID = te.id; }
+                    else { infounde.NivelID = lvlFoundEquipo.id; }
+
+                    infounde.Informacion = Convert.ToString(e.UND_EQUIPO);
+                    infounde.Usuario = "APLICACION";
+                    infounde.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infounde);
+                        modelcount = modelcount + 1;
+                    }
+                    //------------------------------------------Descuento 1
+                    TB_NIVEL_INFO infodesc1e = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infodesc1e.NivelID = te.id; }
+                    else { infodesc1e.NivelID = lvlFoundEquipo.id; }
+
+                    infodesc1e.Informacion = Convert.ToString(e.DESC1_EQUIPO);
+                    infodesc1e.Usuario = "APLICACION";
+                    infodesc1e.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infodesc1e);
+                        modelcount = modelcount + 1;
+                    }
+                    //------------------------------------------Subtotal 1
+                    TB_NIVEL_INFO infosubt1 = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infosubt1.NivelID = te.id; }
+                    else { infosubt1.NivelID = lvlFoundEquipo.id; }
+
+                    infosubt1.Informacion = Convert.ToString(e.SUB_TOTAL1_EQ);
+                    infosubt1.Usuario = "APLICACION";
+                    infosubt1.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infosubt1);
+                        modelcount = modelcount + 1;
+                    }
+                    //------------------------------------------MRC
+                    TB_NIVEL_INFO infomrce = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infomrce.NivelID = te.id; }
+                    else { infomrce.NivelID = lvlFoundEquipo.id; }
+
+                    infomrce.Informacion = Convert.ToString(e.MRC_EQUIPO);
+                    infomrce.Usuario = "APLICACION";
+                    infomrce.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infomrce);
+                        modelcount = modelcount + 1;
                     }
 
+                    //------------------------------------------Desc2 Equipo
+                    TB_NIVEL_INFO infodesc2e = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infodesc2e.NivelID = te.id; }
+                    else { infodesc2e.NivelID = lvlFoundEquipo.id; }
+
+                    infodesc2e.Informacion = Convert.ToString(e.DESC2_EQUIPO);
+                    infodesc2e.Usuario = "APLICACION";
+                    infodesc2e.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infodesc2e);
+                        modelcount = modelcount + 1;
+                    }
+
+                    //------------------------------------------Subtotal 2 Equipo
+                    TB_NIVEL_INFO infosubt2 = new TB_NIVEL_INFO();
+
+                    if (lvlFoundEquipo == null) { infosubt2.NivelID = te.id; }
+                    else { infosubt2.NivelID = lvlFoundEquipo.id; }
+
+                    infosubt2.Informacion = Convert.ToString(e.DESC2_EQUIPO);
+                    infosubt2.Usuario = "APLICACION";
+                    infosubt2.FechaIngreso = DateTime.Now;
+
+                    if (lvlFoundEquipo == null)
+                    {
+                        modelcount = dai.InsertNivelInfo(infosubt2);
+                        modelcount = modelcount + 1;
+                    }
+                    //----------------------------------------->> Data Grilla Equipo
                     foreach (int idCar in caracDistintas)
                     {
                         TB_EQUIPO_CARACTERISTICA carEncontrada = new TB_EQUIPO_CARACTERISTICA();
@@ -1227,6 +1337,8 @@ namespace ModeladorApp.Controllers
 
                             //---------- Si se quiere agregar mas datos a la grilla tendrá que contarse la cantidad de columnas
                             //---------- y hacer la cantidad de Inserts necesarios a TB_NIVEL_INFO con el mismo ID basados en el conteo de columnas.
+
+                            //--------------------------> NRC Caracteristica
                             TB_NIVEL_INFO infoc = new TB_NIVEL_INFO();
 
                             if (lvlFoundCar == null && te.id == 0) { 
@@ -1243,7 +1355,149 @@ namespace ModeladorApp.Controllers
                                 modelcount = dai.InsertNivelInfo(infoc);
                                 modelcount = modelcount + 1;
                             }
-                            //----------------------------->
+                            
+                            //-----------------------------> Cantidad Característica.
+                            TB_NIVEL_INFO infoca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infoca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infoca.NivelID = tc.id; }
+
+                            infoca.Informacion = Convert.ToString(carEncontrada.CANT_CARACTERISTICA);
+                            infoca.Usuario = "APLICACION";
+                            infoca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infoca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> UND Característica.
+                            TB_NIVEL_INFO infoundca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infoundca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infoundca.NivelID = tc.id; }
+
+                            infoundca.Informacion = Convert.ToString(carEncontrada.UND_CARACTERISTICA);
+                            infoundca.Usuario = "APLICACION";
+                            infoundca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infoundca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> DESC1 Característica.
+                            TB_NIVEL_INFO infodesc1ca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infodesc1ca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infodesc1ca.NivelID = tc.id; }
+
+                            infodesc1ca.Informacion = Convert.ToString(carEncontrada.DESC1_CARACTERISTICA);
+                            infodesc1ca.Usuario = "APLICACION";
+                            infodesc1ca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infodesc1ca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> Subtotal1 Característica.
+                            TB_NIVEL_INFO infosubt1ca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infosubt1ca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infosubt1ca.NivelID = tc.id; }
+
+                            infosubt1ca.Informacion = Convert.ToString(carEncontrada.SUB_TOTAL1);
+                            infosubt1ca.Usuario = "APLICACION";
+                            infosubt1ca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infosubt1ca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> MRC Característica.
+                            TB_NIVEL_INFO infomrcca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infomrcca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infomrcca.NivelID = tc.id; }
+
+                            infomrcca.Informacion = Convert.ToString(carEncontrada.MRC_CARACTERISTICA);
+                            infomrcca.Usuario = "APLICACION";
+                            infomrcca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infomrcca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> DESC2 Característica.
+                            TB_NIVEL_INFO infodesc2ca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infodesc2ca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infodesc2ca.NivelID = tc.id; }
+
+                            infodesc2ca.Informacion = Convert.ToString(carEncontrada.DESC2_CARACTERISTICA);
+                            infodesc2ca.Usuario = "APLICACION";
+                            infodesc2ca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infodesc2ca);
+                                modelcount = modelcount + 1;
+                            }
+
+                            //-----------------------------> SUBTOTAL2 Característica.
+                            TB_NIVEL_INFO infosubt2ca = new TB_NIVEL_INFO();
+
+                            if (lvlFoundCar == null && te.id == 0)
+                            {
+                                tc.parentId = idEquipoParent;
+                                infosubt2ca.NivelID = tc.id;
+                            }
+                            else if (lvlFoundCar == null) { infosubt2ca.NivelID = tc.id; }
+
+                            infosubt2ca.Informacion = Convert.ToString(carEncontrada.SUB_TOTAL2);
+                            infosubt2ca.Usuario = "APLICACION";
+                            infosubt2ca.FechaIngreso = DateTime.Now;
+
+                            if (lvlFoundCar == null)
+                            {
+                                modelcount = dai.InsertNivelInfo(infosubt2ca);
+                                modelcount = modelcount + 1;
+                            }
+
+
+
                         }
                     }
                 }
