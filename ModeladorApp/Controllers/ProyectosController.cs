@@ -58,7 +58,7 @@ namespace ModeladorApp.Controllers
 
             if (nullpys == "emptyProjects")
             {
-                ViewBag.empty = "Debes tener CREADO o haber CLONADO al menos un proyecto para acceder";
+                ViewBag.empty = "ATENCION ! Debes tener CREADO o haber CLONADO al menos un proyecto para acceder al Modelador de Proyectos.";
             }
 
             return View(proyectos);
@@ -312,8 +312,7 @@ namespace ModeladorApp.Controllers
                 py.PropietarioID = user.Result.Id;
                 py.PropietarioName = user.Result.UsuarioNombreCompleto;
 
-                var pyCount = da.InsertPy(py);
-                count = count + pyCount;
+                var pyCount = da.InsertPy(py);                
                 //--------------------------------- Permisos.
                 TB_PERMISOS permiso = new TB_PERMISOS();
 
@@ -326,8 +325,7 @@ namespace ModeladorApp.Controllers
                 permiso.FechaPermisoCreado = DateTime.Now;
 
                 var perCount = pda.InsertPermiso(permiso);
-                count = count + perCount;
-
+                
                 //--------------------------------------------- Clonar Arbol
                 //var previousTempID = 0;
                 //var nextTempID = 0;
@@ -364,7 +362,7 @@ namespace ModeladorApp.Controllers
                         sto.style = stylesRoot[s].style;
 
                         var modelstyle = ndas.InsertNivelStyle(sto);
-                        count = count + modelstyle;
+                        
                     }
                 }
                 //----------------------------------------------------- Informacion Nivel Root                
@@ -380,8 +378,7 @@ namespace ModeladorApp.Controllers
                         rootInfo.Usuario = user.Result.UsuarioNombreCompleto;
                         rootInfo.FechaIngreso = DateTime.Now;
 
-                        var modelInfo = ndai.InsertNivelInfo(rootInfo);
-                        count = count + modelInfo;
+                        var modelInfo = ndai.InsertNivelInfo(rootInfo);                        
                     }
                 }
                 ////------------------------- Titulos Nivel Root
@@ -420,11 +417,11 @@ namespace ModeladorApp.Controllers
                         dupTree_step1.descripcion = sublvls[a].descripcion;
                         dupTree_step1.lazy = sublvls[a].lazy;
                         dupTree_step1.parentId = cloneRootTree.id;
-                        dupTree_step1.proyectoId = proyectoId;
+                        dupTree_step1.proyectoId = py.ProyectoID;
                         dupTree_step1.fechaCreacion = DateTime.Now;
 
                         var countlvl = nda.InserNewLevel(dupTree_step1);
-                        count = count + countlvl;
+                        
 
                         //----------- duplicar estilos
                         var step1styles = ndas.GetAllStylesFromLevel(sublvls[a].id, "").ToList();
@@ -438,8 +435,7 @@ namespace ModeladorApp.Controllers
                                 sto.campo = step1styles[s].campo;
                                 sto.style = step1styles[s].style;
 
-                                var modelstyle = ndas.InsertNivelStyle(sto);
-                                count = count + modelstyle;
+                                var modelstyle = ndas.InsertNivelStyle(sto);                                
                             }
                         }
 
@@ -456,8 +452,7 @@ namespace ModeladorApp.Controllers
                                 info.Usuario = user.Result.UsuarioNombreCompleto;
                                 info.FechaIngreso = DateTime.Now;
 
-                                var modelinfo = ndai.InsertNivelInfo(info);
-                                count = count + modelinfo;
+                                var modelinfo = ndai.InsertNivelInfo(info);                                
                             }
                         }
 
@@ -475,11 +470,11 @@ namespace ModeladorApp.Controllers
                                 dupTree_step2.descripcion = sublvls2[b].descripcion;
                                 dupTree_step2.lazy = sublvls2[b].lazy;
                                 dupTree_step2.parentId = dupTree_step1.id;
-                                dupTree_step2.proyectoId = proyectoId;
+                                dupTree_step2.proyectoId = py.ProyectoID;
                                 dupTree_step2.fechaCreacion = DateTime.Now;
 
                                 var countlvl2 = nda.InserNewLevel(dupTree_step2);
-                                count = count + countlvl2;
+                                
 
                                 //----------- duplicar estilos
                                 var step2styles = ndas.GetAllStylesFromLevel(sublvls2[b].id, "").ToList();
@@ -493,8 +488,7 @@ namespace ModeladorApp.Controllers
                                         sto.campo = step2styles[s].campo;
                                         sto.style = step2styles[s].style;
 
-                                        var modelstyle = ndas.InsertNivelStyle(sto);
-                                        count = count + modelstyle;
+                                        var modelstyle = ndas.InsertNivelStyle(sto);                                        
                                     }
                                 }
 
@@ -511,8 +505,7 @@ namespace ModeladorApp.Controllers
                                         info.Usuario = user.Result.UsuarioNombreCompleto;
                                         info.FechaIngreso = DateTime.Now;
 
-                                        var modelinfo = ndai.InsertNivelInfo(info);
-                                        count = count + modelinfo;
+                                        var modelinfo = ndai.InsertNivelInfo(info);                                        
                                     }
                                 }
 
@@ -530,11 +523,11 @@ namespace ModeladorApp.Controllers
                                         dupTree_step3.descripcion = sublvls3[c].descripcion;
                                         dupTree_step3.lazy = sublvls3[c].lazy;
                                         dupTree_step3.parentId = dupTree_step2.id;
-                                        dupTree_step3.proyectoId = proyectoId;
+                                        dupTree_step3.proyectoId = py.ProyectoID;
                                         dupTree_step3.fechaCreacion = DateTime.Now;
 
                                         var countlvl3 = nda.InserNewLevel(dupTree_step3);
-                                        count = count + countlvl3;
+                                        
 
                                         //----------- duplicar estilos
                                         var step3styles = ndas.GetAllStylesFromLevel(sublvls3[c].id, "").ToList();
@@ -548,8 +541,7 @@ namespace ModeladorApp.Controllers
                                                 sto.campo = step3styles[s].campo;
                                                 sto.style = step3styles[s].style;
 
-                                                var modelstyle = ndas.InsertNivelStyle(sto);
-                                                count = count + modelstyle;
+                                                var modelstyle = ndas.InsertNivelStyle(sto);                                                
                                             }
                                         }
 
@@ -566,8 +558,7 @@ namespace ModeladorApp.Controllers
                                                 info.Usuario = user.Result.UsuarioNombreCompleto;
                                                 info.FechaIngreso = DateTime.Now;
 
-                                                var modelinfo = ndai.InsertNivelInfo(info);
-                                                count = count + modelinfo;
+                                                var modelinfo = ndai.InsertNivelInfo(info);                                                
                                             }
                                         }
 
@@ -585,11 +576,10 @@ namespace ModeladorApp.Controllers
                                                 dupTree_step4.descripcion = sublvls4[d].descripcion;
                                                 dupTree_step4.lazy = sublvls4[d].lazy;
                                                 dupTree_step4.parentId = dupTree_step3.id;
-                                                dupTree_step4.proyectoId = proyectoId;
+                                                dupTree_step4.proyectoId = py.ProyectoID;
                                                 dupTree_step4.fechaCreacion = DateTime.Now;
 
-                                                var countlvl4 = nda.InserNewLevel(dupTree_step4);
-                                                count = count + countlvl4;
+                                                var countlvl4 = nda.InserNewLevel(dupTree_step4);                                                
 
                                                 //----------- duplicar estilos
                                                 var step4styles = ndas.GetAllStylesFromLevel(sublvls4[d].id, "").ToList();
@@ -604,7 +594,7 @@ namespace ModeladorApp.Controllers
                                                         sto.style = step4styles[s].style;
 
                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                        count = count + modelstyle;
+                                                        
                                                     }
                                                 }
 
@@ -622,7 +612,7 @@ namespace ModeladorApp.Controllers
                                                         info.FechaIngreso = DateTime.Now;
 
                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                        count = count + modelinfo;
+                                                        
                                                     }
                                                 }
 
@@ -640,11 +630,11 @@ namespace ModeladorApp.Controllers
                                                         dupTree_step5.descripcion = sublvls5[e].descripcion;
                                                         dupTree_step5.lazy = sublvls5[e].lazy;
                                                         dupTree_step5.parentId = dupTree_step4.id;
-                                                        dupTree_step5.proyectoId = proyectoId;
+                                                        dupTree_step5.proyectoId = py.ProyectoID;
                                                         dupTree_step5.fechaCreacion = DateTime.Now;
 
                                                         var countlvl5 = nda.InserNewLevel(dupTree_step5);
-                                                        count = count + countlvl5;
+                                                        
 
                                                         //----------- duplicar estilos
                                                         var step5styles = ndas.GetAllStylesFromLevel(sublvls5[e].id, "").ToList();
@@ -659,7 +649,7 @@ namespace ModeladorApp.Controllers
                                                                 sto.style = step5styles[s].style;
 
                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                count = count + modelstyle;
+                                                                
                                                             }
                                                         }
 
@@ -677,11 +667,9 @@ namespace ModeladorApp.Controllers
                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                count = count + modelinfo;
+                                                                
                                                             }
                                                         }
-
-
 
                                                         //------------ sexto loop...
                                                         List<TB_TREE> sublvls6 = new List<TB_TREE>();
@@ -697,11 +685,11 @@ namespace ModeladorApp.Controllers
                                                                 dupTree_step6.descripcion = sublvls6[f].descripcion;
                                                                 dupTree_step6.lazy = sublvls6[f].lazy;
                                                                 dupTree_step6.parentId = dupTree_step5.id;
-                                                                dupTree_step6.proyectoId = proyectoId;
+                                                                dupTree_step6.proyectoId = py.ProyectoID;
                                                                 dupTree_step6.fechaCreacion = DateTime.Now;
 
                                                                 var countlvl6 = nda.InserNewLevel(dupTree_step6);
-                                                                count = count + countlvl6;
+                                                                
 
                                                                 //----------- duplicar estilos
                                                                 var step6styles = ndas.GetAllStylesFromLevel(sublvls6[f].id, "").ToList();
@@ -716,7 +704,7 @@ namespace ModeladorApp.Controllers
                                                                         sto.style = step6styles[s].style;
 
                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                        count = count + modelstyle;
+                                                                        
                                                                     }
                                                                 }
 
@@ -734,7 +722,7 @@ namespace ModeladorApp.Controllers
                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                        count = count + modelinfo;
+                                                                        
                                                                     }
                                                                 }
 
@@ -752,11 +740,11 @@ namespace ModeladorApp.Controllers
                                                                         dupTree_step7.descripcion = sublvls7[g].descripcion;
                                                                         dupTree_step7.lazy = sublvls7[g].lazy;
                                                                         dupTree_step7.parentId = dupTree_step6.id;
-                                                                        dupTree_step7.proyectoId = proyectoId;
+                                                                        dupTree_step7.proyectoId = py.ProyectoID;
                                                                         dupTree_step7.fechaCreacion = DateTime.Now;
 
                                                                         var countlvl7 = nda.InserNewLevel(dupTree_step7);
-                                                                        count = count + countlvl7;
+                                                                        
 
                                                                         //----------- duplicar estilos
                                                                         var step7styles = ndas.GetAllStylesFromLevel(sublvls7[g].id, "").ToList();
@@ -771,7 +759,7 @@ namespace ModeladorApp.Controllers
                                                                                 sto.style = step7styles[s].style;
 
                                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                count = count + modelstyle;
+                                                                                
                                                                             }
                                                                         }
 
@@ -790,7 +778,7 @@ namespace ModeladorApp.Controllers
                                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                count = count + modelinfo;
+                                                                                
                                                                             }
                                                                         }
 
@@ -809,11 +797,11 @@ namespace ModeladorApp.Controllers
                                                                                 dupTree_step8.descripcion = sublvls8[h].descripcion;
                                                                                 dupTree_step8.lazy = sublvls8[h].lazy;
                                                                                 dupTree_step8.parentId = dupTree_step7.id;
-                                                                                dupTree_step8.proyectoId = proyectoId;
+                                                                                dupTree_step8.proyectoId = py.ProyectoID;
                                                                                 dupTree_step8.fechaCreacion = DateTime.Now;
 
                                                                                 var countlvl8 = nda.InserNewLevel(dupTree_step8);
-                                                                                count = count + countlvl8;
+                                                                                
 
                                                                                 //----------- duplicar estilos
                                                                                 var step8styles = ndas.GetAllStylesFromLevel(sublvls8[h].id, "").ToList();
@@ -828,7 +816,7 @@ namespace ModeladorApp.Controllers
                                                                                         sto.style = step8styles[s].style;
 
                                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                        count = count + modelstyle;
+                                                                                        
                                                                                     }
                                                                                 }
 
@@ -846,7 +834,7 @@ namespace ModeladorApp.Controllers
                                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                        count = count + modelinfo;
+                                                                                        
                                                                                     }
                                                                                 }
 
@@ -864,11 +852,11 @@ namespace ModeladorApp.Controllers
                                                                                         dupTree_step9.descripcion = sublvls9[i].descripcion;
                                                                                         dupTree_step9.lazy = sublvls9[i].lazy;
                                                                                         dupTree_step9.parentId = dupTree_step8.id;
-                                                                                        dupTree_step9.proyectoId = proyectoId;
+                                                                                        dupTree_step9.proyectoId = py.ProyectoID;
                                                                                         dupTree_step9.fechaCreacion = DateTime.Now;
 
                                                                                         var countlvl9 = nda.InserNewLevel(dupTree_step9);
-                                                                                        count = count + countlvl9;
+                                                                                        
 
                                                                                         //----------- duplicar estilos
                                                                                         var step9styles = ndas.GetAllStylesFromLevel(sublvls9[i].id, "").ToList();
@@ -883,7 +871,7 @@ namespace ModeladorApp.Controllers
                                                                                                 sto.style = step9styles[s].style;
 
                                                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                count = count + modelstyle;
+                                                                                                
                                                                                             }
                                                                                         }
 
@@ -901,7 +889,7 @@ namespace ModeladorApp.Controllers
                                                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                count = count + modelinfo;
+                                                                                                
                                                                                             }
                                                                                         }
 
@@ -919,11 +907,11 @@ namespace ModeladorApp.Controllers
                                                                                                 dupTree_step10.descripcion = sublvls10[j].descripcion;
                                                                                                 dupTree_step10.lazy = sublvls10[j].lazy;
                                                                                                 dupTree_step10.parentId = dupTree_step9.id;
-                                                                                                dupTree_step10.proyectoId = proyectoId;
+                                                                                                dupTree_step10.proyectoId = py.ProyectoID;
                                                                                                 dupTree_step10.fechaCreacion = DateTime.Now;
 
                                                                                                 var countlvl10 = nda.InserNewLevel(dupTree_step10);
-                                                                                                count = count + countlvl10;
+                                                                                                
 
                                                                                                 //----------- duplicar estilos
                                                                                                 var step10styles = ndas.GetAllStylesFromLevel(sublvls10[j].id, "").ToList();
@@ -938,7 +926,7 @@ namespace ModeladorApp.Controllers
                                                                                                         sto.style = step10styles[s].style;
 
                                                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                        count = count + modelstyle;
+                                                                                                        
                                                                                                     }
                                                                                                 }
 
@@ -956,7 +944,7 @@ namespace ModeladorApp.Controllers
                                                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                        count = count + modelinfo;
+                                                                                                        
                                                                                                     }
                                                                                                 }
 
@@ -974,11 +962,11 @@ namespace ModeladorApp.Controllers
                                                                                                         dupTree_step11.descripcion = sublvls11[k].descripcion;
                                                                                                         dupTree_step11.lazy = sublvls11[k].lazy;
                                                                                                         dupTree_step11.parentId = dupTree_step10.id;
-                                                                                                        dupTree_step11.proyectoId = proyectoId;
+                                                                                                        dupTree_step11.proyectoId = py.ProyectoID;
                                                                                                         dupTree_step11.fechaCreacion = DateTime.Now;
 
                                                                                                         var countlvl11 = nda.InserNewLevel(dupTree_step11);
-                                                                                                        count = count + countlvl11;
+                                                                                                        
 
                                                                                                         //----------- duplicar estilos
                                                                                                         var step11styles = ndas.GetAllStylesFromLevel(sublvls11[k].id, "").ToList();
@@ -993,7 +981,7 @@ namespace ModeladorApp.Controllers
                                                                                                                 sto.style = step11styles[s].style;
 
                                                                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                count = count + modelstyle;
+                                                                                                                
                                                                                                             }
                                                                                                         }
 
@@ -1011,7 +999,7 @@ namespace ModeladorApp.Controllers
                                                                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                count = count + modelinfo;
+                                                                                                                
                                                                                                             }
                                                                                                         }
 
@@ -1030,11 +1018,11 @@ namespace ModeladorApp.Controllers
                                                                                                                 dupTree_step12.descripcion = sublvls12[m].descripcion;
                                                                                                                 dupTree_step12.lazy = sublvls12[m].lazy;
                                                                                                                 dupTree_step12.parentId = dupTree_step11.id;
-                                                                                                                dupTree_step12.proyectoId = proyectoId;
+                                                                                                                dupTree_step12.proyectoId = py.ProyectoID;
                                                                                                                 dupTree_step12.fechaCreacion = DateTime.Now;
 
                                                                                                                 var countlvl12 = nda.InserNewLevel(dupTree_step12);
-                                                                                                                count = count + countlvl12;
+                                                                                                                
 
 
                                                                                                                 //----------- duplicar estilos
@@ -1050,7 +1038,7 @@ namespace ModeladorApp.Controllers
                                                                                                                         sto.style = step12styles[s].style;
 
                                                                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                        count = count + modelstyle;
+                                                                                                                        
                                                                                                                     }
                                                                                                                 }
 
@@ -1068,7 +1056,7 @@ namespace ModeladorApp.Controllers
                                                                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                        count = count + modelinfo;
+                                                                                                                        
                                                                                                                     }
                                                                                                                 }
 
@@ -1087,11 +1075,11 @@ namespace ModeladorApp.Controllers
                                                                                                                         dupTree_step13.descripcion = sublvls13[n].descripcion;
                                                                                                                         dupTree_step13.lazy = sublvls13[n].lazy;
                                                                                                                         dupTree_step13.parentId = dupTree_step12.id;
-                                                                                                                        dupTree_step13.proyectoId = proyectoId;
+                                                                                                                        dupTree_step13.proyectoId = py.ProyectoID;
                                                                                                                         dupTree_step13.fechaCreacion = DateTime.Now;
 
                                                                                                                         var countlvl13 = nda.InserNewLevel(dupTree_step13);
-                                                                                                                        count = count + countlvl13;
+                                                                                                                        
 
                                                                                                                         //----------- duplicar estilos
                                                                                                                         var step13styles = ndas.GetAllStylesFromLevel(sublvls13[n].id, "").ToList();
@@ -1106,7 +1094,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                 sto.style = step13styles[s].style;
 
                                                                                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                                count = count + modelstyle;
+                                                                                                                                
                                                                                                                             }
                                                                                                                         }
 
@@ -1124,7 +1112,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                                count = count + modelinfo;
+                                                                                                                                
                                                                                                                             }
                                                                                                                         }
 
@@ -1142,11 +1130,11 @@ namespace ModeladorApp.Controllers
                                                                                                                                 dupTree_step14.descripcion = sublvls14[o].descripcion;
                                                                                                                                 dupTree_step14.lazy = sublvls14[o].lazy;
                                                                                                                                 dupTree_step14.parentId = dupTree_step13.id;
-                                                                                                                                dupTree_step14.proyectoId = proyectoId;
+                                                                                                                                dupTree_step14.proyectoId = py.ProyectoID;
                                                                                                                                 dupTree_step14.fechaCreacion = DateTime.Now;
 
                                                                                                                                 var countlvl14 = nda.InserNewLevel(dupTree_step14);
-                                                                                                                                count = count + countlvl14;
+                                                                                                                                
 
                                                                                                                                 //----------- duplicar estilos
                                                                                                                                 var step14styles = ndas.GetAllStylesFromLevel(sublvls14[o].id, "").ToList();
@@ -1161,7 +1149,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                         sto.style = step14styles[s].style;
 
                                                                                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                                        count = count + modelstyle;
+                                                                                                                                        
                                                                                                                                     }
                                                                                                                                 }
 
@@ -1179,7 +1167,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                                        count = count + modelinfo;
+                                                                                                                                        
                                                                                                                                     }
                                                                                                                                 }
 
@@ -1198,11 +1186,11 @@ namespace ModeladorApp.Controllers
                                                                                                                                         dupTree_step15.descripcion = sublvls15[p].descripcion;
                                                                                                                                         dupTree_step15.lazy = sublvls15[p].lazy;
                                                                                                                                         dupTree_step15.parentId = dupTree_step14.id;
-                                                                                                                                        dupTree_step15.proyectoId = proyectoId;
+                                                                                                                                        dupTree_step15.proyectoId = py.ProyectoID;
                                                                                                                                         dupTree_step15.fechaCreacion = DateTime.Now;
 
                                                                                                                                         var countlvl15 = nda.InserNewLevel(dupTree_step15);
-                                                                                                                                        count = count + countlvl15;
+                                                                                                                                        
 
 
                                                                                                                                         //----------- duplicar estilos
@@ -1218,7 +1206,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                                 sto.style = step15styles[s].style;
 
                                                                                                                                                 var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                                                count = count + modelstyle;
+                                                                                                                                                
                                                                                                                                             }
                                                                                                                                         }
 
@@ -1236,7 +1224,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                                 info.FechaIngreso = DateTime.Now;
 
                                                                                                                                                 var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                                                count = count + modelinfo;
+                                                                                                                                                
                                                                                                                                             }
                                                                                                                                         }
 
@@ -1254,11 +1242,11 @@ namespace ModeladorApp.Controllers
                                                                                                                                                 dupTree_step16.descripcion = sublvls16[q].descripcion;
                                                                                                                                                 dupTree_step16.lazy = sublvls16[q].lazy;
                                                                                                                                                 dupTree_step16.parentId = dupTree_step15.id;
-                                                                                                                                                dupTree_step16.proyectoId = proyectoId;
+                                                                                                                                                dupTree_step16.proyectoId = py.ProyectoID;
                                                                                                                                                 dupTree_step16.fechaCreacion = DateTime.Now;
 
                                                                                                                                                 var countlvl16 = nda.InserNewLevel(dupTree_step16);
-                                                                                                                                                count = count + countlvl16;
+                                                                                                                                                
 
                                                                                                                                                 //----------- duplicar estilos
                                                                                                                                                 var step16styles = ndas.GetAllStylesFromLevel(sublvls16[q].id, "").ToList();
@@ -1273,7 +1261,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                                         sto.style = step16styles[s].style;
 
                                                                                                                                                         var modelstyle = ndas.InsertNivelStyle(sto);
-                                                                                                                                                        count = count + modelstyle;
+                                                                                                                                                        
                                                                                                                                                     }
                                                                                                                                                 }// colocar debajo un nuevo nivel si se requiere.
 
@@ -1291,7 +1279,7 @@ namespace ModeladorApp.Controllers
                                                                                                                                                         info.FechaIngreso = DateTime.Now;
 
                                                                                                                                                         var modelinfo = ndai.InsertNivelInfo(info);
-                                                                                                                                                        count = count + modelinfo;
+                                                                                                                                                        
                                                                                                                                                     }
                                                                                                                                                 }
 
@@ -1348,10 +1336,12 @@ namespace ModeladorApp.Controllers
                 if (count == treeTotalCount)
                 {
                     jres = new { msg = "Se duplicaron correctamente los niveles", registros = count, total = treeTotalCount };
-                }
-                else if (count < treeTotalCount)
+                } else if (count < treeTotalCount)
                 {
                     jres = new { msg = "Falto duplicar algunos niveles", registros = count, total = treeTotalCount };
+                } else if (count > treeTotalCount)
+                {
+                    jres = new { msg = "Excepcion no controlada", registros = count, total = treeTotalCount };
                 }
 
                 return Json(jres);

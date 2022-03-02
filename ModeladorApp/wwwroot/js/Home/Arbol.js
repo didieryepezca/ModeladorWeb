@@ -1201,10 +1201,13 @@ async function loadTree(firstPyID, vPermiso) {
                                             Swal.fire('Duplicados Correctamente !', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', 'success');
                                             nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
                                         } else if (response.msg == "Falto duplicar algunos niveles") {
-                                            swal("Atencion", 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning");
+                                            Swal.fire("Atencion", 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning");
+                                            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+                                        } else if (response.msg == "Excepcion no controlada") {
+                                            Swal.fire("Atencion", 'Hubo una excepción, se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning");
                                             nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
                                         } else {
-                                            swal("Hubo un Problema", 'Error:' + response.msg, "error");
+                                            Swal.fire("Hubo un Problema", 'Error:' + response.msg, "error");
                                         } 
                                         
                                     }).catch(error => {

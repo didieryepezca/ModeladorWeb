@@ -130,16 +130,18 @@ function cloneProject(idPy, namePy, desc) {
 
             var rpt = confirmCloneProject(idPy, namePy, desc)
             rpt.then(function (response) {
-                //console.log(response);
+                console.log(response);
                 if (response.msg == "Se duplicaron correctamente los niveles") {
                     Swal.fire('Clonado Correctamente !', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', 'success').then((result) => {
                         location.reload(); //refrescar pantalla para ver los cambios.
-                    });
-                         
+                    });                         
                 } else if (response.msg == "Falto duplicar algunos niveles") {
                     Swal.fire('Atencion', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning").then((result) => {
                         location.reload(); //refrescar pantalla para ver los cambios.
                     });
+                } else if (response.msg == "Excepcion no controlada") {
+                    swal("Atencion", 'Hubo una excepción, se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning");
+                    nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
                 } else {
                     Swal.fire("Hubo un Problema", 'Error:' + response.msg, "error").then((result) => {
                         location.reload(); //refrescar pantalla para ver los cambios.
