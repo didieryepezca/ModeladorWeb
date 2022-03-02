@@ -135,7 +135,8 @@
                                             </div>
                                         }
 
-                                        @if (item.NombreProyecto == "Proyecto Segunda Fase")
+                                        @*PROYECTO POR DEFECTO A CLONAR DESIGNADO POR ERICK DEL CASTILLO*@
+                                        @if (item.NombreProyecto == "02 - UNFV")
                                         {
                                             <a class="btn btn-outline-green" style="color:green"
                                                onclick="cloneProject(@item.ProyectoID, '@item.NombreProyecto', '@item.DescripcionProyecto')"><strong>Clonar</strong></a>
