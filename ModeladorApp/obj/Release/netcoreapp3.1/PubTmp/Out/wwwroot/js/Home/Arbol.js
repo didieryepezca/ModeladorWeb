@@ -1,6 +1,3 @@
-//var firstPyID = '@ViewBag.firstPyID';
-//var permiso = '@ViewBag.permiso';
-
 window.onload = loadTree(firstPyID, permiso);
 
 var CLIPBOARD = null;
@@ -361,11 +358,18 @@ async function loadTree(firstPyID, vPermiso) {
                         if (result.length != 0) {
                             // 50 cajas para nombres de  columnas.
                             //for (h = 0; h <= result.length - 1; h++) { //capturar los 50 titulos
-                            for (h = 0; h <= 10 - 1; h++) {
+                            for (h = 1; h <= 11 - 1; h++) {
                                 $('#' + treeReach + '_colth_' + result[h].tituloID).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
-                                colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 60px;"></th>';
+                                colName = colName + '<th id="' + treeReach + '_colth_' + result[h].tituloID + '"><input id="' + treeReach + '_colname_' + result[h].tituloID + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + h + ',' + result[h].tituloID + ',' + pySelected + ',`' + vPermiso + '` )" type="text" value="' + result[h].titulo + '" style="width: 100%;"></th>';
                             }
                             $('#head_' + treeReach).append(colName).fadeIn(300000);
+                        } else {
+
+                            //for (i = 1; i <= 11 - 1; i++) {
+                            //    $('#' + treeReach + '_colth_' + i).remove(); //removemos para que no se vuelvan a crear cada vez que inicializamos el arbol
+                            //    colName = colName + '<th id="' + treeReach + '_colth_' + i + '"><input id="' + treeReach + '_colname_' + i + '" onchange="InsertUpdateTitulo(`' + treeReach + '_colname`,' + i + ',' + 0 + ',' + pySelected + ',`' + vPermiso + '` )" type="text" placeholder="Ingrese algo" style="width: 100%;"></th>';
+                            //}
+                            //$('#head_' + treeReach).append(colName).fadeIn(300000);
                         }
                     });
 
@@ -382,30 +386,26 @@ async function loadTree(firstPyID, vPermiso) {
 
                             for (n = 0; n <= result.length - 1; n++) {
 
-                                for (i = 2; i <= 11; i++) {
+                                for (i = 2; i <= 12; i++) {
 
-                                    $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 60px;">');
+                                    $tdList.eq(m).html('<input type="text" id="' + treeReach + '_colvalue' + result[n].infoID + '" value="' + result[n].informacion + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + result[n].infoID + '`,`' + 0 + '`,`' + 0 + '`,`' + vPermiso + '`)" style="width: 100%;">');
                                 }
                                 m = m + 1;
-                                for (j = m; j <= 11; j++) {
+                                for (j = m; j <= 12; j++) {
 
-                                    $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
+                                    $tdList.eq(j).html('<input id="' + treeReach + '_colvalue_' + j + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + j + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 100%;"/>');
 
                                 }
                             }
                         } else { // Sino no hay ningun dato en las cajas de un arbol. crear las cajas desde 0
 
                             //console.log("Construir desde 0");
-                            for (k = 2; k <= 11; k++) {
-
-                                $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 60px;"/>');
-
+                            for (k = 2; k <= 12; k++) {
+                                $tdList.eq(k).html('<input id="' + treeReach + '_colvalue_' + k + '_' + node.data.id + '" onchange="insertOrUpdateInfoGrilla(`tree_' + pySelected + '`,`' + 0 + '`,`' + k + '`,`' + node.data.id + '`,`' + vPermiso + '`)" type="text" style="width: 100%;"/>');
                             }
+
                         }
-                    });
-                    // Podemos setear la información en la columna 2 (la que continua al titulo.)
-                    //$tdList.eq(2).find("input").val("hola");
-                    //$tdList.eq(2).html('<input type="text" value="' + node.data.id + '">');
+                    });                  
                 },
                 renderNode: function (event, data) {
                     var node = data.node;
@@ -431,18 +431,15 @@ async function loadTree(firstPyID, vPermiso) {
                                 }
                             }
                         });
-                    }
-                    //node.span.hidden = false;
-                    //console.log(node.span.hidden)                           
+                    }                                      
                 },
                 modifyChild: function (event, data) {
                     data.tree.info(event.type, data);
+                    //console.log("----> OPERATION DRAG & DROP")
                     //console.log(data);
                     //console.log(data.childNode.data.id);
-                    //console.log(data.childNode.title); //nombre a actualizar
-                    //console.log("------------>>")
-                    //console.log(data.node)
-                    //console.log("----> OPERATION DRAG & DROP")
+                    //console.log(data.childNode.title); //nombre a actualizar                 
+                    //console.log(data.node)             
                     if (data.operation == "add") {
                         if (typeof (data.childNode.data.id) != 'undefined') {
                             //console.log(data.operation)
@@ -472,12 +469,10 @@ async function loadTree(firstPyID, vPermiso) {
                         moveMode,
                         tree = $.ui.fancytree.getTree(this),
                         node = tree.getActiveNode();
-
                     //console.log("--------------------->>Add")
                     //console.log(node.data.id) //enviar como parent id
                     //console.log(node.childNode) //enviar como parent id
                     //console.log("--------------------->>Add")
-
                     switch (data.cmd) {
                         case "addChild":
                             tree.applyCommand(data.cmd, node);
@@ -492,9 +487,7 @@ async function loadTree(firstPyID, vPermiso) {
                         case "moveUp":
                         case "outdent":
                         case "remove":
-
                             var selectedNodes = $.ui.fancytree.getTree("#" + treeReach).getSelectedNodes();
-
                             if (selectedNodes.length > 0) {
 
                                 if (data.cmd == "remove" && vPermiso == "EDITOR") {
@@ -2786,17 +2779,24 @@ async function modalInsertMicroDB(parentId, treeReach, pySelected) {
     var footerBtns = "";
     $('#tbodyDataEquipos').remove();
     var tableDataEquipos = "";    
-
+            
     var equipos = await funGetAllEquiposFromDB();   
         
     tableDataEquipos = tableDataEquipos + '<tbody id="tbodyDataEquipos">';
-
+    
     equipos.forEach(function element(ele) {
 
         tableDataEquipos = tableDataEquipos + '<tr class="header equiponaranja" style="cursor:pointer;">';
         tableDataEquipos = tableDataEquipos + '<td><input type="checkbox" disabled></td>';
         tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.nombrE_EQUIPO + '</span></td>';
-        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.ncR_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.nrC_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.canT_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.unD_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.desC1_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.suB_TOTAL1_EQ + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.mrC_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.desC2_EQUIPO + '</span></td>';
+        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + ele.suB_TOTAL2_EQ + '</span></td>';
         tableDataEquipos = tableDataEquipos + '</tr>';
 
             //---------------------------------------Caracteristicas
@@ -2814,12 +2814,19 @@ async function modalInsertMicroDB(parentId, treeReach, pySelected) {
                 });
                 return salidaAjax;
             }();
-          
+           
             caracteristica.forEach(function element(elec) {
                         tableDataEquipos = tableDataEquipos + '<tr class="" style="cursor:pointer;">';
-                tableDataEquipos = tableDataEquipos + '<td><input class="checkbox_equipo" onclick="fnSetEquipo()" value="' + [elec.iD_EQUIPO_C, elec.iD_EQUIPO] + '" data-parsley-multiple="checkbox" type="checkbox"></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><input class="checkbox_equipo" onclick="fnSetEquipo()" value="' + [elec.iD_EQUIPO_C, elec.iD_EQUIPO] + '" data-parsley-multiple="checkbox" type="checkbox"></td>';
                         tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.nombrE_CARACTERISTICA + '</span></td>';
-                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.ncR_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.nrC_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.canT_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.unD_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.desC1_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.suB_TOTAL1 + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.mrC_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.desC2_CARACTERISTICA + '</span></td>';
+                        tableDataEquipos = tableDataEquipos + '<td><span class="text-muted">' + elec.suB_TOTAL2 + '</span></td>';
                         tableDataEquipos = tableDataEquipos + '</tr>';
             });
             //---------------------------------------Caracteristicas

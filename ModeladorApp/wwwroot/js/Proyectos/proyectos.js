@@ -130,17 +130,21 @@ function cloneProject(idPy, namePy, desc) {
 
             var rpt = confirmCloneProject(idPy, namePy, desc)
             rpt.then(function (response) {
-
-                console.log(response);
-                if (response >= 1) {
-
-                    Swal.fire('Proyecto Clonado !', '', 'success').then((result) => {
-                        location.reload(); //refrescar pantalla para ver los cambios.                  
-                    })
-
+                //console.log(response);
+                if (response.msg == "Se duplicaron correctamente los niveles") {
+                    Swal.fire('Clonado Correctamente !', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', 'success').then((result) => {
+                        location.reload(); //refrescar pantalla para ver los cambios.
+                    });
+                         
+                } else if (response.msg == "Falto duplicar algunos niveles") {
+                    Swal.fire('Atencion', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning").then((result) => {
+                        location.reload(); //refrescar pantalla para ver los cambios.
+                    });
                 } else {
-                    Swal.fire('ERROR', 'Hubo un problema', 'error')
-                }
+                    Swal.fire("Hubo un Problema", 'Error:' + response.msg, "error").then((result) => {
+                        location.reload(); //refrescar pantalla para ver los cambios.
+                    });
+                }                
             })
 
         } else if (result.isDenied) {

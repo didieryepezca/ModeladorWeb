@@ -1193,15 +1193,20 @@ async function loadTree(firstPyID, vPermiso) {
                                     //console.log(result.value) cantidad de veces
                                     var rpt = duplicateLevels(node.data.id, node.data.parentId, pySelected, result.value)
                                     rpt.then(function (response) {
-                                        //console.log(styleresponse);
-                                        if (response > 0) {
-                                            Swal.fire('Nivel duplicado !', '', 'success')
-                                            var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
-                                            var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+                                        //console.log(response);
+                                        var tree = $("#" + treeReach).fancytree("getTree"); // para obtener el arbol renderizado.
+                                        var nodo = tree.getActiveNode(); // para obtener el nodo activo.
+
+                                        if (response.msg == "Se duplicaron correctamente los niveles") {
+                                            Swal.fire('Duplicados Correctamente !', 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', 'success');
+                                            nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
+                                        } else if (response.msg == "Falto duplicar algunos niveles") {
+                                            swal("Atencion", 'Se duplicaron: ' + response.registros + ' Registros, de un total de: ' + response.total + ' ', "warning");
                                             nodo.parent.resetLazy(); //recargamos el nodo parent para cargar los id de los n elementos ingresados.
                                         } else {
-                                            Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
-                                        }
+                                            swal("Hubo un Problema", 'Error:' + response.msg, "error");
+                                        } 
+                                        
                                     }).catch(error => {
                                         Swal.fire('ERROR', 'Hubo un problema, no se pudo duplicar correctamente.', 'warning')
                                     });

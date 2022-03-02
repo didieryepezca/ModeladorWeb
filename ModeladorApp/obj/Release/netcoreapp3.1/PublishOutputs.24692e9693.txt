@@ -28,6 +28,7 @@ C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\tabler.rtl.css
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\css\tabler.rtl.min.css
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\favicon.ico
+C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\Microbase.jpg
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\images\optical-white-logo.svg
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\Home\Arbol.js
 C:\Users\didie\source\repos\ModeladorApp\ModeladorApp\obj\Release\netcoreapp3.1\PubTmp\Out\wwwroot\js\litepicker.js

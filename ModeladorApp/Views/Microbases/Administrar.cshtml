@@ -87,18 +87,24 @@
                                     <div class="tab-pane" id="tabs-cargar">
 
                                         <div class="mb-3">
-                                            <div class="form-label">El archivo selecionado debe ser un documento Excel. Verifique que la extención del documento sea .XLS o .XLSX</div>
+                                            <div class="form-label"><p style="color:red">Antes de cargar su archivo, siga las siguientes recomendaciones</p></div>                                           
+
+                                            <img src="~/images/Microbase.jpg" />
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <div class="form-label"><p style="color:red">El archivo selecionado debe ser de tipo Excel. Verifique que su extensión sea .XLS o .XLSX</p></div>
                                             <input id="txtSubirA" type="file" class="form-control">
                                         </div>
 
                                         <div class="mb-3">
-                                            <label class="form-label">Comentarios del archivo (opcional)</label>
+                                            <label class="form-label">Agregue un comentario del archivo</label>
                                             <textarea id="txtObs" class="form-control" name="example-textarea-input" rows="3"></textarea>
                                         </div>
 
                                         <div class="card-footer text-end">
-                                            <div class="d-flex">                                               
-                                                <input onclick="cargarArchivo()" type="submit" value="Cargar Archivo" class="btn btn-primary ms-auto"/>
+                                            <div class="d-flex">
+                                                <input onclick="cargarArchivo()" type="submit" value="Cargar Archivo" class="btn btn-primary ms-auto" />
                                             </div>
                                         </div>
 

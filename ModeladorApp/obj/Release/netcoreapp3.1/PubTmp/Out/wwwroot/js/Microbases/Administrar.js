@@ -4,6 +4,8 @@ async function loadEquipos() {
 
     var equipos = await funGetAllEquipos(); // la que contendra la data de la función asyncrona.   
 
+    //console.table(equipos);
+
     $(function () {
         $("#equiposDataGrid").dxDataGrid({
             dataSource: equipos,
@@ -15,20 +17,63 @@ async function loadEquipos() {
             },
             allowColumnReordering: true,
             //columnChooser: { enabled: true },
-            columns: [{
-                caption: 'NOMBRE DE QUIPO',
+            columns: [
+                {
+                caption: 'NOMBRE DE EQUIPO',
                 dataField: "nombrE_EQUIPO",
                 validationRules: [{
                     type: "required"
                 }],
                 fixed: true
-            }, {
-                caption: 'NCR',
-                dataField: "ncR_EQUIPO",
+                }, {
+                caption: 'NRC',
+                dataField: "nrC_EQUIPO",
                 validationRules: [{
                     type: "required"
                 }]
-            }, {
+                }, {
+                    caption: 'Cant',
+                    dataField: "canT_EQUIPO",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'UND',
+                    dataField: "unD_EQUIPO",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'Desc. 1',
+                    dataField: "desC1_EQUIPO",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'Subtotal 1',
+                    dataField: "suB_TOTAL1_EQ",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'MRC',
+                    dataField: "mrC_EQUIPO",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'Desc. 2',
+                    dataField: "desC2_EQUIPO",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
+                    caption: 'Subtotal 2',
+                    dataField: "suB_TOTAL2_EQ",
+                    validationRules: [{
+                        type: "required"
+                    }]
+                }, {
                 caption: 'FECHA REGISTRO',
                 dataField: "fechA_REGISTRO",
                 dataType: "date",
@@ -75,11 +120,13 @@ async function loadEquipos() {
                 }
             },
             onRowUpdated: function (e) {
-                var data = JSON.stringify(e.data);
-                //console.log(selectedRow)
+                var data = JSON.stringify(e.data);                
                 var actualizar = funUpdateEquipo(data);
                 actualizar.then(function (response) {
-                    if (response > 0) { console.log("Actualizo Correctamente") }
+                    if (response > 0) {
+                        
+                        console.log("Actualizo Correctamente")
+                    }
                     else { console.log("No se Actualizo Correctamente") }
                 });
 
@@ -87,14 +134,18 @@ async function loadEquipos() {
             onInitNewRow(e) { //Cuando cargamos el formulario para añadir un nuevo elemento seteamos el usuario              
                 e.data.usuario = currentUser;
             },
-            onRowInserted: function (e) {
-                delete e.data.iD_EQUIPO; //eliminamos el id que lo autogenerara el insert con entityFramework.
+            onRowInserted: function (e) {                
                 var data = JSON.stringify(e.data);
                 var insertar = funInsertEquipo(data);
                 insertar.then(function (response) {
-                    if (response > 0) { console.log("Inserto Correctamente") }
+                    if (response > 0) {
+                        e.data.iD_EQUIPO = response; // response = id del equipo insertado y lo seteamos a la propiedad del objeto para poder hacer CRUD con el.                      
+                        console.log("Inserto Correctamente")
+                    }
                     else { console.log("No se Inserto Correctamente") }
                 });
+                //console.log(e);
+
             },
             onRowRemoved: function (e) {
                 var eliminare = funDeleteEquipoAndCaracteristica(e.data.iD_EQUIPO);
@@ -110,8 +161,7 @@ async function loadEquipos() {
                     //console.log(info.data.iD_EQUIPO)
                     var eqspecs = funGetCaracteristicas(info.data.iD_EQUIPO); // la que contendra la data de las características
                     eqspecs.then(function (specs) {
-                        //console.log(specs);
-
+                        //console.table(specs);
                         $('<div>')
                             .addClass('master-detail-caption')
                             .text(`Mostrando caracteristicas con ID de Equipo: ${info.data.iD_EQUIPO} `)
@@ -131,12 +181,54 @@ async function loadEquipos() {
                                 }],
                                 fixed: true
                             }, {
-                                caption: 'NCR',
-                                dataField: "ncR_CARACTERISTICA",
+                                caption: 'NRC',
+                                dataField: "nrC_CARACTERISTICA",
                                 validationRules: [{
                                     type: "required"
                                 }]
-                            }, {
+                                }, {
+                                    caption: 'Cant',
+                                    dataField: "canT_CARACTERISTICA",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'UND',
+                                    dataField: "unD_CARACTERISTICA",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'Desc 1',
+                                    dataField: "desC1_CARACTERISTICA",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'Subtotal 1',
+                                    dataField: "suB_TOTAL1",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'MRC',
+                                    dataField: "mrC_CARACTERISTICA",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'Desc 2',
+                                    dataField: "desC2_CARACTERISTICA",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
+                                    caption: 'Subtotal 2',
+                                    dataField: "suB_TOTAL2",
+                                    validationRules: [{
+                                        type: "required"
+                                    }]
+                                }, {
                                 caption: 'FECHA REGISTRO',
                                 dataField: "fechA_REGISTRO",
                                 dataType: "date",
@@ -163,17 +255,24 @@ async function loadEquipos() {
                                 //console.log(data)
                                 var actualizar = funUpdateEquipoCar(data);
                                 actualizar.then(function (response) {
-                                    if (response > 0) { console.log("Actualizo Correctamente") }
+                                    //console.log(e)
+                                    if (response > 0) {
+                                        console.log("Actualizo Correctamente")
+                                        //console.log(e);
+                                    }
                                     else { console.log("No se Actualizo Correctamente") }
                                 });
                             },
-                            onRowInserted: function (e) {
-                                delete e.data.iD_EQUIPO_C; //eliminamos el id que lo autogenerara el insert con entityFramework.
+                            onRowInserted: function (e) {                                
                                 e.data.iD_EQUIPO = info.data.iD_EQUIPO; // añadimos id del equipo padre.
                                 var data = JSON.stringify(e.data);
                                 var insertarC = funInsertEquipoCaracteristica(data);
                                 insertarC.then(function (response) {
-                                    if (response > 0) { console.log("Inserto Correctamente") }
+                                    if (response > 0) {
+                                        e.data.iD_EQUIPO_C = response; // response = id del equipo insertado y lo seteamos a la propiedad del objeto para poder hacer CRUD con el.
+                                        console.log("Inserto Correctamente")
+                                        $("#equiposDataGrid").dxDataGrid("instance").refresh();//Actualizamos la grilla para obtener los ID.                                        
+                                    }
                                     else { console.log("No se Inserto Correctamente") }
                                 });
                             },

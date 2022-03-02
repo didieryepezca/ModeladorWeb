@@ -25,7 +25,6 @@
     <Folder Include="wwwroot\lib\jquery3.6.0\" />
     <Folder Include="wwwroot\lib\fancytree\" />
     <Folder Include="wwwroot\lib\jquery-ui\" />
-    <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

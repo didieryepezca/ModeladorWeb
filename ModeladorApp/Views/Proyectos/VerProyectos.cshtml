@@ -135,6 +135,12 @@
                                             </div>
                                         }
 
+                                        @if (item.NombreProyecto == "Proyecto Segunda Fase")
+                                        {
+                                            <a class="btn btn-outline-green" style="color:green"
+                                               onclick="cloneProject(@item.ProyectoID, '@item.NombreProyecto', '@item.DescripcionProyecto')"><strong>Clonar</strong></a>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
