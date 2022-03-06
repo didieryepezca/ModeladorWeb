@@ -1309,6 +1309,242 @@ namespace ModeladorApp.Controllers
                                                                                                                                                         }
                                                                                                                                                     }
 
+                                                                                                                                                    //------------ diecisiete loop...
+                                                                                                                                                    List<TB_TREE> sublvls17 = new List<TB_TREE>();
+                                                                                                                                                    sublvls17 = nda.GetSubLvl(sublvls16[q].id).ToList();
+
+                                                                                                                                                    if (sublvls17.Count > 0)
+                                                                                                                                                    {
+                                                                                                                                                        for (int r = 0; r <= sublvls17.Count - 1; r++)
+                                                                                                                                                        {
+                                                                                                                                                            TB_TREE dupTree_step17 = new TB_TREE();
+
+                                                                                                                                                            dupTree_step17.title = sublvls17[r].title;
+                                                                                                                                                            dupTree_step17.descripcion = sublvls17[r].descripcion;
+                                                                                                                                                            dupTree_step17.lazy = sublvls17[r].lazy;
+                                                                                                                                                            dupTree_step17.parentId = dupTree_step16.id;
+                                                                                                                                                            dupTree_step17.proyectoId = projectId;
+                                                                                                                                                            dupTree_step17.fechaCreacion = DateTime.Now;
+
+                                                                                                                                                            var countlvl17 = nda.InserNewLevel(dupTree_step17);
+
+
+                                                                                                                                                            //----------- duplicar estilos
+                                                                                                                                                            var step17styles = ndas.GetAllStylesFromLevel(sublvls17[r].id, "").ToList();
+                                                                                                                                                            if (step17styles.Count > 0)
+                                                                                                                                                            {
+                                                                                                                                                                for (int s = 0; s <= step17styles.Count - 1; s++)
+                                                                                                                                                                {
+                                                                                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                                    sto.NivelID = dupTree_step17.id;
+                                                                                                                                                                    sto.campo = step17styles[s].campo;
+                                                                                                                                                                    sto.style = step17styles[s].style;
+
+                                                                                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+
+                                                                                                                                                                }
+                                                                                                                                                            }// colocar debajo un nuevo nivel si se requiere.
+
+                                                                                                                                                            //----------- duplicar info
+                                                                                                                                                            var step17info = ndai.GetNivelInfo(sublvls17[r].id).ToList();
+                                                                                                                                                            if (step17info.Count > 0)
+                                                                                                                                                            {
+                                                                                                                                                                for (int ii = 0; ii <= step17info.Count - 1; ii++)
+                                                                                                                                                                {
+                                                                                                                                                                    TB_NIVEL_INFO info = new TB_NIVEL_INFO();
+
+                                                                                                                                                                    info.NivelID = dupTree_step17.id;
+                                                                                                                                                                    info.Informacion = step17info[ii].Informacion;
+                                                                                                                                                                    info.Usuario = user.Result.UsuarioNombreCompleto;
+                                                                                                                                                                    info.FechaIngreso = DateTime.Now;
+
+                                                                                                                                                                    var modelinfo = ndai.InsertNivelInfo(info);
+
+                                                                                                                                                                }
+                                                                                                                                                            }
+
+                                                                                                                                                            //------------ diesiocho loop...
+                                                                                                                                                            List<TB_TREE> sublvls18 = new List<TB_TREE>();
+                                                                                                                                                            sublvls18 = nda.GetSubLvl(sublvls17[r].id).ToList();
+
+                                                                                                                                                            if (sublvls18.Count > 0)
+                                                                                                                                                            {
+                                                                                                                                                                for (int s = 0; s <= sublvls18.Count - 1; s++)
+                                                                                                                                                                {
+                                                                                                                                                                    TB_TREE dupTree_step18 = new TB_TREE();
+
+                                                                                                                                                                    dupTree_step18.title = sublvls18[s].title;
+                                                                                                                                                                    dupTree_step18.descripcion = sublvls18[s].descripcion;
+                                                                                                                                                                    dupTree_step18.lazy = sublvls18[s].lazy;
+                                                                                                                                                                    dupTree_step18.parentId = dupTree_step17.id;
+                                                                                                                                                                    dupTree_step18.proyectoId = projectId;
+                                                                                                                                                                    dupTree_step18.fechaCreacion = DateTime.Now;
+
+                                                                                                                                                                    var countlvl18 = nda.InserNewLevel(dupTree_step18);
+
+
+                                                                                                                                                                    //----------- duplicar estilos
+                                                                                                                                                                    var step18styles = ndas.GetAllStylesFromLevel(sublvls18[s].id, "").ToList();
+                                                                                                                                                                    if (step18styles.Count > 0)
+                                                                                                                                                                    {
+                                                                                                                                                                        for (int ss = 0; ss <= step18styles.Count - 1; ss++)
+                                                                                                                                                                        {
+                                                                                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                                            sto.NivelID = dupTree_step18.id;
+                                                                                                                                                                            sto.campo = step18styles[ss].campo;
+                                                                                                                                                                            sto.style = step18styles[ss].style;
+
+                                                                                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+
+                                                                                                                                                                        }
+                                                                                                                                                                    }// colocar debajo un nuevo nivel si se requiere.
+
+                                                                                                                                                                    //----------- duplicar info
+                                                                                                                                                                    var step18info = ndai.GetNivelInfo(sublvls18[s].id).ToList();
+                                                                                                                                                                    if (step18info.Count > 0)
+                                                                                                                                                                    {
+                                                                                                                                                                        for (int ii = 0; ii <= step18info.Count - 1; ii++)
+                                                                                                                                                                        {
+                                                                                                                                                                            TB_NIVEL_INFO info = new TB_NIVEL_INFO();
+
+                                                                                                                                                                            info.NivelID = dupTree_step18.id;
+                                                                                                                                                                            info.Informacion = step18info[ii].Informacion;
+                                                                                                                                                                            info.Usuario = user.Result.UsuarioNombreCompleto;
+                                                                                                                                                                            info.FechaIngreso = DateTime.Now;
+
+                                                                                                                                                                            var modelinfo = ndai.InsertNivelInfo(info);
+
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+
+
+                                                                                                                                                                    //------------ diesinueve loop...
+                                                                                                                                                                    List<TB_TREE> sublvls19 = new List<TB_TREE>();
+                                                                                                                                                                    sublvls19 = nda.GetSubLvl(sublvls18[s].id).ToList();
+
+                                                                                                                                                                    if (sublvls19.Count > 0)
+                                                                                                                                                                    {
+                                                                                                                                                                        for (int t = 0; t <= sublvls19.Count - 1; t++)
+                                                                                                                                                                        {
+                                                                                                                                                                            TB_TREE dupTree_step19 = new TB_TREE();
+
+                                                                                                                                                                            dupTree_step19.title = sublvls19[t].title;
+                                                                                                                                                                            dupTree_step19.descripcion = sublvls19[t].descripcion;
+                                                                                                                                                                            dupTree_step19.lazy = sublvls19[t].lazy;
+                                                                                                                                                                            dupTree_step19.parentId = dupTree_step18.id;
+                                                                                                                                                                            dupTree_step19.proyectoId = projectId;
+                                                                                                                                                                            dupTree_step19.fechaCreacion = DateTime.Now;
+
+                                                                                                                                                                            var countlvl19 = nda.InserNewLevel(dupTree_step19);
+
+
+                                                                                                                                                                            //----------- duplicar estilos
+                                                                                                                                                                            var step19styles = ndas.GetAllStylesFromLevel(sublvls19[t].id, "").ToList();
+                                                                                                                                                                            if (step19styles.Count > 0)
+                                                                                                                                                                            {
+                                                                                                                                                                                for (int ss = 0; ss <= step19styles.Count - 1; ss++)
+                                                                                                                                                                                {
+                                                                                                                                                                                    TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                                                    sto.NivelID = dupTree_step19.id;
+                                                                                                                                                                                    sto.campo = step19styles[ss].campo;
+                                                                                                                                                                                    sto.style = step19styles[ss].style;
+
+                                                                                                                                                                                    var modelstyle = ndas.InsertNivelStyle(sto);
+
+                                                                                                                                                                                }
+                                                                                                                                                                            }// colocar debajo un nuevo nivel si se requiere.
+
+                                                                                                                                                                            //----------- duplicar info
+                                                                                                                                                                            var step19info = ndai.GetNivelInfo(sublvls19[t].id).ToList();
+                                                                                                                                                                            if (step19info.Count > 0)
+                                                                                                                                                                            {
+                                                                                                                                                                                for (int ii = 0; ii <= step19info.Count - 1; ii++)
+                                                                                                                                                                                {
+                                                                                                                                                                                    TB_NIVEL_INFO info = new TB_NIVEL_INFO();
+
+                                                                                                                                                                                    info.NivelID = dupTree_step19.id;
+                                                                                                                                                                                    info.Informacion = step19info[ii].Informacion;
+                                                                                                                                                                                    info.Usuario = user.Result.UsuarioNombreCompleto;
+                                                                                                                                                                                    info.FechaIngreso = DateTime.Now;
+
+                                                                                                                                                                                    var modelinfo = ndai.InsertNivelInfo(info);
+
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+
+                                                                                                                                                                            //------------ veinte loop...
+                                                                                                                                                                            List<TB_TREE> sublvls20 = new List<TB_TREE>();
+                                                                                                                                                                            sublvls20 = nda.GetSubLvl(sublvls19[t].id).ToList();
+
+                                                                                                                                                                            if (sublvls20.Count > 0)
+                                                                                                                                                                            {
+                                                                                                                                                                                for (int u = 0; u <= sublvls20.Count - 1; u++)
+                                                                                                                                                                                {
+                                                                                                                                                                                    TB_TREE dupTree_step20 = new TB_TREE();
+
+                                                                                                                                                                                    dupTree_step20.title = sublvls20[u].title;
+                                                                                                                                                                                    dupTree_step20.descripcion = sublvls20[u].descripcion;
+                                                                                                                                                                                    dupTree_step20.lazy = sublvls20[u].lazy;
+                                                                                                                                                                                    dupTree_step20.parentId = dupTree_step19.id;
+                                                                                                                                                                                    dupTree_step20.proyectoId = projectId;
+                                                                                                                                                                                    dupTree_step20.fechaCreacion = DateTime.Now;
+
+                                                                                                                                                                                    var countlvl20 = nda.InserNewLevel(dupTree_step20);
+
+
+                                                                                                                                                                                    //----------- duplicar estilos
+                                                                                                                                                                                    var step20styles = ndas.GetAllStylesFromLevel(sublvls20[u].id, "").ToList();
+                                                                                                                                                                                    if (step20styles.Count > 0)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        for (int ss = 0; ss <= step20styles.Count - 1; ss++)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            TB_TREE_STYLE sto = new TB_TREE_STYLE();
+
+                                                                                                                                                                                            sto.NivelID = dupTree_step20.id;
+                                                                                                                                                                                            sto.campo = step20styles[ss].campo;
+                                                                                                                                                                                            sto.style = step20styles[ss].style;
+
+                                                                                                                                                                                            var modelstyle = ndas.InsertNivelStyle(sto);
+
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }// colocar debajo un nuevo nivel si se requiere.
+
+                                                                                                                                                                                    //----------- duplicar info
+                                                                                                                                                                                    var step20info = ndai.GetNivelInfo(sublvls20[u].id).ToList();
+                                                                                                                                                                                    if (step20info.Count > 0)
+                                                                                                                                                                                    {
+                                                                                                                                                                                        for (int ii = 0; ii <= step20info.Count - 1; ii++)
+                                                                                                                                                                                        {
+                                                                                                                                                                                            TB_NIVEL_INFO info = new TB_NIVEL_INFO();
+
+                                                                                                                                                                                            info.NivelID = dupTree_step20.id;
+                                                                                                                                                                                            info.Informacion = step20info[ii].Informacion;
+                                                                                                                                                                                            info.Usuario = user.Result.UsuarioNombreCompleto;
+                                                                                                                                                                                            info.FechaIngreso = DateTime.Now;
+
+                                                                                                                                                                                            var modelinfo = ndai.InsertNivelInfo(info);
+
+                                                                                                                                                                                        }
+                                                                                                                                                                                    }
+
+                                                                                                                                                                                    count = count + countlvl20;
+                                                                                                                                                                                }
+                                                                                                                                                                            }
+
+                                                                                                                                                                            count = count + countlvl19;
+                                                                                                                                                                        }
+                                                                                                                                                                    }
+                                                                                                                                                                    count = count + countlvl18;
+                                                                                                                                                                }
+                                                                                                                                                            }
+
+                                                                                                                                                            count = count + countlvl17;
+                                                                                                                                                        }
+                                                                                                                                                    }
+
                                                                                                                                                     count = count + countlvl16;
                                                                                                                                                 }
                                                                                                                                             }

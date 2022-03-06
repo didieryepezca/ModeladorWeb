@@ -127,19 +127,20 @@
                                             <div class="card-footer text-end">
                                                 <div class="d-flex">
                                                     <a class="btn btn-link" style="color:red"
-                                                       onclick="deteleProject(@item.ProyectoID, '@item.NombreProyecto')">Eliminar</a>
+                                                       onclick="deteleProject(@item.ProyectoID, `'@item.NombreProyecto'`)">Eliminar</a>
 
                                                     <a class="btn btn-link" style="color:green"
-                                                       onclick="cloneProject(@item.ProyectoID, '@item.NombreProyecto', '@item.DescripcionProyecto')">Clonar</a>
+                                                       onclick="cloneProject(@item.ProyectoID, `'@item.NombreProyecto'`, `'@item.DescripcionProyecto'`)">Clonar</a>
                                                 </div>
                                             </div>
                                         }
 
                                         @*PROYECTO POR DEFECTO A CLONAR DESIGNADO POR ERICK DEL CASTILLO*@
+                                        
                                         @if (item.NombreProyecto == "02 - UNFV")
                                         {
                                             <a class="btn btn-outline-green" style="color:green"
-                                               onclick="cloneProject(@item.ProyectoID, '@item.NombreProyecto', '@item.DescripcionProyecto')"><strong>Clonar</strong></a>
+                                               onclick="cloneProject(@item.ProyectoID, `'@item.NombreProyecto'`, `'@item.DescripcionProyecto'`)"><strong>Clonar</strong></a>
                                         }
 
                                     </div>
